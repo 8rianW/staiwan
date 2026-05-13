@@ -3,346 +3,233 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="台灣性感 Taiwan Sensuality — 一場關於土地、感知與美學的線上展覽">
+  <meta name="description" content="台灣性感 Taiwan Sensuality — Taiwan was never missing. It was always becoming.">
   <meta name="author" content="8rian Wang">
-  <meta name="keywords" content="Taiwan,photography,台灣,藝術,展覽,攝影,設計">
   <title>台灣性感 Taiwan Sensuality</title>
-  <link href="reset.css" rel="stylesheet">
-  <link href="style.css" rel="stylesheet">
+  <link rel="stylesheet" href="reset.css">
+  <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@200;300;400;700&family=Space+Grotesk:wght@300;400;500&family=Noto+Sans+TC:wght@100;300;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Serif+TC:wght@200;300;400&family=Space+Grotesk:wght@300;400;500&family=Noto+Sans+TC:wght@100;300&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <!-- Loader -->
-  <div id="loader">
-    <div class="loader-inner">
-      <div class="loader-text">
-        <span class="loader-zh">台灣性感</span>
-        <span class="loader-en">Taiwan Sensuality</span>
-      </div>
-      <div class="loader-bar"><div class="loader-progress"></div></div>
-    </div>
+<!-- ─── LOADER ─────────────────────────────────────── -->
+<div id="loader">
+  <div class="loader-inner">
+    <div class="loader-zh">台灣性感</div>
+    <div class="loader-en">Taiwan Sensuality</div>
+    <div class="loader-bar"><div class="loader-fill"></div></div>
   </div>
+</div>
 
-  <!-- Custom Cursor -->
-  <div id="cursor"></div>
-  <div id="cursor-follower"></div>
+<!-- ─── CURSOR ─────────────────────────────────────── -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
 
-  <!-- Nav -->
-  <nav id="nav">
-    <a href="#" class="nav-logo">TS</a>
-    <button class="nav-toggle" aria-label="選單">
-      <span></span><span></span>
-    </button>
-    <ul class="nav-links">
-      <li><a href="#gallery">攝影</a></li>
-      <li><a href="#text-works">文字</a></li>
-      <li><a href="#interactive">互動</a></li>
-      <li><a href="#about">關於</a></li>
-    </ul>
-  </nav>
+<!-- ─── NAV ───────────────────────────────────────── -->
+<nav id="nav">
+  <a href="#s-opening" class="nav-logo">TS</a>
+  <div class="nav-section-name" id="navSectionName"></div>
+  <div class="nav-dots" id="navDots">
+    <button class="nav-dot active" data-target="s-opening" aria-label="Opening"></button>
+    <button class="nav-dot" data-target="s-who" aria-label="Who Are We"></button>
+    <button class="nav-dot" data-target="s-crisis" aria-label="Identity Crisis"></button>
+    <button class="nav-dot" data-target="s-syntax" aria-label="Syntax"></button>
+    <button class="nav-dot" data-target="s-chaos" aria-label="Chaos"></button>
+    <button class="nav-dot" data-target="s-warmth" aria-label="Warmth"></button>
+    <button class="nav-dot" data-target="s-marginal" aria-label="Marginalization"></button>
+    <button class="nav-dot" data-target="s-grassroots" aria-label="Grassroots"></button>
+    <button class="nav-dot" data-target="s-freedom" aria-label="Freedom"></button>
+    <button class="nav-dot" data-target="s-culture" aria-label="Culture"></button>
+    <button class="nav-dot" data-target="s-ending" aria-label="Taiwan is"></button>
+  </div>
+</nav>
 
-  <!-- Hero -->
-  <section id="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-content">
-      <div class="hero-label">Online Exhibition · 2024</div>
-      <h1 class="hero-title">
-        <span class="hero-zh">台灣性感</span>
-        <span class="hero-en">Taiwan Sensuality</span>
-      </h1>
-      <p class="hero-sub">感受這片土地的溫度與呼吸</p>
-      <a href="#gallery" class="hero-btn">
-        <span>進入展覽</span>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
-      </a>
-    </div>
-    <div class="hero-scroll">
+<!-- ─── SCROLL PROGRESS ───────────────────────────── -->
+<div id="scroll-progress"><div id="scroll-fill"></div></div>
+
+<section id="s-opening" class="section" data-name="Opening">
+  <div class="section-bg" style="background-image:url(./照片/background.jpg)"></div>
+  <div class="texture-overlay"></div>
+  <div class="opening-content">
+    <div class="opening-eyebrow reveal">Online Exhibition · 2024</div>
+    <h1 class="opening-title">
+      <span class="opening-zh reveal" data-delay="0.2">台灣性感</span>
+      <span class="opening-en reveal" data-delay="0.5">Taiwan Sensuality</span>
+    </h1>
+    <p class="opening-tagline reveal" data-delay="0.8">
+      Taiwan was never missing.<br>It was always becoming.
+    </p>
+    <div class="opening-scroll reveal" data-delay="1.2">
       <span>Scroll</span>
-      <div class="scroll-line"></div>
+      <div class="opening-scroll-line"></div>
     </div>
-    <div class="hero-count">
-      <span>01</span>
-      <div class="count-line"></div>
-      <span>04</span>
-    </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Gallery Section -->
-  <section id="gallery">
-    <div class="section-header" data-reveal>
-      <span class="section-num">01</span>
-      <div class="section-title-wrap">
-        <h2 class="section-title">攝影<em>Photography</em></h2>
-        <p class="section-desc">用鏡頭捕捉台灣的溫度與性感</p>
-      </div>
-    </div>
-    <div class="gallery-grid" id="galleryGrid">
-      <div class="gallery-item" data-index="0" data-title="台灣之境" data-desc="光線穿透的瞬間，土地呼吸的聲音">
-        <div class="gallery-img-wrap">
-          <img src="./照片/p1.jpg" alt="台灣之境" loading="lazy">
-          <div class="gallery-overlay"><span class="gallery-icon">+</span></div>
-        </div>
-        <div class="gallery-info">
-          <span class="gallery-num">001</span>
-          <span class="gallery-name">台灣之境</span>
-        </div>
-      </div>
-      <div class="gallery-item" data-index="1" data-title="山的呼吸" data-desc="山嵐輕撫，自然的感知">
-        <div class="gallery-img-wrap">
-          <img src="./照片/p2.jpg" alt="山的呼吸" loading="lazy">
-          <div class="gallery-overlay"><span class="gallery-icon">+</span></div>
-        </div>
-        <div class="gallery-info">
-          <span class="gallery-num">002</span>
-          <span class="gallery-name">山的呼吸</span>
-        </div>
-      </div>
-      <div class="gallery-item" data-index="2" data-title="海的溫度" data-desc="海浪的節奏如同心跳">
-        <div class="gallery-img-wrap">
-          <img src="./照片/p3.jpg" alt="海的溫度" loading="lazy">
-          <div class="gallery-overlay"><span class="gallery-icon">+</span></div>
-        </div>
-        <div class="gallery-info">
-          <span class="gallery-num">003</span>
-          <span class="gallery-name">海的溫度</span>
-        </div>
-      </div>
-      <div class="gallery-item" data-index="3" data-title="城市皮膚" data-desc="霓虹燈下的城市肌理">
-        <div class="gallery-img-wrap">
-          <img src="./照片/p4.jpg" alt="城市皮膚" loading="lazy">
-          <div class="gallery-overlay"><span class="gallery-icon">+</span></div>
-        </div>
-        <div class="gallery-info">
-          <span class="gallery-num">004</span>
-          <span class="gallery-name">城市皮膚</span>
-        </div>
-      </div>
-      <div class="gallery-item" data-index="4" data-title="光與影" data-desc="明暗之間的感官張力">
-        <div class="gallery-img-wrap">
-          <img src="./照片/p5.jpg" alt="光與影" loading="lazy">
-          <div class="gallery-overlay"><span class="gallery-icon">+</span></div>
-        </div>
-        <div class="gallery-info">
-          <span class="gallery-num">005</span>
-          <span class="gallery-name">光與影</span>
-        </div>
-      </div>
-      <div class="gallery-item" data-index="5" data-title="土地記憶" data-desc="大地的紋路承載了歲月">
-        <div class="gallery-img-wrap">
-          <img src="./照片/p6.jpg" alt="土地記憶" loading="lazy">
-          <div class="gallery-overlay"><span class="gallery-icon">+</span></div>
-        </div>
-        <div class="gallery-info">
-          <span class="gallery-num">006</span>
-          <span class="gallery-name">土地記憶</span>
-        </div>
-      </div>
-      <div class="gallery-item" data-index="6" data-title="靜默之聲" data-desc="安靜中的強烈存在">
-        <div class="gallery-img-wrap">
-          <img src="./照片/p7.jpg" alt="靜默之聲" loading="lazy">
-          <div class="gallery-overlay"><span class="gallery-icon">+</span></div>
-        </div>
-        <div class="gallery-info">
-          <span class="gallery-num">007</span>
-          <span class="gallery-name">靜默之聲</span>
-        </div>
-      </div>
-      <div class="gallery-item" data-index="7" data-title="流動的邊界" data-desc="界限在流動中消融">
-        <div class="gallery-img-wrap">
-          <img src="./照片/p8.jpg" alt="流動的邊界" loading="lazy">
-          <div class="gallery-overlay"><span class="gallery-icon">+</span></div>
-        </div>
-        <div class="gallery-info">
-          <span class="gallery-num">008</span>
-          <span class="gallery-name">流動的邊界</span>
-        </div>
-      </div>
-      <div class="gallery-item" data-index="8" data-title="感官地圖" data-desc="以身體感知地圖的輪廓">
-        <div class="gallery-img-wrap">
-          <img src="./照片/p9.jpg" alt="感官地圖" loading="lazy">
-          <div class="gallery-overlay"><span class="gallery-icon">+</span></div>
-        </div>
-        <div class="gallery-info">
-          <span class="gallery-num">009</span>
-          <span class="gallery-name">感官地圖</span>
-        </div>
-      </div>
-    </div>
-  </section>
+<section id="s-who" class="section" data-name="Who Are We">
+  <div class="who-content">
+    <p class="who-line reveal-up" data-delay="0">We did not redefine Taiwan.</p>
+    <p class="who-line reveal-up" data-delay="0.2">We learned how to feel it.</p>
+    <div class="who-divider reveal-up" data-delay="0.4"></div>
+    <p class="who-zh reveal-up" data-delay="0.6">台灣不是被定義，而是被感受。</p>
+  </div>
+</section>
 
-  <!-- Text Works Section -->
-  <section id="text-works">
-    <div class="section-header" data-reveal>
-      <span class="section-num">02</span>
-      <div class="section-title-wrap">
-        <h2 class="section-title">文字<em>Typography</em></h2>
-        <p class="section-desc">文字作為感知的媒介</p>
-      </div>
+<section id="s-crisis" class="section" data-name="Identity Crisis">
+  <div class="crisis-label reveal-up">Identity Crisis</div>
+  <div class="nine-grid reveal-up" data-delay="0.2">
+    <div class="grid-row">
+      <div class="grid-cell" data-type="negative"><span>Chaos</span><em>混亂</em></div>
+      <div class="grid-cell" data-type="negative"><span>Noise</span><em>噪音</em></div>
+      <div class="grid-cell" data-type="negative"><span>Marginal</span><em>邊緣</em></div>
     </div>
-    <div class="text-works-container">
-      <div class="text-work" data-reveal>
-        <div class="tw-number">I</div>
-        <blockquote class="tw-quote">
-          <p>性感不是裸露<br>是那一刻<br>你感受到了土地的體溫</p>
-          <footer>— 王昱韋</footer>
-        </blockquote>
-      </div>
-      <div class="text-work tw-right" data-reveal>
-        <div class="tw-number">II</div>
-        <blockquote class="tw-quote">
-          <p>Taiwan is not a place<br>it is a feeling<br>written in the air between mountains and sea</p>
-          <footer>— 8rian W.</footer>
-        </blockquote>
-      </div>
-      <div class="text-work" data-reveal>
-        <div class="tw-number">III</div>
-        <blockquote class="tw-quote">
-          <p>每一條路<br>都有它的溫度<br>每一步都是一次感知</p>
-          <footer>— 王昱韋</footer>
-        </blockquote>
-      </div>
+    <div class="grid-row">
+      <div class="grid-cell" data-type="neutral"><span>Flow</span><em>流動</em></div>
+      <div class="grid-cell" data-type="neutral"><span>Interaction</span><em>互動</em></div>
+      <div class="grid-cell" data-type="neutral"><span>Coexist</span><em>共存</em></div>
     </div>
-    <div class="marquee-wrap">
-      <div class="marquee">
-        <span>台灣性感 · Taiwan Sensuality · 感官 · Sensation · 土地 · Land · 溫度 · Warmth · 山海 · Mountains &amp; Sea · </span>
-        <span>台灣性感 · Taiwan Sensuality · 感官 · Sensation · 土地 · Land · 溫度 · Warmth · 山海 · Mountains &amp; Sea · </span>
-      </div>
+    <div class="grid-row">
+      <div class="grid-cell" data-type="positive"><span>Order</span><em>秩序</em></div>
+      <div class="grid-cell" data-type="positive"><span>Warmth</span><em>溫暖</em></div>
+      <div class="grid-cell" data-type="positive"><span>Freedom</span><em>自由</em></div>
     </div>
-  </section>
+  </div>
+  <p class="crisis-note reveal-up" data-delay="0.4">台灣的性感，在矛盾之中誕生。</p>
+</section>
 
-  <!-- Interactive Section -->
-  <section id="interactive">
-    <div class="section-header" data-reveal>
-      <span class="section-num">03</span>
-      <div class="section-title-wrap">
-        <h2 class="section-title">互動<em>Interactive</em></h2>
-        <p class="section-desc">參與這場感官體驗</p>
-      </div>
-    </div>
-    <div class="interactive-grid">
-      <div class="int-piece" id="wordScramble">
-        <div class="int-piece-label">01 · 文字感知</div>
-        <div class="scramble-display">
-          <span id="scrambleText">台灣性感</span>
-        </div>
-        <p class="int-piece-hint">移動滑鼠 / 觸碰體驗文字感知</p>
-      </div>
-      <div class="int-piece" id="colorPalette">
-        <div class="int-piece-label">02 · 台灣色彩</div>
-        <div class="palette-grid">
-          <div class="palette-item" data-color="#2d4a3e" data-name="山林綠"></div>
-          <div class="palette-item" data-color="#8b4513" data-name="紅土棕"></div>
-          <div class="palette-item" data-color="#1a3a5c" data-name="海洋藍"></div>
-          <div class="palette-item" data-color="#c9a84c" data-name="稻穗金"></div>
-          <div class="palette-item" data-color="#7b5fa0" data-name="薰衣紫"></div>
-          <div class="palette-item" data-color="#c8593a" data-name="廟宇紅"></div>
-        </div>
-        <div class="palette-name" id="paletteName">點擊感受台灣的色彩</div>
-      </div>
-      <div class="int-piece" id="textureCanvas">
-        <div class="int-piece-label">03 · 土地紋理</div>
-        <canvas id="noiseCanvas"></canvas>
-        <p class="int-piece-hint">點擊 / 觸碰更新紋理</p>
-      </div>
-      <div class="int-piece" id="reactionPiece">
-        <div class="int-piece-label">04 · 你的感受</div>
-        <div class="reaction-prompt">
-          <p>這場展覽讓你感受到什麼？</p>
-          <div class="reaction-tags">
-            <button class="tag">溫暖</button>
-            <button class="tag">遼闊</button>
-            <button class="tag">懷念</button>
-            <button class="tag">自由</button>
-            <button class="tag">連結</button>
-            <button class="tag">靜謐</button>
-          </div>
-          <div class="reaction-result" id="reactionResult"></div>
-        </div>
-      </div>
-    </div>
-  </section>
+<section id="s-syntax" class="section" data-name="Syntax of Taiwan">
+  <div class="syntax-label reveal-up">Syntax of Taiwan</div>
+  <div class="syntax-sub reveal-up" data-delay="0.1">字母重組系統 · Letter Transformation</div>
+  <div class="syntax-stage">
+    <div class="syntax-word-wrap"><div class="syntax-word" id="syntaxFrom"></div></div>
+    <div class="syntax-arrow reveal-up" data-delay="0.3">→</div>
+    <div class="syntax-word-wrap"><div class="syntax-word" id="syntaxTo"></div></div>
+  </div>
+  <p class="syntax-rule reveal-up" data-delay="0.4">T · A · I · W · A · N &nbsp;字母參與每一次轉化</p>
+  <button class="syntax-next reveal-up" data-delay="0.5" id="syntaxNext">Next →</button>
+</section>
 
-  <!-- About Section -->
-  <section id="about">
-    <div class="section-header" data-reveal>
-      <span class="section-num">04</span>
-      <div class="section-title-wrap">
-        <h2 class="section-title">關於<em>About</em></h2>
-      </div>
+<section id="s-chaos" class="section" data-name="Chaos → Flow">
+  <canvas id="chaosCanvas"></canvas>
+  <div class="chaos-content">
+    <div class="chaos-words">
+      <span class="chaos-neg">CHAOS</span>
+      <span class="chaos-arr">→</span>
+      <span class="chaos-pos">FLOW</span>
     </div>
-    <div class="about-content" data-reveal>
-      <div class="about-text">
-        <h3>台灣性感<em>Taiwan Sensuality</em></h3>
-        <p>這是一場關於感知台灣的展覽。性感，不是身體的裸露，而是感官的全然開放——當你踩在台灣的土地上，感受山的冷冽、海的溫潤、城市的喧囂與田野的靜默，那就是台灣的性感。</p>
-        <p class="about-en">This exhibition explores the sensory experience of Taiwan — its warmth, its textures, its sounds and silences. Photography, typography, and interactive design come together to invite you into a visceral encounter with this island.</p>
-        <div class="about-meta">
-          <div class="meta-item">
-            <span class="meta-label">藝術家</span>
-            <span class="meta-value">王昱韋 / 8rian Wang</span>
-          </div>
-          <div class="meta-item">
-            <span class="meta-label">年份</span>
-            <span class="meta-value">2024</span>
-          </div>
-          <div class="meta-item">
-            <span class="meta-label">媒介</span>
-            <span class="meta-value">攝影、文字、互動設計</span>
-          </div>
-          <div class="meta-item">
-            <span class="meta-label">聯絡</span>
-            <span class="meta-value"><a href="mailto:chribria228@gmail.com">chribria228@gmail.com</a></span>
-          </div>
-        </div>
-      </div>
-      <div class="about-image">
-        <img src="./照片/me.jpg" alt="8rian Wang 王昱韋">
-        <div class="about-img-label">
-          <span>王昱韋</span>
-          <span>攝影師 · 旅人</span>
-        </div>
-      </div>
-    </div>
-  </section>
+    <p class="chaos-sub reveal-up">混亂中自有秩序，噪音中自有韻律</p>
+  </div>
+</section>
 
-  <!-- Footer -->
-  <footer>
-    <div class="footer-inner">
-      <div class="footer-left">
-        <p class="footer-title">台灣性感</p>
-        <p class="footer-sub">Taiwan Sensuality</p>
-      </div>
-      <div class="footer-right">
-        <a href="https://www.instagram.com/8rian.w/" target="_blank" rel="noopener noreferrer">Instagram</a>
-        <span aria-hidden="true">·</span>
-        <a href="mailto:chribria228@gmail.com">Email</a>
-      </div>
-    </div>
-    <div class="footer-copy">
-      <p>© 2024 王昱韋 8rian Wang · 希望人與自然土地永共存</p>
-    </div>
-  </footer>
+<section id="s-warmth" class="section" data-name="Warmth">
+  <div class="warmth-grid">
+    <div class="warmth-photo reveal-photo" data-delay="0"><img src="./照片/p1.jpg" alt=""></div>
+    <div class="warmth-photo reveal-photo" data-delay="0.1"><img src="./照片/p2.jpg" alt=""></div>
+    <div class="warmth-photo reveal-photo" data-delay="0.2"><img src="./照片/p3.jpg" alt=""></div>
+  </div>
+  <div class="warmth-text">
+    <h2 class="warmth-title reveal-up">Warmth <span>溫暖</span></h2>
+    <blockquote class="warmth-quote reveal-up" data-delay="0.2">人情味是台灣最獨特的性感</blockquote>
+    <p class="warmth-en reveal-up" data-delay="0.4">The warmth between strangers.<br>The meal shared without invitation.<br>This is Taiwan's most sensual quality.</p>
+  </div>
+</section>
 
-  <!-- Lightbox -->
-  <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-label="作品燈箱">
-    <div class="lightbox-backdrop" id="lbBackdrop"></div>
-    <div class="lightbox-container">
-      <button class="lb-close" id="lbClose" aria-label="關閉">✕</button>
-      <button class="lb-prev" id="lbPrev" aria-label="上一張">‹</button>
-      <button class="lb-next" id="lbNext" aria-label="下一張">›</button>
-      <div class="lb-img-wrap">
-        <img id="lbImg" src="" alt="">
+<section id="s-marginal" class="section" data-name="Marginalization">
+  <div class="marginal-content">
+    <div class="taiwan-svg-wrap reveal-up">
+      <svg class="taiwan-svg" viewBox="0 0 180 400" xmlns="http://www.w3.org/2000/svg">
+        <path id="taiwanPath" d="M95,18 C102,16 112,22 120,32 C130,44 136,60 138,78 C140,96 136,114 132,132 C128,150 125,168 124,186 C123,204 124,222 122,240 C120,258 116,275 113,292 C110,309 108,326 107,343 C106,358 108,372 106,382 C104,390 96,394 89,388 C82,382 84,368 87,354 C90,340 93,326 94,312 C95,298 94,284 95,270 C96,256 99,243 101,229 C103,215 104,201 101,187 C98,173 93,161 92,147 C91,133 95,119 99,105 C103,91 106,77 104,63 C102,49 97,36 95,22 Z"/>
+      </svg>
+    </div>
+    <div class="marginal-text">
+      <h2 class="marginal-title reveal-up">Marginalization</h2>
+      <p class="marginal-zh reveal-up" data-delay="0.2">邊緣化</p>
+      <p class="marginal-body reveal-up" data-delay="0.4">邊緣，不是消失<br>是另一種存在的方式<br><br><em>To be marginal<br>is to exist between definitions.<br>Taiwan knows this well.</em></p>
+    </div>
+  </div>
+</section>
+
+<section id="s-grassroots" class="section" data-name="Grassroots">
+  <div class="grassroots-header">
+    <h2 class="grassroots-title reveal-up">Grassroots</h2>
+    <p class="grassroots-sub reveal-up" data-delay="0.1">草根 · 生命力</p>
+  </div>
+  <div class="grassroots-grid">
+    <div class="gr-item gr-large reveal-photo" data-delay="0"><img src="./照片/p4.jpg" alt=""></div>
+    <div class="gr-item reveal-photo" data-delay="0.1"><img src="./照片/p5.jpg" alt=""></div>
+    <div class="gr-item reveal-photo" data-delay="0.2"><img src="./照片/p6.jpg" alt=""></div>
+  </div>
+  <p class="grassroots-quote reveal-up" data-delay="0.3">生命從縫隙中長出來，那是台灣最真實的姿態。</p>
+</section>
+
+<section id="s-freedom" class="section" data-name="Freedom">
+  <div class="freedom-bg"></div>
+  <div class="freedom-content">
+    <h2 class="freedom-title reveal-up">Freedom</h2>
+    <p class="freedom-zh reveal-up" data-delay="0.1">自由</p>
+    <div class="freedom-bars reveal-up" data-delay="0.2">
+      <div class="f-bar" style="background:#B23A3A"></div>
+      <div class="f-bar" style="background:#E8721C"></div>
+      <div class="f-bar" style="background:#F5C842"></div>
+      <div class="f-bar" style="background:#3A7D44"></div>
+      <div class="f-bar" style="background:#2F5D9F"></div>
+      <div class="f-bar" style="background:#7B4F9E"></div>
+    </div>
+    <p class="freedom-body reveal-up" data-delay="0.4">多元 · 平等 · 同婚<br><em>Diverse · Equal · Love is Love</em><br><br>台灣的自由，是用漫長的掙扎換來的。</p>
+  </div>
+</section>
+
+<section id="s-culture" class="section" data-name="Culture">
+  <div class="culture-header">
+    <h2 class="culture-title reveal-up">Culture</h2>
+    <p class="culture-sub reveal-up" data-delay="0.1">文化 · 辦桌 · 廟會 · 多元</p>
+  </div>
+  <div class="culture-grid">
+    <div class="cu-item cu-tall reveal-photo" data-delay="0"><img src="./照片/p7.jpg" alt=""></div>
+    <div class="cu-item reveal-photo" data-delay="0.1"><img src="./照片/p8.jpg" alt=""></div>
+    <div class="cu-item reveal-photo" data-delay="0.2"><img src="./照片/p9.jpg" alt=""></div>
+    <div class="cu-item cu-wide reveal-photo" data-delay="0.3">
+      <img src="./照片/bg.jpg" alt="">
+      <div class="cu-overlay"><p>台灣的文化是一鍋永遠沸騰的湯<br><em>Taiwan's culture is a soup that never stops boiling.</em></p></div>
+    </div>
+  </div>
+</section>
+
+<section id="s-ending" class="section" data-name="Taiwan is ______">
+  <div class="ending-content">
+    <p class="ending-prompt reveal-up">Taiwan is</p>
+    <div class="ending-blank reveal-up" data-delay="0.2">
+      <div class="drop-zone" id="dropZone">
+        <span class="drop-placeholder">______</span>
+        <span class="drop-word" id="dropWord"></span>
       </div>
-      <div class="lb-info">
-        <span class="lb-num" id="lbNum"></span>
-        <h3 id="lbTitle"></h3>
-        <p id="lbDesc"></p>
+    </div>
+    <div class="word-bank reveal-up" data-delay="0.4" id="wordBank">
+      <button class="w-chip" data-word="resilient">resilient</button>
+      <button class="w-chip" data-word="alive">alive</button>
+      <button class="w-chip" data-word="diverse">diverse</button>
+      <button class="w-chip" data-word="warm">warm</button>
+      <button class="w-chip" data-word="unresolved">unresolved</button>
+      <button class="w-chip" data-word="becoming">becoming</button>
+    </div>
+    <p class="ending-core reveal-up" data-delay="0.7">台灣不是被定義，而是被感受。</p>
+    <div class="ending-artist reveal-up" data-delay="0.9">
+      <img src="./照片/me.jpg" alt="8rian Wang">
+      <div class="ending-artist-info">
+        <span>王昱韋 · 8rian Wang</span>
+        <a href="https://www.instagram.com/8rian.w/" target="_blank" rel="noopener">@8rian.w</a>
+        <a href="mailto:chribria228@gmail.com">chribria228@gmail.com</a>
       </div>
     </div>
   </div>
+</section>
 
-  <script src="js/exhibition.js"></script>
+<footer>
+  <p>© 2024 Taiwan Sensuality · 王昱韋 · 希望人與自然土地永共存</p>
+</footer>
+
+<script src="js/exhibition.js"></script>
 </body>
 </html>
