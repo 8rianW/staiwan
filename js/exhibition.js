@@ -1,310 +1,321 @@
 'use strict';
 
-/* ========== LOADER ========== */
+/* ═══════════════════════════════════════════
+   LOADER
+═══════════════════════════════════════════ */
 const loader = document.getElementById('loader');
-const loaderProgress = document.querySelector('.loader-progress');
+const loaderFill = document.querySelector('.loader-fill');
 
 window.addEventListener('load', () => {
-  loaderProgress.style.width = '100%';
+  loaderFill.style.width = '100%';
   setTimeout(() => {
     loader.classList.add('hidden');
-    document.getElementById('hero').classList.add('loaded');
-    initReveal();
-  }, 1900);
+    initAll();
+  }, 2000);
 });
 
-/* ========== CUSTOM CURSOR ========== */
-const cursor = document.getElementById('cursor');
-const follower = document.getElementById('cursor-follower');
-let cx = 0, cy = 0, fx = 0, fy = 0;
+/* ═══════════════════════════════════════════
+   CURSOR
+═══════════════════════════════════════════ */
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let cx = 0, cy = 0, rx = 0, ry = 0;
 
-document.addEventListener('mousemove', (e) => {
-  cx = e.clientX;
-  cy = e.clientY;
-  cursor.style.left = cx + 'px';
-  cursor.style.top  = cy + 'px';
+document.addEventListener('mousemove', e => {
+  cx = e.clientX; cy = e.clientY;
+  cur.style.left = cx + 'px';
+  cur.style.top  = cy + 'px';
 });
-
-(function animateFollower() {
-  fx += (cx - fx) * 0.12;
-  fy += (cy - fy) * 0.12;
-  follower.style.left = fx + 'px';
-  follower.style.top  = fy + 'px';
-  requestAnimationFrame(animateFollower);
+(function followRing() {
+  rx += (cx - rx) * .1;
+  ry += (cy - ry) * .1;
+  ring.style.left = rx + 'px';
+  ring.style.top  = ry + 'px';
+  requestAnimationFrame(followRing);
 })();
-
-document.querySelectorAll('a, button, .gallery-item, .palette-item, .tag').forEach(el => {
-  el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-  el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+document.querySelectorAll('a, button, .grid-cell, .warmth-photo, .gr-item, .cu-item').forEach(el => {
+  el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+  el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
 });
 
-/* ========== NAV ========== */
-const nav = document.getElementById('nav');
-const toggle = document.querySelector('.nav-toggle');
-const navLinks = document.querySelector('.nav-links');
+/* ═══════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════ */
+const nav         = document.getElementById('nav');
+const navName     = document.getElementById('navSectionName');
+const navDots     = document.querySelectorAll('.nav-dot');
+const sections    = document.querySelectorAll('.section');
 
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 60);
+  updateScrollProgress();
+  updateNavDots();
 }, { passive: true });
 
-toggle.addEventListener('click', () => {
-  const open = navLinks.classList.toggle('open');
-  toggle.classList.toggle('open', open);
-  toggle.setAttribute('aria-expanded', open);
-});
-
-navLinks.querySelectorAll('a').forEach(a => {
-  a.addEventListener('click', () => {
-    navLinks.classList.remove('open');
-    toggle.classList.remove('open');
+navDots.forEach(dot => {
+  dot.addEventListener('click', () => {
+    document.getElementById(dot.dataset.target)?.scrollIntoView({ behavior: 'smooth' });
   });
 });
 
-/* ========== SCROLL REVEAL ========== */
-function initReveal() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const el = entry.target;
-      const delay = parseFloat(el.dataset.revealDelay || 0) * 1000;
-      setTimeout(() => el.classList.add('revealed'), delay);
-      observer.unobserve(el);
+function updateNavDots() {
+  let current = 0;
+  sections.forEach((s, i) => {
+    const rect = s.getBoundingClientRect();
+    if (rect.top <= window.innerHeight * .5) current = i;
+  });
+  navDots.forEach((d, i) => d.classList.toggle('active', i === current));
+  navName.textContent = sections[current]?.dataset.name || '';
+}
+
+/* ═══════════════════════════════════════════
+   SCROLL PROGRESS
+═══════════════════════════════════════════ */
+const scrollFill = document.getElementById('scroll-fill');
+function updateScrollProgress() {
+  const total = document.body.scrollHeight - window.innerHeight;
+  scrollFill.style.height = (window.scrollY / total * 100) + '%';
+}
+
+/* ═══════════════════════════════════════════
+   REVEAL OBSERVER
+═══════════════════════════════════════════ */
+function initAll() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const delay = parseFloat(el.dataset.delay || 0) * 1000;
+      setTimeout(() => el.classList.add('in'), delay);
+      obs.unobserve(el);
     });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
 
-  document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
+  document.querySelectorAll('.reveal, .reveal-up, .reveal-photo').forEach(el => obs.observe(el));
 
-  /* stagger gallery items */
-  const galleryObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const items = entry.target.querySelectorAll('.gallery-item');
-      items.forEach((item, i) => {
-        setTimeout(() => item.classList.add('revealed'), i * 80);
-      });
-      galleryObserver.unobserve(entry.target);
+  /* section-level observers */
+  const sectionObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('active');
     });
-  }, { threshold: 0.05 });
+  }, { threshold: 0.3 });
+  sections.forEach(s => sectionObs.observe(s));
 
-  const grid = document.getElementById('galleryGrid');
-  if (grid) galleryObserver.observe(grid);
-}
-
-/* ========== LIGHTBOX ========== */
-const galleryItems = Array.from(document.querySelectorAll('.gallery-item'));
-const lightbox = document.getElementById('lightbox');
-const lbImg    = document.getElementById('lbImg');
-const lbTitle  = document.getElementById('lbTitle');
-const lbDesc   = document.getElementById('lbDesc');
-const lbNum    = document.getElementById('lbNum');
-const lbClose  = document.getElementById('lbClose');
-const lbPrev   = document.getElementById('lbPrev');
-const lbNext   = document.getElementById('lbNext');
-const lbBg     = document.getElementById('lbBackdrop');
-
-const galleryData = galleryItems.map(item => ({
-  src:   item.querySelector('img').src,
-  title: item.dataset.title || '',
-  desc:  item.dataset.desc  || '',
-  index: parseInt(item.dataset.index, 10)
-}));
-
-let current = 0;
-
-function openLightbox(idx) {
-  current = idx;
-  renderLightbox(true);
-  lightbox.classList.add('open');
-  lightbox.setAttribute('aria-hidden', 'false');
-  document.body.style.overflow = 'hidden';
-  lbClose.focus();
-}
-
-function closeLightbox() {
-  lightbox.classList.remove('open');
-  lightbox.setAttribute('aria-hidden', 'true');
-  document.body.style.overflow = '';
-}
-
-function renderLightbox(instant) {
-  const d = galleryData[current];
-  if (!instant) {
-    lbImg.style.opacity = '0';
-    lbImg.style.transform = 'scale(0.96)';
-  }
-  const total = galleryData.length;
-  lbNum.textContent = String(current + 1).padStart(3, '0') + ' / ' + String(total).padStart(3, '0');
-  lbTitle.textContent = d.title;
-  lbDesc.textContent  = d.desc;
-
-  const img = new Image();
-  img.onload = () => {
-    lbImg.src = img.src;
-    lbImg.alt = d.title;
-    requestAnimationFrame(() => {
-      lbImg.style.opacity = '1';
-      lbImg.style.transform = 'scale(1)';
+  /* freedom bars need special handling */
+  const fbObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('in');
     });
-  };
-  img.src = d.src;
+  }, { threshold: 0.4 });
+  const fb = document.querySelector('.freedom-bars');
+  if (fb) fbObs.observe(fb);
+
+  initSyntax();
+  initChaos();
+  initEnding();
 }
 
-function prevItem() {
-  current = (current - 1 + galleryData.length) % galleryData.length;
-  renderLightbox(false);
-}
-function nextItem() {
-  current = (current + 1) % galleryData.length;
-  renderLightbox(false);
-}
-
-galleryItems.forEach(item => {
-  item.addEventListener('click', () => openLightbox(parseInt(item.dataset.index, 10)));
-});
-
-lbClose.addEventListener('click', closeLightbox);
-lbBg.addEventListener('click', closeLightbox);
-lbPrev.addEventListener('click', prevItem);
-lbNext.addEventListener('click', nextItem);
-
-document.addEventListener('keydown', (e) => {
-  if (!lightbox.classList.contains('open')) return;
-  if (e.key === 'Escape')     closeLightbox();
-  if (e.key === 'ArrowLeft')  prevItem();
-  if (e.key === 'ArrowRight') nextItem();
-});
-
-/* touch swipe on lightbox */
-let touchStartX = 0;
-lightbox.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-lightbox.addEventListener('touchend', e => {
-  const dx = e.changedTouches[0].clientX - touchStartX;
-  if (Math.abs(dx) > 50) dx < 0 ? nextItem() : prevItem();
-}, { passive: true });
-
-/* ========== WORD SCRAMBLE ========== */
-const scrambleEl = document.getElementById('scrambleText');
-const words = ['台灣性感', 'Taiwan', 'Sensuality', '感官', '土地', '溫度', '呼吸', '山海', '記憶', '自由', 'Identity'];
-let wordIdx = 0;
-let scrambling = false;
-const pool = '台灣性感あいうえおABCDEF土山海風光∞◦·ₐ₀₁₂';
-
-function scramble(target, done) {
-  const len = target.length;
-  let step = 0;
-  const maxSteps = len * 9;
-  const id = setInterval(() => {
-    scrambleEl.textContent = target.split('').map((ch, i) => {
-      if (i < Math.floor(step / 9)) return ch;
-      return pool[Math.floor(Math.random() * pool.length)];
-    }).join('');
-    if (++step > maxSteps) {
-      clearInterval(id);
-      scrambleEl.textContent = target;
-      scrambling = false;
-      if (done) done();
-    }
-  }, 38);
-}
-
-function triggerScramble() {
-  if (scrambling) return;
-  scrambling = true;
-  wordIdx = (wordIdx + 1) % words.length;
-  scramble(words[wordIdx]);
-}
-
-const wordPiece = document.getElementById('wordScramble');
-wordPiece.addEventListener('mousemove', triggerScramble);
-wordPiece.addEventListener('touchstart', triggerScramble, { passive: true });
-setInterval(triggerScramble, 3200);
-
-/* ========== COLOR PALETTE ========== */
-const paletteItems = document.querySelectorAll('.palette-item');
-const paletteName  = document.getElementById('paletteName');
-let activeColor = null;
-
-paletteItems.forEach(item => {
-  item.style.backgroundColor = item.dataset.color;
-
-  item.addEventListener('click', () => {
-    paletteItems.forEach(p => p.classList.remove('active'));
-    item.classList.add('active');
-    activeColor = item.dataset.name;
-    paletteName.textContent = item.dataset.name;
-    paletteName.style.color = item.dataset.color;
-  });
-
-  item.addEventListener('mouseenter', () => {
-    paletteName.textContent = item.dataset.name;
-    paletteName.style.color = item.dataset.color;
-  });
-  item.addEventListener('mouseleave', () => {
-    paletteName.textContent = activeColor || '點擊感受台灣的色彩';
-    if (!activeColor) paletteName.style.color = '';
-  });
-});
-
-/* ========== NOISE CANVAS ========== */
-const canvas = document.getElementById('noiseCanvas');
-const ctx = canvas.getContext('2d');
-const noiseColors = [
-  [45, 74, 62],    // 山林綠
-  [139, 69, 19],   // 紅土棕
-  [26, 58, 92],    // 海洋藍
-  [201, 168, 76],  // 稻穗金
-  [123, 95, 160],  // 薰衣紫
-  [200, 89, 58],   // 廟宇紅
+/* ═══════════════════════════════════════════
+   SYNTAX — Letter Transformation
+═══════════════════════════════════════════ */
+const wordPairs = [
+  { from: 'CHAOS',  to: 'ACTION', taiwan: ['C','A','O'] },
+  { from: 'CHAOS',  to: 'NATION', taiwan: ['A','N'] },
+  { from: 'LOST',   to: 'STAND',  taiwan: ['T','A','N'] },
+  { from: 'MESS',   to: 'MEANS',  taiwan: ['A','N'] },
+  { from: 'NOISE',  to: 'ONSITE', taiwan: ['I','N'] },
 ];
 
-function resizeCanvas() {
-  const parent = canvas.parentElement;
-  canvas.width  = parent.clientWidth  - 80;
-  canvas.height = Math.max(150, parent.clientHeight - 120);
-  drawNoise();
-}
+let pairIdx = 0;
+let isAnimating = false;
+const syntaxFrom = document.getElementById('syntaxFrom');
+const syntaxTo   = document.getElementById('syntaxTo');
+const syntaxBtn  = document.getElementById('syntaxNext');
 
-function drawNoise() {
-  const w = canvas.width;
-  const h = canvas.height;
-  const imgData = ctx.createImageData(w, h);
-  const data = imgData.data;
-  for (let i = 0; i < data.length; i += 4) {
-    const c = noiseColors[Math.floor(Math.random() * noiseColors.length)];
-    const b = 0.25 + Math.random() * 0.75;
-    data[i]   = c[0] * b;
-    data[i+1] = c[1] * b;
-    data[i+2] = c[2] * b;
-    data[i+3] = 200 + Math.floor(Math.random() * 55);
-  }
-  ctx.putImageData(imgData, 0, 0);
-}
-
-canvas.addEventListener('click', drawNoise);
-canvas.addEventListener('touchstart', drawNoise, { passive: true });
-window.addEventListener('resize', resizeCanvas, { passive: true });
-setTimeout(resizeCanvas, 120);
-
-/* ========== REACTION TAGS ========== */
-const tags = document.querySelectorAll('.tag');
-const reactionResult = document.getElementById('reactionResult');
-const responses = {
-  '溫暖': '你感受到了台灣的體溫 ♡',
-  '遼闊': '山與海的無邊，都是你的',
-  '懷念': '那些走過的路，永遠在你心裡',
-  '自由': '行走就是自由最好的詮釋',
-  '連結': '人與土地，永遠相連',
-  '靜謐': '在靜默中，你聽見了最深的聲音',
-};
-
-tags.forEach(tag => {
-  tag.addEventListener('click', () => {
-    tags.forEach(t => t.classList.remove('selected'));
-    tag.classList.add('selected');
-    reactionResult.style.opacity = '0';
-    setTimeout(() => {
-      reactionResult.textContent = responses[tag.textContent.trim()] || '';
-      reactionResult.style.opacity = '1';
-    }, 280);
+function renderWord(el, word, taiwanChars) {
+  el.innerHTML = '';
+  word.split('').forEach(ch => {
+    const span = document.createElement('span');
+    span.className = 's-letter' + (taiwanChars.includes(ch) ? ' taiwan' : '');
+    span.textContent = ch;
+    el.appendChild(span);
   });
-});
+}
+
+function animateTransform(fromWord, toWord, taiwanChars) {
+  if (isAnimating) return;
+  isAnimating = true;
+
+  /* animate FROM letters out */
+  const fromLetters = syntaxFrom.querySelectorAll('.s-letter');
+  fromLetters.forEach((l, i) => {
+    setTimeout(() => l.classList.add('out'), i * 60);
+  });
+
+  /* after from disappears, show TO letters coming in */
+  const delay = fromWord.length * 60 + 200;
+  syntaxTo.innerHTML = '';
+  toWord.split('').forEach((ch, i) => {
+    const span = document.createElement('span');
+    span.className = 's-letter in' + (taiwanChars.includes(ch) ? ' taiwan' : '');
+    span.textContent = ch;
+    syntaxTo.appendChild(span);
+    setTimeout(() => span.classList.remove('in'), delay + i * 70);
+  });
+
+  setTimeout(() => {
+    renderWord(syntaxFrom, fromWord, taiwanChars);
+    isAnimating = false;
+  }, delay + toWord.length * 70 + 300);
+}
+
+function initSyntax() {
+  const p = wordPairs[pairIdx];
+  renderWord(syntaxFrom, p.from, p.taiwan);
+  renderWord(syntaxTo,   p.to,   p.taiwan);
+
+  syntaxBtn.addEventListener('click', () => {
+    pairIdx = (pairIdx + 1) % wordPairs.length;
+    const next = wordPairs[pairIdx];
+    animateTransform(next.from, next.to, next.taiwan);
+  });
+
+  /* auto-cycle when in view */
+  const syntaxObs = new IntersectionObserver(entries => {
+    if (!entries[0].isIntersecting) return;
+    let auto = setInterval(() => {
+      pairIdx = (pairIdx + 1) % wordPairs.length;
+      const next = wordPairs[pairIdx];
+      animateTransform(next.from, next.to, next.taiwan);
+    }, 3500);
+    syntaxBtn.addEventListener('click', () => { clearInterval(auto); });
+    syntaxObs.unobserve(entries[0].target);
+  }, { threshold: 0.5 });
+  const syntaxSection = document.getElementById('s-syntax');
+  if (syntaxSection) syntaxObs.observe(syntaxSection);
+}
+
+/* ═══════════════════════════════════════════
+   CHAOS CANVAS — Particle System
+═══════════════════════════════════════════ */
+function initChaos() {
+  const canvas = document.getElementById('chaosCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  const colors = ['#B23A3A', '#2F5D9F', '#3A7D44', '#C9A84C', '#7B4F9E'];
+  let particles = [];
+  let settled = false;
+  let W, H;
+
+  function resize() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+  window.addEventListener('resize', resize, { passive: true });
+  resize();
+
+  class Particle {
+    constructor() { this.reset(true); }
+    reset(random) {
+      this.x = random ? Math.random() * W : W / 2;
+      this.y = random ? Math.random() * H : H / 2;
+      this.vx = (Math.random() - .5) * (settled ? 1.5 : 3.5);
+      this.vy = (Math.random() - .5) * (settled ? 1.5 : 3.5);
+      this.r  = Math.random() * 2 + 1;
+      this.alpha = Math.random() * .6 + .3;
+      this.color = colors[Math.floor(Math.random() * colors.length)];
+      this.life = Math.random() * 200 + 100;
+      this.age  = 0;
+    }
+    update() {
+      if (settled) {
+        this.vx += (Math.sin(this.y * .012 + Date.now() * .0005) - this.vx) * .06;
+        this.vy += (Math.cos(this.x * .012 + Date.now() * .0005) - this.vy) * .06;
+      } else {
+        this.vx += (Math.random() - .5) * .3;
+        this.vy += (Math.random() - .5) * .3;
+      }
+      this.x += this.vx;
+      this.y += this.vy;
+      this.age++;
+      if (this.age > this.life || this.x < -10 || this.x > W + 10 || this.y < -10 || this.y > H + 10) {
+        this.reset(false);
+      }
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+      ctx.fillStyle = this.color + Math.floor(this.alpha * 255).toString(16).padStart(2,'0');
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < 200; i++) particles.push(new Particle());
+
+  function loop() {
+    ctx.fillStyle = 'rgba(0,0,0,0.18)';
+    ctx.fillRect(0, 0, W, H);
+    particles.forEach(p => { p.update(); p.draw(); });
+    requestAnimationFrame(loop);
+  }
+  loop();
+
+  /* settle when section enters view */
+  const chaosObs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) {
+      setTimeout(() => { settled = true; }, 1800);
+    } else {
+      settled = false;
+    }
+  }, { threshold: 0.4 });
+  const chaosSection = document.getElementById('s-chaos');
+  if (chaosSection) chaosObs.observe(chaosSection);
+}
+
+/* ═══════════════════════════════════════════
+   TAIWAN IS —— Word Selection
+═══════════════════════════════════════════ */
+function initEnding() {
+  const chips       = document.querySelectorAll('.w-chip');
+  const dropWord    = document.getElementById('dropWord');
+  const placeholder = document.querySelector('.drop-placeholder');
+  const dropZone    = document.getElementById('dropZone');
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      chips.forEach(c => c.classList.remove('selected'));
+      chip.classList.add('selected');
+
+      dropWord.classList.remove('show');
+      placeholder.classList.add('hidden');
+      dropZone.classList.add('active');
+
+      setTimeout(() => {
+        dropWord.textContent = chip.dataset.word;
+        dropWord.classList.add('show');
+      }, 200);
+    });
+  });
+
+  /* drag and drop (desktop) */
+  chips.forEach(chip => {
+    chip.setAttribute('draggable', true);
+    chip.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', chip.dataset.word);
+      chip.classList.add('selected');
+    });
+  });
+  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('active'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('active'));
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    const word = e.dataTransfer.getData('text/plain');
+    dropWord.classList.remove('show');
+    placeholder.classList.add('hidden');
+    setTimeout(() => {
+      dropWord.textContent = word;
+      dropWord.classList.add('show');
+    }, 150);
+  });
+}
