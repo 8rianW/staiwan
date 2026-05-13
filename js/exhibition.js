@@ -247,8 +247,9 @@ function initEnding() {
   const placeholder = document.querySelector('.drop-placeholder');
   const dropZone    = document.getElementById('dropZone');
 
-  function setWord(word) {
+  function setWord(word, activeChip) {
     chips.forEach(c => c.classList.remove('selected'));
+    if (activeChip) activeChip.classList.add('selected');
     dropWord.classList.remove('show');
     placeholder.classList.add('hidden');
     dropZone.classList.add('active');
@@ -257,8 +258,7 @@ function initEnding() {
 
   chips.forEach(chip => {
     chip.addEventListener('click', () => {
-      chip.classList.add('selected');
-      setWord(chip.dataset.word);
+      setWord(chip.dataset.word, chip);
     });
     chip.setAttribute('draggable', true);
     chip.addEventListener('dragstart', e => {
@@ -270,7 +270,9 @@ function initEnding() {
   dropZone.addEventListener('dragleave', () => dropZone.classList.remove('active'));
   dropZone.addEventListener('drop', e => {
     e.preventDefault();
-    setWord(e.dataTransfer.getData('text/plain'));
+    const w = e.dataTransfer.getData('text/plain');
+    const match = Array.from(chips).find(c => c.dataset.word === w);
+    setWord(w, match || null);
   });
 }
 
@@ -291,6 +293,7 @@ function initLightbox() {
     document.body.style.overflow = '';
     setTimeout(() => { lbImg.src = ''; }, 400);
   }
+  window.addEventListener('pagehide', close);
 
   document.querySelectorAll('[data-lightbox]').forEach(el => {
     el.addEventListener('click', () => open(el.dataset.lightbox));
