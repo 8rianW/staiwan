@@ -1,119 +1,348 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-TW">
 <head>
-    <!--網頁編碼-->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="熱愛台灣，偶爾環島的攝影愛好者">
-    <meta name="author" content="8rian Wang,8W">
-    <meta name="keywords" content="Taiwan,photography,台灣,旅遊,攝影">
-    <title>8W</title>
-    <link href="reset.css" rel="stylesheet" type="text/css">
-    <link href="style.css" rel="stylesheet" type="text/css">
-    <script src="js/jquery.min.js"></script> 
-    <script src="js/parallaxie.min.js"></script> 
-    <script src="js/wow.min.js"></script>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/parallaxie.min.js"></script>
-    <link rel="stylesheet" href="css/animate.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="css/animate.css">
-    <script src="js/wow.min.js"></script>
-  </head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="台灣性感 Taiwan Sensuality — 一場關於土地、感知與美學的線上展覽">
+  <meta name="author" content="8rian Wang">
+  <meta name="keywords" content="Taiwan,photography,台灣,藝術,展覽,攝影,設計">
+  <title>台灣性感 Taiwan Sensuality</title>
+  <link href="reset.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@200;300;400;700&family=Space+Grotesk:wght@300;400;500&family=Noto+Sans+TC:wght@100;300;400&display=swap" rel="stylesheet">
+</head>
 <body>
-  <nav class="wow fadeIn" data-wow-delay='1s'>
-    <h3 class="right" ><a href="#">8W</a></h3>
-    <ul>
-      <li><a href="#a01">簡介</a></li>
-      <li><a href="#a02">旅程</a></li>
-      <li><a href="#a03">紀錄</a></li>
+
+  <!-- Loader -->
+  <div id="loader">
+    <div class="loader-inner">
+      <div class="loader-text">
+        <span class="loader-zh">台灣性感</span>
+        <span class="loader-en">Taiwan Sensuality</span>
+      </div>
+      <div class="loader-bar"><div class="loader-progress"></div></div>
+    </div>
+  </div>
+
+  <!-- Custom Cursor -->
+  <div id="cursor"></div>
+  <div id="cursor-follower"></div>
+
+  <!-- Nav -->
+  <nav id="nav">
+    <a href="#" class="nav-logo">TS</a>
+    <button class="nav-toggle" aria-label="選單">
+      <span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="#gallery">攝影</a></li>
+      <li><a href="#text-works">文字</a></li>
+      <li><a href="#interactive">互動</a></li>
+      <li><a href="#about">關於</a></li>
     </ul>
   </nav>
-<header>
-  <div  class="wrap wow fadeIn" data-wow-delay='1s' >
-    <div class="left wow slideInLeft" data-wow-delay="1s"></div>
-    <p class="wow flash" data-wow-delay='2s' data-wow-duration="2s">學習和自然共處</p>
-    <div class="right wow slideInRight" data-wow-delay="1s"></div>
-  </div> 
-</header>
-<main>
-  <article id="a01">
-    
-    <div class="intro wow slideInUp" data-wow-offset="10">
-      <div class="title"><h2>簡介</h2></div>
-      <div class="picture"></div>
-      <div class="text">
-        <ul>
-          <li>王昱韋</li>
-          <li>1994/2/28</li>
-          <li>攝影、旅行</li>
-          <li><a href="https://www.instagram.com/8rian.w/">IG</a></li>
-        </ul>
+
+  <!-- Hero -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-label">Online Exhibition · 2024</div>
+      <h1 class="hero-title">
+        <span class="hero-zh">台灣性感</span>
+        <span class="hero-en">Taiwan Sensuality</span>
+      </h1>
+      <p class="hero-sub">感受這片土地的溫度與呼吸</p>
+      <a href="#gallery" class="hero-btn">
+        <span>進入展覽</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+      </a>
+    </div>
+    <div class="hero-scroll">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+    <div class="hero-count">
+      <span>01</span>
+      <div class="count-line"></div>
+      <span>04</span>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section id="gallery">
+    <div class="section-header" data-reveal>
+      <span class="section-num">01</span>
+      <div class="section-title-wrap">
+        <h2 class="section-title">攝影<em>Photography</em></h2>
+        <p class="section-desc">用鏡頭捕捉台灣的溫度與性感</p>
       </div>
     </div>
-
-  </article>
-  <article id="a02">
-    <div class="trip wow slideInUp" data-wow-offset="10">
-      <h2 class="wow fadeIn">旅程</h2>
-      <p class="wow fadeIn" data-wow-delay="1.5s">2013.7.4--機車環島</p>
-      <p class="wow fadeIn" data-wow-delay="2s">2023.5.22--徒步環島</p>
-      <p class="wow fadeIn" data-wow-delay="2.5s">2024.4.8--徒步武嶺</p>
-      <iframe  width="300" height="150" src="https://www.youtube.com/embed/Le85ZqLo7Z4?si=5YhS2BsNZy_kDcwV" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="wow fadeIn" data-wow-delay="3s"></iframe>
-    </div>
-    
-  </article>
-  <article id="a03">
-    <h2 class="wow fadeIn">紀錄</h2>
-    <div class="swiper mySwiper wow slideInUp" data-wow-offset="10">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide"><img src="./照片/p1.jpg" alt=""></div>
-        <div class="swiper-slide"><img src="./照片/p2.jpg" alt=""></div>
-        <div class="swiper-slide"><img src="./照片/p3.jpg" alt=""></div>
-        <div class="swiper-slide"><img src="./照片/p4.jpg" alt=""></div>
-        <div class="swiper-slide"><img src="./照片/p5.jpg" alt=""></div>
-        <div class="swiper-slide"><img src="./照片/p6.jpg" alt=""></div>
-        <div class="swiper-slide"><img src="./照片/p7.jpg" alt=""></div>
-        <div class="swiper-slide"><img src="./照片/p8.jpg" alt=""></div>
-        <div class="swiper-slide"><img src="./照片/p9.jpg" alt=""></div>
+    <div class="gallery-grid" id="galleryGrid">
+      <div class="gallery-item" data-index="0" data-title="台灣之境" data-desc="光線穿透的瞬間，土地呼吸的聲音">
+        <div class="gallery-img-wrap">
+          <img src="./照片/p1.jpg" alt="台灣之境" loading="lazy">
+          <div class="gallery-overlay"><span class="gallery-icon">+</span></div>
+        </div>
+        <div class="gallery-info">
+          <span class="gallery-num">001</span>
+          <span class="gallery-name">台灣之境</span>
+        </div>
       </div>
-      <div class="swiper-button-next"></div>
-      <div class="swiper-button-prev"></div>
-      <div class="swiper-pagination"></div>
+      <div class="gallery-item" data-index="1" data-title="山的呼吸" data-desc="山嵐輕撫，自然的感知">
+        <div class="gallery-img-wrap">
+          <img src="./照片/p2.jpg" alt="山的呼吸" loading="lazy">
+          <div class="gallery-overlay"><span class="gallery-icon">+</span></div>
+        </div>
+        <div class="gallery-info">
+          <span class="gallery-num">002</span>
+          <span class="gallery-name">山的呼吸</span>
+        </div>
+      </div>
+      <div class="gallery-item" data-index="2" data-title="海的溫度" data-desc="海浪的節奏如同心跳">
+        <div class="gallery-img-wrap">
+          <img src="./照片/p3.jpg" alt="海的溫度" loading="lazy">
+          <div class="gallery-overlay"><span class="gallery-icon">+</span></div>
+        </div>
+        <div class="gallery-info">
+          <span class="gallery-num">003</span>
+          <span class="gallery-name">海的溫度</span>
+        </div>
+      </div>
+      <div class="gallery-item" data-index="3" data-title="城市皮膚" data-desc="霓虹燈下的城市肌理">
+        <div class="gallery-img-wrap">
+          <img src="./照片/p4.jpg" alt="城市皮膚" loading="lazy">
+          <div class="gallery-overlay"><span class="gallery-icon">+</span></div>
+        </div>
+        <div class="gallery-info">
+          <span class="gallery-num">004</span>
+          <span class="gallery-name">城市皮膚</span>
+        </div>
+      </div>
+      <div class="gallery-item" data-index="4" data-title="光與影" data-desc="明暗之間的感官張力">
+        <div class="gallery-img-wrap">
+          <img src="./照片/p5.jpg" alt="光與影" loading="lazy">
+          <div class="gallery-overlay"><span class="gallery-icon">+</span></div>
+        </div>
+        <div class="gallery-info">
+          <span class="gallery-num">005</span>
+          <span class="gallery-name">光與影</span>
+        </div>
+      </div>
+      <div class="gallery-item" data-index="5" data-title="土地記憶" data-desc="大地的紋路承載了歲月">
+        <div class="gallery-img-wrap">
+          <img src="./照片/p6.jpg" alt="土地記憶" loading="lazy">
+          <div class="gallery-overlay"><span class="gallery-icon">+</span></div>
+        </div>
+        <div class="gallery-info">
+          <span class="gallery-num">006</span>
+          <span class="gallery-name">土地記憶</span>
+        </div>
+      </div>
+      <div class="gallery-item" data-index="6" data-title="靜默之聲" data-desc="安靜中的強烈存在">
+        <div class="gallery-img-wrap">
+          <img src="./照片/p7.jpg" alt="靜默之聲" loading="lazy">
+          <div class="gallery-overlay"><span class="gallery-icon">+</span></div>
+        </div>
+        <div class="gallery-info">
+          <span class="gallery-num">007</span>
+          <span class="gallery-name">靜默之聲</span>
+        </div>
+      </div>
+      <div class="gallery-item" data-index="7" data-title="流動的邊界" data-desc="界限在流動中消融">
+        <div class="gallery-img-wrap">
+          <img src="./照片/p8.jpg" alt="流動的邊界" loading="lazy">
+          <div class="gallery-overlay"><span class="gallery-icon">+</span></div>
+        </div>
+        <div class="gallery-info">
+          <span class="gallery-num">008</span>
+          <span class="gallery-name">流動的邊界</span>
+        </div>
+      </div>
+      <div class="gallery-item" data-index="8" data-title="感官地圖" data-desc="以身體感知地圖的輪廓">
+        <div class="gallery-img-wrap">
+          <img src="./照片/p9.jpg" alt="感官地圖" loading="lazy">
+          <div class="gallery-overlay"><span class="gallery-icon">+</span></div>
+        </div>
+        <div class="gallery-info">
+          <span class="gallery-num">009</span>
+          <span class="gallery-name">感官地圖</span>
+        </div>
+      </div>
     </div>
-  </article>
+  </section>
 
-  
-</main>
-<footer>
-  <div class="end wow slideInDown" data-wow-offset="10">
-    <p>@希望人與自然土地永共存，聯絡8W,chribria228@gmail.com</p>
-</div>    
-</footer>
-    
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-   <script>
-    var swiper = new Swiper(".mySwiper", {
-      cssMode: true,
-      navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
-      },
-      pagination: {
-        el: ".swiper-pagination",
-      },
-      mousewheel: true,
-      keyboard: true,
-    });
-  </script>
-  <script>
-    $('header').parallaxie({speed:0.5});
-    $('#a01').parallaxie({speed:0.5});
-    $('#a02').parallaxie({speed:0.5});
-    $('#a03').parallaxie({speed:0.5});
-    </script>
-    <script>
-      new WOW().init();
-    </script>
+  <!-- Text Works Section -->
+  <section id="text-works">
+    <div class="section-header" data-reveal>
+      <span class="section-num">02</span>
+      <div class="section-title-wrap">
+        <h2 class="section-title">文字<em>Typography</em></h2>
+        <p class="section-desc">文字作為感知的媒介</p>
+      </div>
+    </div>
+    <div class="text-works-container">
+      <div class="text-work" data-reveal>
+        <div class="tw-number">I</div>
+        <blockquote class="tw-quote">
+          <p>性感不是裸露<br>是那一刻<br>你感受到了土地的體溫</p>
+          <footer>— 王昱韋</footer>
+        </blockquote>
+      </div>
+      <div class="text-work tw-right" data-reveal>
+        <div class="tw-number">II</div>
+        <blockquote class="tw-quote">
+          <p>Taiwan is not a place<br>it is a feeling<br>written in the air between mountains and sea</p>
+          <footer>— 8rian W.</footer>
+        </blockquote>
+      </div>
+      <div class="text-work" data-reveal>
+        <div class="tw-number">III</div>
+        <blockquote class="tw-quote">
+          <p>每一條路<br>都有它的溫度<br>每一步都是一次感知</p>
+          <footer>— 王昱韋</footer>
+        </blockquote>
+      </div>
+    </div>
+    <div class="marquee-wrap">
+      <div class="marquee">
+        <span>台灣性感 · Taiwan Sensuality · 感官 · Sensation · 土地 · Land · 溫度 · Warmth · 山海 · Mountains &amp; Sea · </span>
+        <span>台灣性感 · Taiwan Sensuality · 感官 · Sensation · 土地 · Land · 溫度 · Warmth · 山海 · Mountains &amp; Sea · </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Section -->
+  <section id="interactive">
+    <div class="section-header" data-reveal>
+      <span class="section-num">03</span>
+      <div class="section-title-wrap">
+        <h2 class="section-title">互動<em>Interactive</em></h2>
+        <p class="section-desc">參與這場感官體驗</p>
+      </div>
+    </div>
+    <div class="interactive-grid">
+      <div class="int-piece" id="wordScramble">
+        <div class="int-piece-label">01 · 文字感知</div>
+        <div class="scramble-display">
+          <span id="scrambleText">台灣性感</span>
+        </div>
+        <p class="int-piece-hint">移動滑鼠 / 觸碰體驗文字感知</p>
+      </div>
+      <div class="int-piece" id="colorPalette">
+        <div class="int-piece-label">02 · 台灣色彩</div>
+        <div class="palette-grid">
+          <div class="palette-item" data-color="#2d4a3e" data-name="山林綠"></div>
+          <div class="palette-item" data-color="#8b4513" data-name="紅土棕"></div>
+          <div class="palette-item" data-color="#1a3a5c" data-name="海洋藍"></div>
+          <div class="palette-item" data-color="#c9a84c" data-name="稻穗金"></div>
+          <div class="palette-item" data-color="#7b5fa0" data-name="薰衣紫"></div>
+          <div class="palette-item" data-color="#c8593a" data-name="廟宇紅"></div>
+        </div>
+        <div class="palette-name" id="paletteName">點擊感受台灣的色彩</div>
+      </div>
+      <div class="int-piece" id="textureCanvas">
+        <div class="int-piece-label">03 · 土地紋理</div>
+        <canvas id="noiseCanvas"></canvas>
+        <p class="int-piece-hint">點擊 / 觸碰更新紋理</p>
+      </div>
+      <div class="int-piece" id="reactionPiece">
+        <div class="int-piece-label">04 · 你的感受</div>
+        <div class="reaction-prompt">
+          <p>這場展覽讓你感受到什麼？</p>
+          <div class="reaction-tags">
+            <button class="tag">溫暖</button>
+            <button class="tag">遼闊</button>
+            <button class="tag">懷念</button>
+            <button class="tag">自由</button>
+            <button class="tag">連結</button>
+            <button class="tag">靜謐</button>
+          </div>
+          <div class="reaction-result" id="reactionResult"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about">
+    <div class="section-header" data-reveal>
+      <span class="section-num">04</span>
+      <div class="section-title-wrap">
+        <h2 class="section-title">關於<em>About</em></h2>
+      </div>
+    </div>
+    <div class="about-content" data-reveal>
+      <div class="about-text">
+        <h3>台灣性感<em>Taiwan Sensuality</em></h3>
+        <p>這是一場關於感知台灣的展覽。性感，不是身體的裸露，而是感官的全然開放——當你踩在台灣的土地上，感受山的冷冽、海的溫潤、城市的喧囂與田野的靜默，那就是台灣的性感。</p>
+        <p class="about-en">This exhibition explores the sensory experience of Taiwan — its warmth, its textures, its sounds and silences. Photography, typography, and interactive design come together to invite you into a visceral encounter with this island.</p>
+        <div class="about-meta">
+          <div class="meta-item">
+            <span class="meta-label">藝術家</span>
+            <span class="meta-value">王昱韋 / 8rian Wang</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">年份</span>
+            <span class="meta-value">2024</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">媒介</span>
+            <span class="meta-value">攝影、文字、互動設計</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">聯絡</span>
+            <span class="meta-value"><a href="mailto:chribria228@gmail.com">chribria228@gmail.com</a></span>
+          </div>
+        </div>
+      </div>
+      <div class="about-image">
+        <img src="./照片/me.jpg" alt="8rian Wang 王昱韋">
+        <div class="about-img-label">
+          <span>王昱韋</span>
+          <span>攝影師 · 旅人</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-left">
+        <p class="footer-title">台灣性感</p>
+        <p class="footer-sub">Taiwan Sensuality</p>
+      </div>
+      <div class="footer-right">
+        <a href="https://www.instagram.com/8rian.w/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <span aria-hidden="true">·</span>
+        <a href="mailto:chribria228@gmail.com">Email</a>
+      </div>
+    </div>
+    <div class="footer-copy">
+      <p>© 2024 王昱韋 8rian Wang · 希望人與自然土地永共存</p>
+    </div>
+  </footer>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-label="作品燈箱">
+    <div class="lightbox-backdrop" id="lbBackdrop"></div>
+    <div class="lightbox-container">
+      <button class="lb-close" id="lbClose" aria-label="關閉">✕</button>
+      <button class="lb-prev" id="lbPrev" aria-label="上一張">‹</button>
+      <button class="lb-next" id="lbNext" aria-label="下一張">›</button>
+      <div class="lb-img-wrap">
+        <img id="lbImg" src="" alt="">
+      </div>
+      <div class="lb-info">
+        <span class="lb-num" id="lbNum"></span>
+        <h3 id="lbTitle"></h3>
+        <p id="lbDesc"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/exhibition.js"></script>
 </body>
 </html>
