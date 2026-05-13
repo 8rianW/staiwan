@@ -49,6 +49,7 @@
 <!-- ─── SCROLL PROGRESS ───────────────────────────── -->
 <div id="scroll-progress"><div id="scroll-fill"></div></div>
 
+<!-- ─── OPENING ──────────────────────────────────── -->
 <section id="s-opening" class="section" data-name="Opening">
   <div class="section-bg" style="background-image:url(./照片/background.jpg)"></div>
   <div class="texture-overlay"></div>
@@ -68,6 +69,7 @@
   </div>
 </section>
 
+<!-- ─── WHO ARE WE ────────────────────────────────── -->
 <section id="s-who" class="section" data-name="Who Are We">
   <div class="who-content">
     <p class="who-line reveal-up" data-delay="0">We did not redefine Taiwan.</p>
@@ -77,28 +79,57 @@
   </div>
 </section>
 
+<!-- ─── IDENTITY CRISIS ───────────────────────────── -->
 <section id="s-crisis" class="section" data-name="Identity Crisis">
   <div class="crisis-label reveal-up">Identity Crisis</div>
   <div class="nine-grid reveal-up" data-delay="0.2">
     <div class="grid-row">
-      <div class="grid-cell" data-type="negative"><span>Chaos</span><em>混亂</em></div>
-      <div class="grid-cell" data-type="negative"><span>Noise</span><em>噪音</em></div>
-      <div class="grid-cell" data-type="negative"><span>Marginal</span><em>邊緣</em></div>
+      <div class="grid-cell" data-type="negative">
+        <span>Chaos</span><em>混亂</em>
+        <div class="grid-cell-detail"><p>混亂是台灣城市的底色，卻也是生命力的來源</p></div>
+      </div>
+      <div class="grid-cell" data-type="negative">
+        <span>Noise</span><em>噪音</em>
+        <div class="grid-cell-detail"><p>廟會鑼鼓、夜市叫賣，那是屬於台灣的聲景</p></div>
+      </div>
+      <div class="grid-cell" data-type="negative">
+        <span>Marginal</span><em>邊緣</em>
+        <div class="grid-cell-detail"><p>介於中間的位置，是台灣一直以來的生存之道</p></div>
+      </div>
     </div>
     <div class="grid-row">
-      <div class="grid-cell" data-type="neutral"><span>Flow</span><em>流動</em></div>
-      <div class="grid-cell" data-type="neutral"><span>Interaction</span><em>互動</em></div>
-      <div class="grid-cell" data-type="neutral"><span>Coexist</span><em>共存</em></div>
+      <div class="grid-cell" data-type="neutral">
+        <span>Flow</span><em>流動</em>
+        <div class="grid-cell-detail"><p>人、資本、文化不斷流動，台灣從不靜止</p></div>
+      </div>
+      <div class="grid-cell" data-type="neutral">
+        <span>Interaction</span><em>互動</em>
+        <div class="grid-cell-detail"><p>多元文化在此相遇、衝撞，最終融合成新的形態</p></div>
+      </div>
+      <div class="grid-cell" data-type="neutral">
+        <span>Coexist</span><em>共存</em>
+        <div class="grid-cell-detail"><p>矛盾與美麗、新與舊，在台灣和諧並存</p></div>
+      </div>
     </div>
     <div class="grid-row">
-      <div class="grid-cell" data-type="positive"><span>Order</span><em>秩序</em></div>
-      <div class="grid-cell" data-type="positive"><span>Warmth</span><em>溫暖</em></div>
-      <div class="grid-cell" data-type="positive"><span>Freedom</span><em>自由</em></div>
+      <div class="grid-cell" data-type="positive">
+        <span>Order</span><em>秩序</em>
+        <div class="grid-cell-detail"><p>混亂之下，台灣人自有一套維持生活的秩序</p></div>
+      </div>
+      <div class="grid-cell" data-type="positive">
+        <span>Warmth</span><em>溫暖</em>
+        <div class="grid-cell-detail"><p>陌生人之間的體貼，是台灣最珍貴的溫柔</p></div>
+      </div>
+      <div class="grid-cell" data-type="positive">
+        <span>Freedom</span><em>自由</em>
+        <div class="grid-cell-detail"><p>亞洲第一個通過同婚，自由是用掙扎換來的</p></div>
+      </div>
     </div>
   </div>
   <p class="crisis-note reveal-up" data-delay="0.4">台灣的性感，在矛盾之中誕生。</p>
 </section>
 
+<!-- ─── SYNTAX ────────────────────────────────────── -->
 <section id="s-syntax" class="section" data-name="Syntax of Taiwan">
   <div class="syntax-label reveal-up">Syntax of Taiwan</div>
   <div class="syntax-sub reveal-up" data-delay="0.1">字母重組系統 · Letter Transformation</div>
@@ -111,6 +142,7 @@
   <button class="syntax-next reveal-up" data-delay="0.5" id="syntaxNext">Next →</button>
 </section>
 
+<!-- ─── CHAOS ─────────────────────────────────────── -->
 <section id="s-chaos" class="section" data-name="Chaos → Flow">
   <canvas id="chaosCanvas"></canvas>
   <div class="chaos-content">
@@ -123,11 +155,21 @@
   </div>
 </section>
 
+<!-- ─── WARMTH ────────────────────────────────────── -->
+<!-- p7: volunteer giving drink to traveler = human warmth / 人情味 -->
+<!-- block3: person alone on beach with clear water = quiet connection -->
+<!-- p5: river at sunset with power lines = everyday warmth of Taiwan -->
 <section id="s-warmth" class="section" data-name="Warmth">
   <div class="warmth-grid">
-    <div class="warmth-photo reveal-photo" data-delay="0"><img src="./照片/p1.jpg" alt=""></div>
-    <div class="warmth-photo reveal-photo" data-delay="0.1"><img src="./照片/p2.jpg" alt=""></div>
-    <div class="warmth-photo reveal-photo" data-delay="0.2"><img src="./照片/p3.jpg" alt=""></div>
+    <div class="warmth-photo reveal-photo" data-delay="0" data-lightbox="./照片/p7.jpg">
+      <img src="./照片/p7.jpg" alt="人情味 — 廟會義工贈飲給旅人">
+    </div>
+    <div class="warmth-photo reveal-photo" data-delay="0.1" data-lightbox="./照片/block3.jpg">
+      <img src="./照片/block3.jpg" alt="海邊的獨處與靜謐">
+    </div>
+    <div class="warmth-photo reveal-photo" data-delay="0.2" data-lightbox="./照片/p5.jpg">
+      <img src="./照片/p5.jpg" alt="夕陽下的溪流與日常">
+    </div>
   </div>
   <div class="warmth-text">
     <h2 class="warmth-title reveal-up">Warmth <span>溫暖</span></h2>
@@ -136,7 +178,10 @@
   </div>
 </section>
 
+<!-- ─── MARGINALIZATION ───────────────────────────── -->
+<!-- p4: misty island floating alone in fog = marginalization metaphor -->
 <section id="s-marginal" class="section" data-name="Marginalization">
+  <div class="section-bg" style="background-image:url(./照片/p4.jpg)"></div>
   <div class="marginal-content">
     <div class="taiwan-svg-wrap reveal-up">
       <svg class="taiwan-svg" viewBox="0 0 180 400" xmlns="http://www.w3.org/2000/svg">
@@ -151,21 +196,33 @@
   </div>
 </section>
 
+<!-- ─── GRASSROOTS ────────────────────────────────── -->
+<!-- block1: mountain peak with clouds = resilient Taiwan nature -->
+<!-- p8: beetle on dried grass = life thriving in small corners -->
+<!-- p2: train along turquoise coastline = everyday Taiwan movement -->
 <section id="s-grassroots" class="section" data-name="Grassroots">
   <div class="grassroots-header">
     <h2 class="grassroots-title reveal-up">Grassroots</h2>
     <p class="grassroots-sub reveal-up" data-delay="0.1">草根 · 生命力</p>
   </div>
   <div class="grassroots-grid">
-    <div class="gr-item gr-large reveal-photo" data-delay="0"><img src="./照片/p4.jpg" alt=""></div>
-    <div class="gr-item reveal-photo" data-delay="0.1"><img src="./照片/p5.jpg" alt=""></div>
-    <div class="gr-item reveal-photo" data-delay="0.2"><img src="./照片/p6.jpg" alt=""></div>
+    <div class="gr-item gr-large reveal-photo" data-delay="0" data-lightbox="./照片/block1.jpg">
+      <img src="./照片/block1.jpg" alt="山峰 — 台灣大地的生命力">
+    </div>
+    <div class="gr-item reveal-photo" data-delay="0.1" data-lightbox="./照片/p8.jpg">
+      <img src="./照片/p8.jpg" alt="甲蟲 — 生命從縫隙中長出">
+    </div>
+    <div class="gr-item reveal-photo" data-delay="0.2" data-lightbox="./照片/p2.jpg">
+      <img src="./照片/p2.jpg" alt="海邊鐵路 — 台灣日常的韌性">
+    </div>
   </div>
   <p class="grassroots-quote reveal-up" data-delay="0.3">生命從縫隙中長出來，那是台灣最真實的姿態。</p>
 </section>
 
+<!-- ─── FREEDOM ────────────────────────────────────── -->
+<!-- p3: person walking on open highway toward horizon = freedom -->
 <section id="s-freedom" class="section" data-name="Freedom">
-  <div class="freedom-bg"></div>
+  <div class="freedom-bg" style="background-image:url(./照片/p3.jpg)"></div>
   <div class="freedom-content">
     <h2 class="freedom-title reveal-up">Freedom</h2>
     <p class="freedom-zh reveal-up" data-delay="0.1">自由</p>
@@ -181,22 +238,37 @@
   </div>
 </section>
 
+<!-- ─── CULTURE ────────────────────────────────────── -->
+<!-- p9: silhouettes in illuminated tunnel = cultural passage, art space -->
+<!-- p6: toy truck on Taiwan road marking = street culture, urban play -->
+<!-- p1: traveler sitting at sea wall = Taiwan people, journeys -->
+<!-- bg: dark road with light beam = cinematic Taiwan at night -->
 <section id="s-culture" class="section" data-name="Culture">
   <div class="culture-header">
     <h2 class="culture-title reveal-up">Culture</h2>
     <p class="culture-sub reveal-up" data-delay="0.1">文化 · 辦桌 · 廟會 · 多元</p>
   </div>
   <div class="culture-grid">
-    <div class="cu-item cu-tall reveal-photo" data-delay="0"><img src="./照片/p7.jpg" alt=""></div>
-    <div class="cu-item reveal-photo" data-delay="0.1"><img src="./照片/p8.jpg" alt=""></div>
-    <div class="cu-item reveal-photo" data-delay="0.2"><img src="./照片/p9.jpg" alt=""></div>
-    <div class="cu-item cu-wide reveal-photo" data-delay="0.3">
-      <img src="./照片/bg.jpg" alt="">
+    <div class="cu-item cu-tall reveal-photo" data-delay="0" data-lightbox="./照片/p9.jpg">
+      <img src="./照片/p9.jpg" alt="光影隧道中的人影">
+      <div class="cu-overlay"><p>光影之間，文化的通道<br><em>Between light and shadow.</em></p></div>
+    </div>
+    <div class="cu-item reveal-photo" data-delay="0.1" data-lightbox="./照片/p6.jpg">
+      <img src="./照片/p6.jpg" alt="路上的台灣地圖">
+      <div class="cu-overlay"><p>街道上的台灣<br><em>Taiwan written on the street.</em></p></div>
+    </div>
+    <div class="cu-item reveal-photo" data-delay="0.2" data-lightbox="./照片/p1.jpg">
+      <img src="./照片/p1.jpg" alt="旅人坐在海邊石牆">
+      <div class="cu-overlay"><p>旅人與土地<br><em>Traveler and the land.</em></p></div>
+    </div>
+    <div class="cu-item cu-wide reveal-photo" data-delay="0.3" data-lightbox="./照片/bg.jpg">
+      <img src="./照片/bg.jpg" alt="夜間路面光影">
       <div class="cu-overlay"><p>台灣的文化是一鍋永遠沸騰的湯<br><em>Taiwan's culture is a soup that never stops boiling.</em></p></div>
     </div>
   </div>
 </section>
 
+<!-- ─── ENDING ─────────────────────────────────────── -->
 <section id="s-ending" class="section" data-name="Taiwan is ______">
   <div class="ending-content">
     <p class="ending-prompt reveal-up">Taiwan is</p>
@@ -229,6 +301,15 @@
 <footer>
   <p>© 2024 Taiwan Sensuality · 王昱韋 · 希望人與自然土地永共存</p>
 </footer>
+
+<!-- ─── LIGHTBOX ──────────────────────────────────── -->
+<div id="lightbox">
+  <div class="lb-backdrop" id="lbBackdrop"></div>
+  <div class="lb-container">
+    <img class="lb-img" id="lbImg" src="" alt="">
+    <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
+  </div>
+</div>
 
 <script src="js/exhibition.js"></script>
 </body>
