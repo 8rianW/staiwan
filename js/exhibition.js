@@ -195,7 +195,7 @@ function initChaos() {
     draw() {
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.rad, 0, Math.PI * 2);
-      ctx.fillStyle = this.color + Math.floor(this.alpha * 255).toString(16).padStart(2, '0');
+      ctx.fillStyle = this.color + Math.floor(this.alpha * 255).toString(16).padStart(2, '00');
       ctx.fill();
     }
   }
@@ -305,21 +305,59 @@ function initLightbox() {
 
 /* ─── GRID CELLS ─────────────────────────────────── */
 function initGridCells() {
-  const cells = document.querySelectorAll('.grid-cell');
+  const cells        = document.querySelectorAll('.grid-cell');
+  const cellBox      = document.getElementById('cellBox');
+  const cellBoxImg   = document.getElementById('cellBoxImg');
+  const cellBoxBd    = document.getElementById('cellBoxBackdrop');
+  const cellBoxClose = document.getElementById('cellBoxClose');
+  let activeCell     = null;
+
+  function openCellBox(cell) {
+    const photo = cell.dataset.photo;
+    const rect  = cell.getBoundingClientRect();
+    activeCell  = cell;
+
+    cellBoxImg.src          = photo;
+    cellBoxImg.style.top    = rect.top    + 'px';
+    cellBoxImg.style.left   = rect.left   + 'px';
+    cellBoxImg.style.width  = rect.width  + 'px';
+    cellBoxImg.style.height = rect.height + 'px';
+
+    cellBox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      const pad = 40;
+      const tw  = Math.min(window.innerWidth  - pad * 2, 1100);
+      const th  = Math.min(window.innerHeight - pad * 2, 820);
+      cellBoxImg.style.top    = (window.innerHeight - th) / 2 + 'px';
+      cellBoxImg.style.left   = (window.innerWidth  - tw) / 2 + 'px';
+      cellBoxImg.style.width  = tw + 'px';
+      cellBoxImg.style.height = th + 'px';
+    }));
+  }
+
+  function closeCellBox() {
+    if (!activeCell) return;
+    const rect = activeCell.getBoundingClientRect();
+    cellBoxImg.style.top    = rect.top    + 'px';
+    cellBoxImg.style.left   = rect.left   + 'px';
+    cellBoxImg.style.width  = rect.width  + 'px';
+    cellBoxImg.style.height = rect.height + 'px';
+    setTimeout(() => {
+      cellBox.classList.remove('open');
+      document.body.style.overflow = '';
+      activeCell = null;
+      setTimeout(() => { cellBoxImg.src = ''; }, 50);
+    }, 460);
+  }
+
   cells.forEach(cell => {
-    cell.addEventListener('click', e => {
-      e.stopPropagation();
-      const wasActive = cell.classList.contains('active-cell');
-      cells.forEach(c => c.classList.remove('active-cell'));
-      if (!wasActive) {
-        const photo = cell.dataset.photo;
-        const img = cell.querySelector('.gc-photo img');
-        if (photo && img && !img.src.endsWith(photo.split('/').pop())) img.src = photo;
-        cell.classList.add('active-cell');
-      }
-    });
+    cell.addEventListener('click', e => { e.stopPropagation(); openCellBox(cell); });
   });
-  document.addEventListener('click', () => cells.forEach(c => c.classList.remove('active-cell')));
+  cellBoxClose.addEventListener('click', closeCellBox);
+  cellBoxBd.addEventListener('click', closeCellBox);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCellBox(); });
 }
 
 /* ─── PARALLAX ───────────────────────────────────── */

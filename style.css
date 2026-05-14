@@ -1154,6 +1154,56 @@ footer p {
 }
 .lb-close:hover { border-color: var(--gold); color: var(--gold); }
 
+/* ─── CELL LIGHTBOX (九宮格投射展開) ─────────────── */
+#cellBox {
+  position: fixed;
+  inset: 0;
+  z-index: 9400;
+  pointer-events: none;
+}
+#cellBox.open { pointer-events: auto; }
+#cellBoxBackdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0);
+  transition: background 0.4s ease;
+}
+#cellBox.open #cellBoxBackdrop { background: rgba(0,0,0,0.9); }
+#cellBoxImg {
+  position: fixed;
+  object-fit: contain;
+  opacity: 0;
+  border-radius: 2px;
+  transition:
+    top    0.48s cubic-bezier(0.22,0.61,0.36,1),
+    left   0.48s cubic-bezier(0.22,0.61,0.36,1),
+    width  0.48s cubic-bezier(0.22,0.61,0.36,1),
+    height 0.48s cubic-bezier(0.22,0.61,0.36,1),
+    opacity 0.25s ease;
+}
+#cellBox.open #cellBoxImg { opacity: 1; }
+#cellBoxClose {
+  position: fixed;
+  top: 24px;
+  right: 32px;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  width: 44px;
+  height: 44px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.3s, color 0.3s, opacity 0.3s;
+  z-index: 9401;
+  opacity: 0;
+  pointer-events: none;
+  cursor: pointer;
+}
+#cellBox.open #cellBoxClose { opacity: 1; pointer-events: auto; }
+#cellBoxClose:hover { border-color: var(--gold); color: var(--gold); }
+
 /* ─── KEYFRAMES ──────────────────────────────────── */
 @keyframes scrollPulse {
   0%   { transform: scaleY(0); transform-origin: top; }
