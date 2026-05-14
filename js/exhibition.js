@@ -311,12 +311,15 @@ function initGridCells() {
       e.stopPropagation();
       const wasActive = cell.classList.contains('active-cell');
       cells.forEach(c => c.classList.remove('active-cell'));
-      if (!wasActive) cell.classList.add('active-cell');
+      if (!wasActive) {
+        const photo = cell.dataset.photo;
+        const img = cell.querySelector('.gc-photo img');
+        if (photo && img && !img.src.endsWith(photo.split('/').pop())) img.src = photo;
+        cell.classList.add('active-cell');
+      }
     });
   });
-  document.addEventListener('click', () => {
-    cells.forEach(c => c.classList.remove('active-cell'));
-  });
+  document.addEventListener('click', () => cells.forEach(c => c.classList.remove('active-cell')));
 }
 
 /* ─── PARALLAX ───────────────────────────────────── */
