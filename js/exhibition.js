@@ -293,7 +293,6 @@ function initLightbox() {
     document.body.style.overflow = '';
     setTimeout(() => { lbImg.src = ''; }, 400);
   }
-  window.addEventListener('pagehide', close);
 
   document.querySelectorAll('[data-lightbox]').forEach(el => {
     el.addEventListener('click', () => open(el.dataset.lightbox));
@@ -301,6 +300,7 @@ function initLightbox() {
   lbClose.addEventListener('click', close);
   lbBackdrop.addEventListener('click', close);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+  window.addEventListener('pagehide', close);
 }
 
 /* ─── GRID CELLS ─────────────────────────────────── */

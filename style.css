@@ -602,21 +602,25 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   position: absolute;
   top: 12px;
   right: 14px;
-  width: 28px;
-  height: 28px;
-  border: 1px solid rgba(255,255,255,0.4);
+  width: 26px;
+  height: 26px;
+  border: 1px solid rgba(255,255,255,0.5);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
-  color: rgba(255,255,255,0.5);
+  font-size: 15px;
+  color: rgba(255,255,255,0.6);
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
-  z-index: 3;
+  z-index: 4;
+  line-height: 1;
 }
-.warmth-photo:hover::after, .gr-item:hover::after, .cu-item:hover::after { opacity: 1; }
+.warmth-photo:hover::after, .gr-item:hover::after { opacity: 1; }
+@media (pointer: coarse) {
+  .warmth-photo::after, .gr-item::after, .cu-item::after { display: none; }
+}
 .warmth-text {
   padding: 64px 56px;
   display: flex;
@@ -763,6 +767,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   object-fit: cover;
   transition: transform 0.9s var(--ease), filter 0.4s ease;
   filter: brightness(0.82) saturate(0.85);
+  will-change: transform;
 }
 .gr-large img { min-height: 520px; }
 .gr-item:hover img {
@@ -1141,7 +1146,7 @@ footer p {
   .warmth-text { padding: 48px 40px; }
   .culture-grid {
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: minmax(260px, 42vh) minmax(260px, 42vh) minmax(220px, 36vh);
+    grid-template-rows: minmax(240px, 40vh) minmax(240px, 40vh) minmax(200px, 34vh);
   }
   .cu-tall { grid-row: span 2; }
   .cu-wide { grid-column: span 2; grid-row: auto; }
