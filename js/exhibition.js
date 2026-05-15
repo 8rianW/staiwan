@@ -379,8 +379,6 @@ function initBanquet() {
     popup.classList.add('open');
     document.body.style.overflow = 'hidden';
 
-    const title = encodeURIComponent(food.wiki.replace(/_/g, ' '));
-
     // 1. Wikipedia REST summary API
     try {
       const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(food.wiki)}`);
@@ -391,8 +389,9 @@ function initBanquet() {
       }
     } catch (_) {}
 
-    // 2. Wikipedia action API fallback
+    // 2. Wikipedia action API
     try {
+      const title = encodeURIComponent(food.wiki.replace(/_/g, ' '));
       const res  = await fetch(`https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&titles=${title}&piprop=thumbnail&pithumbsize=640&redirects=1&format=json&origin=*`);
       const data = await res.json();
       const page = data?.query?.pages ? Object.values(data.query.pages)[0] : null;
@@ -400,7 +399,20 @@ function initBanquet() {
       if (src) { showPhoto(src); return; }
     } catch (_) {}
 
-    // 3. Hardcoded Wikimedia Commons fallback
+    // 3. Wikimedia Commons search by English food name
+    try {
+      const q   = encodeURIComponent(food.en);
+      const res = await fetch(`https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrnamespace=6&gsrsearch=${q}&prop=imageinfo&iiprop=url&iiurlwidth=640&gsrlimit=6&format=json&origin=*`);
+      const data  = await res.json();
+      const pages = Object.values(data?.query?.pages || {});
+      for (const pg of pages) {
+        const url = (pg?.imageinfo?.[0]?.url || '').toLowerCase();
+        const src = pg?.imageinfo?.[0]?.thumburl;
+        if (src && /\.(jpg|jpeg|png)$/.test(url)) { showPhoto(src); return; }
+      }
+    } catch (_) {}
+
+    // 4. Hardcoded last-resort fallback
     if (food.fallback) showPhoto(food.fallback);
   }
 
