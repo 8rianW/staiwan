@@ -1,6 +1,6 @@
 @charset "utf-8";
 
-/* ─── VARIABLES ────────────────────────────────────── */
+/* ─── VARIABLES ──────────────────────────────────── */
 :root {
   --bg:       #0D0D0D;
   --bg2:      #111111;
@@ -19,7 +19,7 @@
   --ease:     cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ─── BASE ─────────────────────────────────────────── */
+/* ─── BASE ───────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; background: var(--bg); }
 body {
@@ -33,7 +33,7 @@ a { color: inherit; text-decoration: none; }
 img { display: block; width: 100%; height: 100%; object-fit: cover; }
 button { font-family: inherit; cursor: none; border: none; background: none; }
 
-/* ─── TEXTURE ───────────────────────────────────────── */
+/* ─── TEXTURE ──────────────────────────────────────── */
 .texture-overlay {
   position: absolute;
   inset: 0;
@@ -177,7 +177,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
 .nav-dot.active { background: var(--gold); transform: scale(1.5); }
 .nav-dot:hover { background: var(--muted); }
 
-/* ─── SCROLL PROGRESS ───────────────────────────────── */
+/* ─── SCROLL PROGRESS ─────────────────────────────────── */
 #scroll-progress {
   position: fixed;
   left: 0;
@@ -215,7 +215,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
 }
 .section.active .section-bg { filter: brightness(0.28) saturate(0.55); }
 
-/* ─── REVEAL ANIMATIONS ───────────────────────────────── */
+/* ─── REVEAL ANIMATIONS ─────────────────────────────────── */
 .reveal, .reveal-up {
   opacity: 0;
   transform: translateY(28px);
@@ -231,7 +231,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
 .reveal.in, .reveal-up.in   { opacity: 1; transform: translateY(0); will-change: auto; }
 .reveal-photo.in             { opacity: 1; transform: translateY(0) scale(1); will-change: auto; }
 
-/* ─── OPENING ──────────────────────────────────────── */
+/* ─── OPENING ────────────────────────────────────────── */
 #s-opening { height: 100vh; }
 .opening-content {
   position: relative;
@@ -298,7 +298,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   animation: scrollPulse 2.2s ease-in-out infinite;
 }
 
-/* ─── WHO ARE WE ───────────────────────────────────── */
+/* ─── WHO ARE WE ─────────────────────────────────────── */
 #s-who { background: var(--bg2); }
 .who-content {
   text-align: center;
@@ -327,7 +327,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   letter-spacing: 0.25em;
 }
 
-/* ─── IDENTITY CRISIS ────────────────────────────────── */
+/* ─── IDENTITY CRISIS ──────────────────────────────────── */
 #s-crisis {
   background: var(--bg);
   flex-direction: column;
@@ -471,7 +471,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   letter-spacing: 0.2em;
 }
 
-/* ─── SYNTAX ─────────────────────────────────────────── */
+/* ─── SYNTAX ──────────────────────────────────────────── */
 #s-syntax {
   background: var(--bg3);
   flex-direction: column;
@@ -541,7 +541,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   background: rgba(201,168,76,0.07);
 }
 
-/* ─── CHAOS ────────────────────────────────────────────── */
+/* ─── CHAOS ─────────────────────────────────────────────── */
 #s-chaos { background: #000; height: 100vh; }
 #chaosCanvas {
   position: absolute;
@@ -589,7 +589,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   letter-spacing: 0.22em;
 }
 
-/* ─── WARMTH ─────────────────────────────────────────── */
+/* ─── WARMTH ──────────────────────────────────────────── */
 #s-warmth {
   background: var(--bg2);
   min-height: 100vh;
@@ -689,7 +689,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   line-height: 2;
 }
 
-/* ─── MARGINALIZATION ──────────────────────────────────── */
+/* ─── MARGINALIZATION ────────────────────────────────────── */
 #s-marginal { background: var(--bg); }
 .marginal-content {
   position: relative;
@@ -746,7 +746,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   font-size: 0.9em;
 }
 
-/* ─── GRASSROOTS ───────────────────────────────────── */
+/* ─── GRASSROOTS ─────────────────────────────────────── */
 #s-grassroots {
   background: var(--bg);
   flex-direction: column;
@@ -811,7 +811,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   width: 100%;
 }
 
-/* ─── FREEDOM ─────────────────────────────────────────── */
+/* ─── FREEDOM ───────────────────────────────────────────── */
 #s-freedom { background: var(--bg); }
 .freedom-bg {
   position: absolute;
@@ -880,7 +880,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   color: var(--dim);
 }
 
-/* ─── CULTURE ─────────────────────────────────────────── */
+/* ─── CULTURE ───────────────────────────────────────────── */
 #s-culture {
   background: var(--bg);
   flex-direction: column;
@@ -961,7 +961,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   margin-top: 4px;
 }
 
-/* ─── ENDING ─────────────────────────────────────────── */
+/* ─── ENDING ─────────────────────────────────────────────── */
 #s-ending { background: var(--bg2); }
 .ending-content {
   text-align: center;
@@ -1085,7 +1085,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
 }
 .ending-artist-info a:hover { color: var(--gold); }
 
-/* ─── FOOTER ──────────────────────────────────────────── */
+/* ─── FOOTER ──────────────────────────────────────────────── */
 footer {
   background: var(--bg);
   border-top: 1px solid var(--border);
@@ -1100,7 +1100,7 @@ footer p {
   letter-spacing: 0.25em;
 }
 
-/* ─── LIGHTBOX ─────────────────────────────────────────── */
+/* ─── LIGHTBOX ────────────────────────────────────────────── */
 #lightbox {
   position: fixed;
   inset: 0;
@@ -1154,7 +1154,7 @@ footer p {
 }
 .lb-close:hover { border-color: var(--gold); color: var(--gold); }
 
-/* ─── CELL LIGHTBOX (九宮格投射展開) ────────────────────── */
+/* ─── CELL LIGHTBOX (九宮格投射展開) ────────────────────────── */
 #cellBox {
   position: fixed;
   inset: 0;
@@ -1204,24 +1204,32 @@ footer p {
 #cellBox.open #cellBoxClose { opacity: 1; pointer-events: auto; }
 #cellBoxClose:hover { border-color: var(--gold); color: var(--gold); }
 
-/* ─── MARGINALIZATION SPOTLIGHT ──────────────────────────────── */
+/* ─── MARGINALIZATION LENS ──────────────────────────────────── */
 .marginal-spotlight {
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: radial-gradient(
-    ellipse 24% 16% at 17% 83%,
-    rgba(255, 210, 70, 0.42) 0%,
-    rgba(255, 190, 40, 0.14) 50%,
+  background: url(./_DSC9382.jpg) center / cover no-repeat;
+  filter: brightness(1.35) contrast(1.05) saturate(0.9);
+  -webkit-mask-image: radial-gradient(
+    circle 130px at 26% 67%,
+    black 62%,
+    rgba(0,0,0,0.5) 78%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    circle 130px at 26% 67%,
+    black 62%,
+    rgba(0,0,0,0.5) 78%,
     transparent 100%
   );
   opacity: 0;
-  transition: opacity 2s ease;
+  transition: opacity 1.6s ease;
 }
 #s-marginal.spotlight-active .marginal-spotlight { opacity: 1; }
 
-/* ─── FREEDOM ORBS ───────────────────────────────────── */
+/* ─── FREEDOM ORBS ─────────────────────────────────────── */
 .freedom-orbs {
   position: absolute;
   inset: 0;
@@ -1248,7 +1256,7 @@ footer p {
   100% { transform: translateY(-100vh) scale(0.25); opacity: 0; }
 }
 
-/* ─── BANQUET HALF-CIRCLE ─────────────────────────────────── */
+/* ─── BANQUET HALF-CIRCLE ─────────────────────────────────────── */
 .banquet-wrap {
   width: 100%;
   padding: 60px 0 0;
@@ -1298,7 +1306,7 @@ footer p {
 }
 .banquet-food { cursor: pointer; }
 
-/* ─── BANQUET POPUP ───────────────────────────────────── */
+/* ─── BANQUET POPUP ───────────────────────────────────────── */
 #banquetPopup {
   position: fixed;
   inset: 0;
@@ -1383,7 +1391,7 @@ footer p {
 }
 #bp-close:hover { border-color: var(--gold); color: var(--gold); }
 
-/* ─── KEYFRAMES ──────────────────────────────────────────── */
+/* ─── KEYFRAMES ──────────────────────────────────────────────── */
 @keyframes scrollPulse {
   0%   { transform: scaleY(0); transform-origin: top; }
   49%  { transform: scaleY(1); transform-origin: top; }
@@ -1391,7 +1399,7 @@ footer p {
   100% { transform: scaleY(0); transform-origin: bottom; }
 }
 
-/* ─── TABLET ───────────────────────────────────────────── */
+/* ─── TABLET ──────────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .marginal-content {
     grid-template-columns: 180px 1fr;
@@ -1408,7 +1416,7 @@ footer p {
   .grassroots-grid { grid-template-columns: 3fr 2fr 2fr; }
 }
 
-/* ─── MOBILE ───────────────────────────────────────────── */
+/* ─── MOBILE ──────────────────────────────────────────────── */
 @media (max-width: 768px) {
   #nav { padding: 14px 20px; }
   #nav.scrolled { padding: 10px 20px; }
