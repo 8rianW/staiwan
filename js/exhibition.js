@@ -344,16 +344,16 @@ function initBanquet() {
   if (!viewport || !rotateG || !foodEls.length) return;
 
   const FOOD_DATA = {
-    oyster:     { zh: '蚵仔煎',  en: 'Oyster Omelette',        desc: '以地瓜粉、雞蛋與新鮮蚵仔煎製而成，淋上特調甜辣醬，是台灣夜市最具代表性的小吃。',       wiki: 'Oyster_omelette' },
-    chicken:    { zh: '鹹酥雞',  en: 'Taiwanese Fried Chicken', desc: '香酥的雞塊與九層塔一同入鍋炸製，鹹香酥脆，是台灣宵夜文化的靈魂小吃。',               wiki: 'Yán_sū_jī' },
-    guabao:     { zh: '割包',    en: 'Gua Bao',                 desc: '鬆軟白麵包夾入滷製五花肉、花生粉與酸菜，軟嫩酥脆並存，被譽為「台灣漢堡」。',           wiki: 'Gua_bao' },
-    luroufan:   { zh: '滷肉飯',  en: 'Lu Rou Fan',              desc: '肥瘦相間的豬五花以醬油、米酒、冰糖慢燉後澆在白飯上，是台灣家常滋味的最高代表。',       wiki: 'Lu_rou_fan' },
-    beefnoodle: { zh: '牛肉麵',  en: 'Beef Noodle Soup',        desc: '以紅燒湯底燉煮軟爛牛腱，搭配彈牙麵條，是台灣最驕傲的國民美食，每年舉辦比賽選出最佳口味。', wiki: 'Beef_noodle_soup' },
-    bubbletea:  { zh: '珍珠奶茶', en: 'Bubble Tea',             desc: '1980年代發源於台灣台中，Q彈珍珠搭配奶茶，是台灣對世界飲料文化最大的貢獻。',           wiki: 'Bubble_tea' },
-    miansian:   { zh: '大腸麵線', en: 'Oyster Vermicelli',      desc: '以豬大腸與蚵仔燉入勾芡的麵線湯中，口感滑順，是廟會與夜市中最撫慰人心的平民小吃。',   wiki: 'Oyster_vermicelli' },
-    coffin:     { zh: '棺材板',  en: 'Coffin Bread',            desc: '發源於台南，以厚片土司挖空後填入濃郁奶油燉料，外酥內滑，名稱怪異卻深受喜愛。',       wiki: 'Coffin_bread' },
-    stinkytofu: { zh: '臭豆腐',  en: 'Stinky Tofu',             desc: '炸至金黃酥脆後配上酸辣泡菜，「聞起來臭，吃起來香」，是台灣夜市最具挑戰性的美食。', wiki: 'Stinky_tofu' },
-    bawan:      { zh: '肉圓',    en: 'Ba-Wan',                  desc: '以地瓜粉製成半透明外皮，包裹豬絞肉、竹筍與香菇，清蒸或油炸後淋上甜辣醬，是彰化、台南的在地驕傲。', wiki: 'Ba-wan' },
+    oyster:     { zh: '蚵仔煎',  en: 'Oyster Omelette',        desc: '以地瓜粉、雞蛋與新鮮蚵仔煎製而成，淋上特調甜辣醬，是台灣夜市最具代表性的小吃。',       wiki: 'Oyster_omelette',   fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Orh-Nee-Jian-Oyster-Omelette.jpg/640px-Orh-Nee-Jian-Oyster-Omelette.jpg' },
+    chicken:    { zh: '鹹酥雞',  en: 'Taiwanese Fried Chicken', desc: '香酥的雞塊與九層塔一同入鍋炸製，鹹香酥脆，是台灣宵夜文化的靈魂小吃。',               wiki: 'Yan_su_ji',         fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Yansují.jpg/640px-Yansují.jpg' },
+    guabao:     { zh: '割包',    en: 'Gua Bao',                 desc: '鬆軟白麵包夾入滷製五花肉、花生粉與酸菜，軟嫩酥脆並存，被譽為「台灣漢堡」。',           wiki: 'Gua_bao',           fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Gua_bao_2.jpg/640px-Gua_bao_2.jpg' },
+    luroufan:   { zh: '滷肉飯',  en: 'Lu Rou Fan',              desc: '肥瘦相間的豬五花以醬油、米酒、冰糖慢燉後澆在白飯上，是台灣家常滋味的最高代表。',       wiki: 'Lu_rou_fan',        fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Luroufan.jpg/640px-Luroufan.jpg' },
+    beefnoodle: { zh: '牛肉麵',  en: 'Beef Noodle Soup',        desc: '以紅燒湯底燉煮軟爛牛腱，搭配彈牙麵條，是台灣最驕傲的國民美食，每年舉辦比賽選出最佳口味。', wiki: 'Beef_noodle_soup',  fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Taiwan_beef_noodle_soup.jpg/640px-Taiwan_beef_noodle_soup.jpg' },
+    bubbletea:  { zh: '珍珠奶茶', en: 'Bubble Tea',             desc: '1980年代發源於台灣台中，Q彈珍珠搭配奶茶，是台灣對世界飲料文化最大的貢獻。',           wiki: 'Bubble_tea',        fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Bubble_tea_at_Fantaasia_2015.jpg/640px-Bubble_tea_at_Fantaasia_2015.jpg' },
+    miansian:   { zh: '大腸麵線', en: 'Oyster Vermicelli',      desc: '以豬大腸與蚵仔燉入勾芡的麵線湯中，口感滑順，是廟會與夜市中最撫慰人心的平民小吃。',   wiki: 'Oyster_vermicelli', fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Mian_xian.jpg/640px-Mian_xian.jpg' },
+    coffin:     { zh: '棺材板',  en: 'Coffin Bread',            desc: '發源於台南，以厚片土司挖空後填入濃郁奶油燉料，外酥內滑，名稱怪異卻深受喜愛。',       wiki: 'Coffin_bread',      fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Coffin_bread.jpg/640px-Coffin_bread.jpg' },
+    stinkytofu: { zh: '臭豆腐',  en: 'Stinky Tofu',             desc: '炸至金黃酥脆後配上酸辣泡菜，「聞起來臭，吃起來香」，是台灣夜市最具挑戰性的美食。',   wiki: 'Stinky_tofu',       fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Stinky_tofu_in_Jiufen.jpg/640px-Stinky_tofu_in_Jiufen.jpg' },
+    bawan:      { zh: '肉圓',    en: 'Ba-Wan',                  desc: '以地瓜粉製成半透明外皮，包裹豬絞肉、竹筍與香菇，清蒸或油炸後淋上甜辣醬，是彰化、台南的在地驕傲。', wiki: 'Ba-wan',       fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Bawan.jpg/640px-Bawan.jpg' },
   };
 
   const popup   = document.getElementById('banquetPopup');
@@ -362,6 +362,12 @@ function initBanquet() {
   const bpName  = document.getElementById('bp-name');
   const bpDesc  = document.getElementById('bp-desc');
   const bpPhoto = document.getElementById('bp-photo');
+
+  function showPhoto(src) {
+    bpPhoto.onload = () => { bpPhoto.style.opacity = '1'; };
+    bpPhoto.onerror = () => {};
+    bpPhoto.src = src;
+  }
 
   async function openPopup(key) {
     const food = FOOD_DATA[key];
@@ -372,16 +378,30 @@ function initBanquet() {
     bpPhoto.src           = '';
     popup.classList.add('open');
     document.body.style.overflow = 'hidden';
+
+    const title = encodeURIComponent(food.wiki.replace(/_/g, ' '));
+
+    // 1. Wikipedia REST summary API
     try {
-      const res  = await fetch(`https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&titles=${food.wiki}&piprop=thumbnail&pithumbsize=640&format=json&origin=*`);
+      const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(food.wiki)}`);
+      if (res.ok) {
+        const data = await res.json();
+        const src  = data?.thumbnail?.source || data?.originalimage?.source;
+        if (src) { showPhoto(src); return; }
+      }
+    } catch (_) {}
+
+    // 2. Wikipedia action API fallback
+    try {
+      const res  = await fetch(`https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&titles=${title}&piprop=thumbnail&pithumbsize=640&redirects=1&format=json&origin=*`);
       const data = await res.json();
       const page = data?.query?.pages ? Object.values(data.query.pages)[0] : null;
       const src  = page?.thumbnail?.source;
-      if (src) {
-        bpPhoto.onload = () => { bpPhoto.style.opacity = '1'; };
-        bpPhoto.src = src;
-      }
+      if (src) { showPhoto(src); return; }
     } catch (_) {}
+
+    // 3. Hardcoded Wikimedia Commons fallback
+    if (food.fallback) showPhoto(food.fallback);
   }
 
   function closePopup() {
