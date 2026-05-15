@@ -89,16 +89,26 @@ function initAll() {
   initLightbox();
   initGridCells();
   initParallax();
+  initSpotlight();
+  initBanquet();
 }
 
 /* ─── SYNTAX ─────────────────────────────────────── */
 const wordPairs = [
-  { from: 'CHAOS',  to: 'ACTION', taiwan: ['C','A','O'] },
-  { from: 'CHAOS',  to: 'NATION', taiwan: ['A','N'] },
-  { from: 'LOST',   to: 'STAND',  taiwan: ['T','A','N'] },
-  { from: 'MESS',   to: 'MEANS',  taiwan: ['A','N'] },
-  { from: 'NOISE',  to: 'ONSITE', taiwan: ['I','N'] },
-  { from: 'WAIT',   to: 'TAIWAN', taiwan: ['T','A','I','W','N'] },
+  { from: 'CHAOS',  to: 'ACTION',  taiwan: ['C','A','O'] },
+  { from: 'CHAOS',  to: 'NATION',  taiwan: ['A','N'] },
+  { from: 'LOST',   to: 'STAND',   taiwan: ['T','A','N'] },
+  { from: 'MESS',   to: 'MEANS',   taiwan: ['A','N'] },
+  { from: 'NOISE',  to: 'ONSITE',  taiwan: ['I','N'] },
+  { from: 'WAIT',   to: 'TAIWAN',  taiwan: ['T','A','I','W','N'] },
+  { from: 'WIN',    to: 'TWIN',    taiwan: ['T','W','I','N'] },
+  { from: 'RAIN',   to: 'TRAIN',   taiwan: ['T','A','I','N'] },
+  { from: 'ANT',    to: 'WANT',    taiwan: ['W','A','N','T'] },
+  { from: 'OWN',    to: 'TOWN',    taiwan: ['T','W','N'] },
+  { from: 'NOT',    to: 'NOTION',  taiwan: ['N','T','I'] },
+  { from: 'WRIT',   to: 'WRITTEN', taiwan: ['W','I','T','N'] },
+  { from: 'MOAN',   to: 'WOMAN',   taiwan: ['W','A','N'] },
+  { from: 'SPIN',   to: 'SPAIN',   taiwan: ['A','I','N'] },
 ];
 let pairIdx = 0, isAnimating = false;
 const syntaxFrom = document.getElementById('syntaxFrom');
@@ -232,12 +242,15 @@ function initChaos() {
     const r = canvas.getBoundingClientRect();
     burst(e.clientX - r.left, e.clientY - r.top, 24);
   });
-  canvas.addEventListener('touchstart', e => {
-    e.preventDefault();
-    const r = canvas.getBoundingClientRect();
-    const t = e.touches[0];
-    burst(t.clientX - r.left, t.clientY - r.top, 24);
-  }, { passive: false });
+  if (window.matchMedia('(pointer: coarse)').matches) {
+    canvas.style.pointerEvents = 'none';
+  } else {
+    canvas.addEventListener('touchend', e => {
+      const r = canvas.getBoundingClientRect();
+      const t = e.changedTouches[0];
+      burst(t.clientX - r.left, t.clientY - r.top, 24);
+    }, { passive: true });
+  }
 }
 
 /* ─── ENDING ─────────────────────────────────────── */
@@ -274,6 +287,54 @@ function initEnding() {
     const match = Array.from(chips).find(c => c.dataset.word === w);
     setWord(w, match || null);
   });
+}
+
+/* ─── SPOTLIGHT ──────────────────────────────────── */
+function initSpotlight() {
+  const section = document.getElementById('s-marginal');
+  if (!section) return;
+  let lit = false;
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting && !lit) {
+      setTimeout(() => {
+        section.classList.add('spotlight-active');
+        lit = true;
+      }, 1000);
+    }
+  }, { threshold: 0.5 });
+  obs.observe(section);
+}
+
+/* ─── BANQUET ─────────────────────────────────────── */
+function initBanquet() {
+  const viewport = document.getElementById('banquetViewport');
+  const rotateG  = document.getElementById('banquetRotate');
+  if (!viewport || !rotateG) return;
+  let rotation = 0, isDragging = false, startX = 0, startRot = 0;
+
+  function applyRotation(deg) {
+    rotateG.setAttribute('transform', `rotate(${deg}, 800, 800)`);
+  }
+
+  viewport.addEventListener('mousedown', e => {
+    isDragging = true; startX = e.clientX; startRot = rotation;
+  });
+  document.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    rotation = startRot + (e.clientX - startX) * 0.45;
+    applyRotation(rotation);
+  });
+  document.addEventListener('mouseup', () => { isDragging = false; });
+  viewport.addEventListener('touchstart', e => {
+    isDragging = true; startX = e.touches[0].clientX; startRot = rotation;
+  }, { passive: true });
+  viewport.addEventListener('touchmove', e => {
+    if (!isDragging) return;
+    e.preventDefault();
+    rotation = startRot + (e.touches[0].clientX - startX) * 0.45;
+    applyRotation(rotation);
+  }, { passive: false });
+  viewport.addEventListener('touchend', () => { isDragging = false; });
 }
 
 /* ─── LIGHTBOX ────────────────────────────────────── */
