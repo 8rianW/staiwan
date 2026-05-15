@@ -118,7 +118,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   button { cursor: pointer; }
 }
 
-/* ─── NAV ────────────────────────────────────────── */
+/* ─── NAV ──────────────────────────────────────────── */
 #nav {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -177,7 +177,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
 .nav-dot.active { background: var(--gold); transform: scale(1.5); }
 .nav-dot:hover { background: var(--muted); }
 
-/* ─── SCROLL PROGRESS ────────────────────────────── */
+/* ─── SCROLL PROGRESS ──────────────────────────────── */
 #scroll-progress {
   position: fixed;
   left: 0;
@@ -194,7 +194,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   transition: height 0.1s linear;
 }
 
-/* ─── SECTION BASE ───────────────────────────────── */
+/* ─── SECTION BASE ────────────────────────────────── */
 .section {
   position: relative;
   min-height: 100vh;
@@ -215,7 +215,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
 }
 .section.active .section-bg { filter: brightness(0.28) saturate(0.55); }
 
-/* ─── REVEAL ANIMATIONS ──────────────────────────── */
+/* ─── REVEAL ANIMATIONS ────────────────────────────── */
 .reveal, .reveal-up {
   opacity: 0;
   transform: translateY(28px);
@@ -327,7 +327,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   letter-spacing: 0.25em;
 }
 
-/* ─── IDENTITY CRISIS ────────────────────────────── */
+/* ─── IDENTITY CRISIS ──────────────────────────────── */
 #s-crisis {
   background: var(--bg);
   flex-direction: column;
@@ -471,7 +471,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   letter-spacing: 0.2em;
 }
 
-/* ─── SYNTAX ─────────────────────────────────────── */
+/* ─── SYNTAX ───────────────────────────────────────── */
 #s-syntax {
   background: var(--bg3);
   flex-direction: column;
@@ -541,7 +541,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   background: rgba(201,168,76,0.07);
 }
 
-/* ─── CHAOS ──────────────────────────────────────── */
+/* ─── CHAOS ─────────────────────────────────────────── */
 #s-chaos { background: #000; height: 100vh; }
 #chaosCanvas {
   position: absolute;
@@ -589,7 +589,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   letter-spacing: 0.22em;
 }
 
-/* ─── WARMTH ─────────────────────────────────────── */
+/* ─── WARMTH ───────────────────────────────────────── */
 #s-warmth {
   background: var(--bg2);
   min-height: 100vh;
@@ -689,7 +689,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   line-height: 2;
 }
 
-/* ─── MARGINALIZATION ────────────────────────────── */
+/* ─── MARGINALIZATION ────────────────────────────────── */
 #s-marginal { background: var(--bg); }
 .marginal-content {
   position: relative;
@@ -746,7 +746,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   font-size: 0.9em;
 }
 
-/* ─── GRASSROOTS ─────────────────────────────────── */
+/* ─── GRASSROOTS ───────────────────────────────────── */
 #s-grassroots {
   background: var(--bg);
   flex-direction: column;
@@ -811,7 +811,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   width: 100%;
 }
 
-/* ─── FREEDOM ────────────────────────────────────── */
+/* ─── FREEDOM ───────────────────────────────────────── */
 #s-freedom { background: var(--bg); }
 .freedom-bg {
   position: absolute;
@@ -880,7 +880,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   color: var(--dim);
 }
 
-/* ─── CULTURE ────────────────────────────────────── */
+/* ─── CULTURE ───────────────────────────────────────── */
 #s-culture {
   background: var(--bg);
   flex-direction: column;
@@ -961,7 +961,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   margin-top: 4px;
 }
 
-/* ─── ENDING ─────────────────────────────────────── */
+/* ─── ENDING ───────────────────────────────────────── */
 #s-ending { background: var(--bg2); }
 .ending-content {
   text-align: center;
@@ -1085,7 +1085,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
 }
 .ending-artist-info a:hover { color: var(--gold); }
 
-/* ─── FOOTER ─────────────────────────────────────── */
+/* ─── FOOTER ────────────────────────────────────────── */
 footer {
   background: var(--bg);
   border-top: 1px solid var(--border);
@@ -1100,7 +1100,7 @@ footer p {
   letter-spacing: 0.25em;
 }
 
-/* ─── LIGHTBOX ───────────────────────────────────── */
+/* ─── LIGHTBOX ─────────────────────────────────────── */
 #lightbox {
   position: fixed;
   inset: 0;
@@ -1154,7 +1154,7 @@ footer p {
 }
 .lb-close:hover { border-color: var(--gold); color: var(--gold); }
 
-/* ─── CELL LIGHTBOX (九宮格投射展開) ─────────────── */
+/* ─── CELL LIGHTBOX (九宮格投射展開) ───────────────── */
 #cellBox {
   position: fixed;
   inset: 0;
@@ -1204,7 +1204,100 @@ footer p {
 #cellBox.open #cellBoxClose { opacity: 1; pointer-events: auto; }
 #cellBoxClose:hover { border-color: var(--gold); color: var(--gold); }
 
-/* ─── KEYFRAMES ──────────────────────────────────── */
+/* ─── MARGINALIZATION SPOTLIGHT ────────────────────────── */
+.marginal-spotlight {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 24% 16% at 17% 83%,
+    rgba(255, 210, 70, 0.42) 0%,
+    rgba(255, 190, 40, 0.14) 50%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+#s-marginal.spotlight-active .marginal-spotlight { opacity: 1; }
+
+/* ─── FREEDOM ORBS ─────────────────────────────────── */
+.freedom-orbs {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.f-orb {
+  position: absolute;
+  width: calc(var(--s, 1) * 10px);
+  height: calc(var(--s, 1) * 10px);
+  left: var(--x, 50%);
+  bottom: -20px;
+  border-radius: 50%;
+  background: var(--c, #fff);
+  opacity: 0;
+  filter: blur(1px);
+  animation: orbFloat 7s var(--d, 0s) ease-in infinite;
+}
+@keyframes orbFloat {
+  0%   { transform: translateY(0) scale(1); opacity: 0; }
+  8%   { opacity: 0.55; }
+  85%  { opacity: 0.2; }
+  100% { transform: translateY(-100vh) scale(0.25); opacity: 0; }
+}
+
+/* ─── BANQUET QUARTER-CIRCLE ───────────────────────────── */
+.banquet-wrap {
+  width: 100%;
+  padding: 60px 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  background: var(--bg);
+}
+.banquet-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.banquet-title {
+  font-family: var(--zh);
+  font-size: clamp(12px, 1.5vw, 14px);
+  color: var(--muted);
+  letter-spacing: 0.3em;
+  font-weight: 200;
+}
+.banquet-drag-hint {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  color: var(--dim);
+  font-family: var(--sans);
+}
+.banquet-viewport {
+  width: min(640px, 100vw);
+  height: calc(min(640px, 100vw) * 0.52);
+  overflow: hidden;
+  position: relative;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.banquet-viewport:active { cursor: grabbing; }
+#banquetSvg {
+  width: 100%;
+  height: auto;
+  touch-action: none;
+  display: block;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ─── KEYFRAMES ──────────────────────────────────────── */
 @keyframes scrollPulse {
   0%   { transform: scaleY(0); transform-origin: top; }
   49%  { transform: scaleY(1); transform-origin: top; }
@@ -1212,7 +1305,7 @@ footer p {
   100% { transform: scaleY(0); transform-origin: bottom; }
 }
 
-/* ─── TABLET ─────────────────────────────────────── */
+/* ─── TABLET ─────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .marginal-content {
     grid-template-columns: 180px 1fr;
@@ -1229,7 +1322,7 @@ footer p {
   .grassroots-grid { grid-template-columns: 3fr 2fr 2fr; }
 }
 
-/* ─── MOBILE ─────────────────────────────────────── */
+/* ─── MOBILE ─────────────────────────────────────────── */
 @media (max-width: 768px) {
   #nav { padding: 14px 20px; }
   #nav.scrolled { padding: 10px 20px; }
