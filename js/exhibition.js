@@ -95,20 +95,32 @@ function initAll() {
 
 /* ─── SYNTAX ─────────────────────────────────────── */
 const wordPairs = [
-  { from: 'CHAOS',  to: 'ACTION',  taiwan: ['C','A','O'] },
-  { from: 'CHAOS',  to: 'NATION',  taiwan: ['A','N'] },
-  { from: 'LOST',   to: 'STAND',   taiwan: ['T','A','N'] },
-  { from: 'MESS',   to: 'MEANS',   taiwan: ['A','N'] },
-  { from: 'NOISE',  to: 'ONSITE',  taiwan: ['I','N'] },
-  { from: 'WAIT',   to: 'TAIWAN',  taiwan: ['T','A','I','W','N'] },
-  { from: 'WIN',    to: 'TWIN',    taiwan: ['T','W','I','N'] },
-  { from: 'RAIN',   to: 'TRAIN',   taiwan: ['T','A','I','N'] },
-  { from: 'ANT',    to: 'WANT',    taiwan: ['W','A','N','T'] },
-  { from: 'OWN',    to: 'TOWN',    taiwan: ['T','W','N'] },
-  { from: 'NOT',    to: 'NOTION',  taiwan: ['N','T','I'] },
-  { from: 'WRIT',   to: 'WRITTEN', taiwan: ['W','I','T','N'] },
-  { from: 'MOAN',   to: 'WOMAN',   taiwan: ['W','A','N'] },
-  { from: 'SPIN',   to: 'SPAIN',   taiwan: ['A','I','N'] },
+  { from: 'CHAOS',  to: 'ACTION',    taiwan: ['C','A','O'] },
+  { from: 'CHAOS',  to: 'NATION',    taiwan: ['A','N'] },
+  { from: 'LOST',   to: 'STAND',     taiwan: ['T','A','N'] },
+  { from: 'MESS',   to: 'MEANS',     taiwan: ['A','N'] },
+  { from: 'NOISE',  to: 'ONSITE',    taiwan: ['I','N'] },
+  { from: 'WAIT',   to: 'TAIWAN',    taiwan: ['T','A','I','W','N'] },
+  { from: 'WIN',    to: 'TWIN',      taiwan: ['T','W','I','N'] },
+  { from: 'RAIN',   to: 'TRAIN',     taiwan: ['T','A','I','N'] },
+  { from: 'ANT',    to: 'WANT',      taiwan: ['W','A','N','T'] },
+  { from: 'OWN',    to: 'TOWN',      taiwan: ['T','W','N'] },
+  { from: 'NOT',    to: 'NOTION',    taiwan: ['N','T','I'] },
+  { from: 'WRIT',   to: 'WRITTEN',   taiwan: ['W','I','T','N'] },
+  { from: 'MOAN',   to: 'WOMAN',     taiwan: ['W','A','N'] },
+  { from: 'SPIN',   to: 'SPAIN',     taiwan: ['A','I','N'] },
+  { from: 'WINE',   to: 'TWINE',     taiwan: ['T','W','I','N'] },
+  { from: 'WIST',   to: 'TWIST',     taiwan: ['T','W','I'] },
+  { from: 'THIN',   to: 'WITHIN',    taiwan: ['W','T','I','N'] },
+  { from: 'AND',    to: 'WAND',      taiwan: ['W','A','N'] },
+  { from: 'WIT',    to: 'AWAIT',     taiwan: ['W','A','I','T'] },
+  { from: 'TWIN',   to: 'TWAIN',     taiwan: ['T','W','A','I','N'] },
+  { from: 'TAME',   to: 'ANIMATE',   taiwan: ['A','N','T'] },
+  { from: 'WANT',   to: 'WANTON',    taiwan: ['W','A','N','T'] },
+  { from: 'TAN',    to: 'TITAN',     taiwan: ['T','I','A','N'] },
+  { from: 'NATION', to: 'INNOVATION',taiwan: ['N','A','T','I'] },
+  { from: 'PLAIN',  to: 'CAPTAIN',   taiwan: ['T','A','I','N'] },
+  { from: 'STING',  to: 'WAITING',   taiwan: ['W','A','T','I','N'] },
 ];
 let pairIdx = 0, isAnimating = false;
 const syntaxFrom = document.getElementById('syntaxFrom');
@@ -219,13 +231,6 @@ function initChaos() {
   }
   loop();
 
-  const cObs = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting) setTimeout(() => { settled = true; }, 1800);
-    else settled = false;
-  }, { threshold: 0.4 });
-  const cs = document.getElementById('s-chaos');
-  if (cs) cObs.observe(cs);
-
   function burst(bx, by, count) {
     for (let i = 0; i < count; i++) {
       const p = new Particle();
@@ -238,12 +243,38 @@ function initChaos() {
     if (particles.length > 320) particles.splice(0, particles.length - 320);
   }
 
+  const isMobile = window.matchMedia('(pointer: coarse)').matches;
+  let autoBurst = null;
+
+  const cObs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) {
+      setTimeout(() => { settled = true; }, 1800);
+      if (isMobile && !autoBurst) {
+        autoBurst = setInterval(() => {
+          if (W && H) burst(W * 0.2 + Math.random() * W * 0.6, H * 0.2 + Math.random() * H * 0.6, 14);
+        }, 2200);
+      }
+    } else {
+      settled = false;
+      if (autoBurst) { clearInterval(autoBurst); autoBurst = null; }
+    }
+  }, { threshold: 0.4 });
+  const cs = document.getElementById('s-chaos');
+  if (cs) cObs.observe(cs);
+
   canvas.addEventListener('click', e => {
     const r = canvas.getBoundingClientRect();
     burst(e.clientX - r.left, e.clientY - r.top, 24);
   });
-  if (window.matchMedia('(pointer: coarse)').matches) {
+  if (isMobile) {
     canvas.style.pointerEvents = 'none';
+    const content = document.querySelector('.chaos-content');
+    if (content) {
+      content.style.pointerEvents = 'auto';
+      content.addEventListener('touchend', () => {
+        if (W && H) burst(W * 0.25 + Math.random() * W * 0.5, H * 0.25 + Math.random() * H * 0.5, 22);
+      }, { passive: true });
+    }
   } else {
     canvas.addEventListener('touchend', e => {
       const r = canvas.getBoundingClientRect();
