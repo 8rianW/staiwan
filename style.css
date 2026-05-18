@@ -693,7 +693,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
 #s-marginal { background: var(--bg); }
 .marginal-content {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   display: grid;
   grid-template-columns: 240px 1fr;
   gap: 80px;
@@ -745,6 +745,35 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   color: var(--dim);
   font-size: 0.9em;
 }
+
+/* ─── MARGINALIZATION LENS ──────────────────────────────────── */
+.marginal-spotlight {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: url(./_DSC9382.jpg) center / cover no-repeat;
+  filter: brightness(3.2) contrast(1.08) saturate(0.85);
+  clip-path: circle(138px at 26% 67%);
+  opacity: 0;
+  transition: opacity 1.8s ease;
+}
+.marginal-lens-ring {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  width: 276px;
+  height: 276px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.28);
+  left: calc(26% - 138px);
+  top: calc(67% - 138px);
+  box-shadow: 0 0 24px 4px rgba(255,255,255,0.08);
+  opacity: 0;
+  transition: opacity 1.8s ease;
+}
+#s-marginal.spotlight-active .marginal-spotlight,
+#s-marginal.spotlight-active .marginal-lens-ring { opacity: 1; }
 
 /* ─── GRASSROOTS ─────────────────────────────────────── */
 #s-grassroots {
@@ -1154,7 +1183,7 @@ footer p {
 }
 .lb-close:hover { border-color: var(--gold); color: var(--gold); }
 
-/* ─── CELL LIGHTBOX (九宮格投射展開) ────────────────────────── */
+/* ─── CELL LIGHTBOX ────────────────────────────────────────────── */
 #cellBox {
   position: fixed;
   inset: 0;
@@ -1203,31 +1232,6 @@ footer p {
 }
 #cellBox.open #cellBoxClose { opacity: 1; pointer-events: auto; }
 #cellBoxClose:hover { border-color: var(--gold); color: var(--gold); }
-
-/* ─── MARGINALIZATION LENS ──────────────────────────────────── */
-.marginal-spotlight {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: url(./_DSC9382.jpg) center / cover no-repeat;
-  filter: brightness(1.35) contrast(1.05) saturate(0.9);
-  -webkit-mask-image: radial-gradient(
-    circle 130px at 26% 67%,
-    black 62%,
-    rgba(0,0,0,0.5) 78%,
-    transparent 100%
-  );
-  mask-image: radial-gradient(
-    circle 130px at 26% 67%,
-    black 62%,
-    rgba(0,0,0,0.5) 78%,
-    transparent 100%
-  );
-  opacity: 0;
-  transition: opacity 1.6s ease;
-}
-#s-marginal.spotlight-active .marginal-spotlight { opacity: 1; }
 
 /* ─── FREEDOM ORBS ─────────────────────────────────────── */
 .freedom-orbs {
