@@ -1,40 +1,40 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>8Wlo — Taiwan Online Exhibition</title>
+  <meta name="description" content="台灣性感 Taiwan Sensuality — Taiwan was never missing. It was always becoming.">
+  <meta name="author" content="8rian Wang">
+  <title>台灣性感 Taiwan Sensuality</title>
+  <link rel="stylesheet" href="reset.css">
+  <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Space+Grotesk:wght@300;400;500&family=Noto+Serif+TC:wght@200;300;400&family=Noto+Sans+TC:wght@200;300&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Serif+TC:wght@200;300;400&family=Space+Grotesk:wght@300;400;500&family=Noto+Sans+TC:wght@100;300&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<!-- ─── LOADER ────────────────────────────────────── -->
+<!-- ─── LOADER ─────────────────────────────────────── -->
 <div id="loader">
   <div class="loader-inner">
-    <p class="loader-zh">臺灣</p>
-    <p class="loader-en">Online Exhibition</p>
+    <div class="loader-zh">台灣性感</div>
+    <div class="loader-en">Taiwan Sensuality</div>
     <div class="loader-bar"><div class="loader-fill"></div></div>
   </div>
 </div>
 
-<!-- ─── CURSOR ───────────────────────────────────── -->
+<!-- ─── CURSOR ─────────────────────────────────────── -->
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
 
-<!-- ─── SCROLL PROGRESS ──────────────────────────── -->
-<div id="scroll-progress"><div id="scroll-fill"></div></div>
-
-<!-- ─── NAV ──────────────────────────────────────── -->
+<!-- ─── NAV ───────────────────────────────────────── -->
 <nav id="nav">
-  <span class="nav-logo">8Wlo</span>
-  <span class="nav-section-name" id="navSectionName"></span>
-  <div class="nav-dots">
-    <button class="nav-dot" data-target="s-opening" aria-label="Opening"></button>
+  <a href="#s-opening" class="nav-logo">TS</a>
+  <div class="nav-section-name" id="navSectionName"></div>
+  <div class="nav-dots" id="navDots">
+    <button class="nav-dot active" data-target="s-opening" aria-label="Opening"></button>
     <button class="nav-dot" data-target="s-who" aria-label="Who Are We"></button>
-    <button class="nav-dot" data-target="s-crisis" aria-label="Identity"></button>
+    <button class="nav-dot" data-target="s-crisis" aria-label="Identity Crisis"></button>
     <button class="nav-dot" data-target="s-syntax" aria-label="Syntax"></button>
     <button class="nav-dot" data-target="s-chaos" aria-label="Chaos"></button>
     <button class="nav-dot" data-target="s-warmth" aria-label="Warmth"></button>
@@ -42,23 +42,27 @@
     <button class="nav-dot" data-target="s-grassroots" aria-label="Grassroots"></button>
     <button class="nav-dot" data-target="s-freedom" aria-label="Freedom"></button>
     <button class="nav-dot" data-target="s-culture" aria-label="Culture"></button>
-    <button class="nav-dot" data-target="s-banquet" aria-label="Banquet"></button>
-    <button class="nav-dot" data-target="s-ending" aria-label="Ending"></button>
+    <button class="nav-dot" data-target="s-ending" aria-label="Taiwan is"></button>
   </div>
 </nav>
 
-<!-- ─── OPENING ───────────────────────────────────── -->
+<!-- ─── SCROLL PROGRESS ───────────────────────────── -->
+<div id="scroll-progress"><div id="scroll-fill"></div></div>
+
+<!-- ─── OPENING ──────────────────────────────────── -->
 <section id="s-opening" class="section" data-name="Opening">
-  <div class="section-bg" style="background-image:url(./_DSC9447.jpg)"></div>
+  <div class="section-bg" style="background-image:url(./_DSC9559.jpg)"></div>
   <div class="texture-overlay"></div>
   <div class="opening-content">
-    <p class="opening-eyebrow">Taiwan · 2025 Online Exhibition</p>
-    <div class="opening-title">
-      <h1 class="opening-zh">臺灣</h1>
-      <p class="opening-en">Between Names</p>
-    </div>
-    <p class="opening-tagline">A country without a seat.<br>A people without a single name.<br>And yet—unmistakably here.</p>
-    <div class="opening-scroll">
+    <div class="opening-eyebrow reveal">Online Exhibition</div>
+    <h1 class="opening-title">
+      <span class="opening-zh reveal" data-delay="0.2">台灣性感</span>
+      <span class="opening-en reveal" data-delay="0.5">Taiwan Sensuality</span>
+    </h1>
+    <p class="opening-tagline reveal" data-delay="0.8">
+      Taiwan was never missing.<br>It was always becoming.
+    </p>
+    <div class="opening-scroll reveal" data-delay="1.2">
       <span>Scroll</span>
       <div class="opening-scroll-line"></div>
     </div>
@@ -68,118 +72,115 @@
 <!-- ─── WHO ARE WE ────────────────────────────────── -->
 <section id="s-who" class="section" data-name="Who Are We">
   <div class="who-content">
-    <p class="who-line reveal">We are called many things.</p>
-    <div class="who-divider"></div>
-    <p class="who-zh reveal" data-delay="0.2">中華民國 · 台灣 · 福爾摩沙<br>自由中國 · 中華台北</p>
+    <p class="who-line reveal-up" data-delay="0">We did not redefine Taiwan.</p>
+    <p class="who-line reveal-up" data-delay="0.2">We learned how to feel it.</p>
+    <div class="who-divider reveal-up" data-delay="0.4"></div>
+    <p class="who-zh reveal-up" data-delay="0.6">台灣不是被定義，而是被感受。</p>
   </div>
 </section>
 
 <!-- ─── IDENTITY CRISIS ───────────────────────────── -->
-<section id="s-crisis" class="section" data-name="Identity">
-  <p class="crisis-label reveal">The Nine Contradictions</p>
-  <div class="nine-grid reveal" data-delay="0.1">
+<section id="s-crisis" class="section" data-name="Identity Crisis">
+  <div class="crisis-label reveal-up">Identity Crisis</div>
+  <div class="nine-grid reveal-up" data-delay="0.2">
     <div class="grid-row">
-      <div class="grid-cell" data-type="negative" data-photo="./_DSC9382.jpg">
-        <div class="gc-titles"><span>Invisible</span><em>隱形</em></div>
-        <div class="gc-desc"><p>在大多數國際組織中，台灣的名字不存在。</p></div>
-        <div class="gc-photo"><img src="./_DSC9382.jpg" alt="" loading="lazy"></div>
+      <div class="grid-cell" data-type="negative" data-photo="./_DSC9853.jpg">
+        <div class="gc-titles"><span>Chaos</span><em>混亂</em></div>
+        <div class="gc-desc"><p>混亂是台灣城市的底色，卻也是生命力的來源</p></div>
+        <div class="gc-photo"><img src="" alt="Chaos 混亂" loading="lazy"></div>
       </div>
-      <div class="grid-cell" data-type="positive" data-photo="./_DSC9612.jpg">
-        <div class="gc-titles"><span>Resilient</span><em>韌性</em></div>
-        <div class="gc-desc"><p>面對壓力，台灣人以創造力與韌性回應。</p></div>
-        <div class="gc-photo"><img src="./_DSC9612.jpg" alt="" loading="lazy"></div>
+      <div class="grid-cell" data-type="negative" data-photo="./_DSC9783.jpg">
+        <div class="gc-titles"><span>Noise</span><em>噪音</em></div>
+        <div class="gc-desc"><p>廟會鑼鼓、夜市叫賣，那是屬於台灣的聲景</p></div>
+        <div class="gc-photo"><img src="" alt="Noise 噪音" loading="lazy"></div>
       </div>
-      <div class="grid-cell" data-type="neutral" data-photo="./_DSC9758.jpg">
-        <div class="gc-titles"><span>Ambiguous</span><em>模糊</em></div>
-        <div class="gc-desc"><p>身份認同的邊界從未清晰，卻從未消失。</p></div>
-        <div class="gc-photo"><img src="./_DSC9758.jpg" alt="" loading="lazy"></div>
+      <div class="grid-cell" data-type="negative" data-photo="./_DSC7467.jpg">
+        <div class="gc-titles"><span>Marginal</span><em>邊緣</em></div>
+        <div class="gc-desc"><p>介於中間的位置，是台灣一直以來的生存之道</p></div>
+        <div class="gc-photo"><img src="" alt="Marginal 邊緣" loading="lazy"></div>
       </div>
     </div>
     <div class="grid-row">
-      <div class="grid-cell" data-type="positive" data-photo="./_DSC9813.jpg">
-        <div class="gc-titles"><span>Democratic</span><em>民主</em></div>
-        <div class="gc-desc"><p>亞洲最活躍的民主之一，每四年一次的驕傲。</p></div>
-        <div class="gc-photo"><img src="./_DSC9813.jpg" alt="" loading="lazy"></div>
+      <div class="grid-cell" data-type="neutral" data-photo="./_DSC8299.jpg">
+        <div class="gc-titles"><span>Flow</span><em>流動</em></div>
+        <div class="gc-desc"><p>人、資本、文化不斷流動，台灣從不靜止</p></div>
+        <div class="gc-photo"><img src="" alt="Flow 流動" loading="lazy"></div>
       </div>
-      <div class="grid-cell" data-type="negative" data-photo="./_DSC9382.jpg">
-        <div class="gc-titles"><span>Unrecognized</span><em>不被承認</em></div>
-        <div class="gc-desc"><p>僅有十幾個國家正式承認中華民國。</p></div>
-        <div class="gc-photo"><img src="./_DSC9382.jpg" alt="" loading="lazy"></div>
+      <div class="grid-cell" data-type="neutral" data-photo="./照片/p7.jpg">
+        <div class="gc-titles"><span>Interaction</span><em>互動</em></div>
+        <div class="gc-desc"><p>多元文化在此相遇、衝撞，最終融合成新的形態</p></div>
+        <div class="gc-photo"><img src="" alt="Interaction 互動" loading="lazy"></div>
       </div>
-      <div class="grid-cell" data-type="neutral" data-photo="./_DSC9447.jpg">
-        <div class="gc-titles"><span>Alive</span><em>存在</em></div>
-        <div class="gc-desc"><p>兩千三百萬人的生活，無需任何人的許可。</p></div>
-        <div class="gc-photo"><img src="./_DSC9447.jpg" alt="" loading="lazy"></div>
+      <div class="grid-cell" data-type="neutral" data-photo="./_DSC7488.jpg">
+        <div class="gc-titles"><span>Coexist</span><em>共存</em></div>
+        <div class="gc-desc"><p>矛盾與美麗、新與舊，在台灣和諧並存</p></div>
+        <div class="gc-photo"><img src="" alt="Coexist 共存" loading="lazy"></div>
       </div>
     </div>
     <div class="grid-row">
-      <div class="grid-cell" data-type="neutral" data-photo="./_DSC9758.jpg">
-        <div class="gc-titles"><span>Between</span><em>之間</em></div>
-        <div class="gc-desc"><p>存在於兩岸之間，東西方之間，過去與未來之間。</p></div>
-        <div class="gc-photo"><img src="./_DSC9758.jpg" alt="" loading="lazy"></div>
+      <div class="grid-cell" data-type="positive" data-photo="./_DSC7603.jpg">
+        <div class="gc-titles"><span>Order</span><em>秩序</em></div>
+        <div class="gc-desc"><p>混亂之下，台灣人自有一套維持生活的秩序</p></div>
+        <div class="gc-photo"><img src="" alt="Order 秩序" loading="lazy"></div>
       </div>
-      <div class="grid-cell" data-type="positive" data-photo="./_DSC9612.jpg">
-        <div class="gc-titles"><span>Creative</span><em>創造力</em></div>
-        <div class="gc-desc"><p>從半導體到珍珠奶茶，台灣的創造力改變世界。</p></div>
-        <div class="gc-photo"><img src="./_DSC9612.jpg" alt="" loading="lazy"></div>
+      <div class="grid-cell" data-type="positive" data-photo="./_DSC7642.jpg">
+        <div class="gc-titles"><span>Warmth</span><em>溫暖</em></div>
+        <div class="gc-desc"><p>陌生人之間的體貼，是台灣最珍貴的溫柔</p></div>
+        <div class="gc-photo"><img src="" alt="Warmth 溫暖" loading="lazy"></div>
       </div>
-      <div class="grid-cell" data-type="negative" data-photo="./_DSC9813.jpg">
-        <div class="gc-titles"><span>Threatened</span><em>威脅下</em></div>
-        <div class="gc-desc"><p>每天面對跨越海峽的軍事與政治壓力。</p></div>
-        <div class="gc-photo"><img src="./_DSC9813.jpg" alt="" loading="lazy"></div>
+      <div class="grid-cell" data-type="positive" data-photo="./_DSC9337.jpg">
+        <div class="gc-titles"><span>Freedom</span><em>自由</em></div>
+        <div class="gc-desc"><p>亞洲第一個通過同婚，自由是用掙扎換來的</p></div>
+        <div class="gc-photo"><img src="" alt="Freedom 自由" loading="lazy"></div>
       </div>
     </div>
   </div>
-  <p class="crisis-note reveal" data-delay="0.3">九個矛盾，一個島嶼</p>
+  <p class="crisis-note reveal-up" data-delay="0.4">台灣的性感，在矛盾之中誕生。</p>
 </section>
 
-<!-- ─── SYNTAX ─────────────────────────────────────── -->
-<section id="s-syntax" class="section" data-name="Syntax">
-  <p class="syntax-label reveal">The Hidden Letters</p>
-  <p class="syntax-sub reveal" data-delay="0.1">台灣，藏在每個英文字裡</p>
+<!-- ─── SYNTAX ────────────────────────────────────── -->
+<section id="s-syntax" class="section" data-name="Syntax of Taiwan">
+  <div class="syntax-label reveal-up">Syntax of Taiwan</div>
+  <div class="syntax-sub reveal-up" data-delay="0.1">字母重組系統 · Letter Transformation</div>
   <div class="syntax-stage">
-    <div class="syntax-word-wrap">
-      <div class="syntax-word" id="syntaxFrom"></div>
-    </div>
-    <span class="syntax-arrow">→</span>
-    <div class="syntax-word-wrap">
-      <div class="syntax-word" id="syntaxTo"></div>
-    </div>
+    <div class="syntax-word-wrap"><div class="syntax-word" id="syntaxFrom"></div></div>
+    <div class="syntax-arrow reveal-up" data-delay="0.3">→</div>
+    <div class="syntax-word-wrap"><div class="syntax-word" id="syntaxTo"></div></div>
   </div>
-  <p class="syntax-rule reveal">T · A · I · W · A · N</p>
-  <button class="syntax-next" id="syntaxNext">Next Word →</button>
+  <p class="syntax-rule reveal-up" data-delay="0.4">T · A · I · W · A · N &nbsp;字母參與每一次轉化</p>
+  <button class="syntax-next reveal-up" data-delay="0.5" id="syntaxNext">Next →</button>
 </section>
 
-<!-- ─── CHAOS ──────────────────────────────────────── -->
-<section id="s-chaos" class="section" data-name="Chaos">
+<!-- ─── CHAOS ─────────────────────────────────────── -->
+<section id="s-chaos" class="section" data-name="Chaos → Flow">
   <canvas id="chaosCanvas"></canvas>
   <div class="chaos-content">
     <div class="chaos-words">
-      <span class="chaos-neg">Chaos</span>
+      <span class="chaos-neg">CHAOS</span>
       <span class="chaos-arr">→</span>
-      <span class="chaos-pos">Energy</span>
+      <span class="chaos-pos">FLOW</span>
     </div>
-    <p class="chaos-sub">混亂是台灣的另一種秩序</p>
+    <p class="chaos-sub reveal-up">混亂中自有秩序，噪音中自有韻律</p>
   </div>
 </section>
 
-<!-- ─── WARMTH ─────────────────────────────────────── -->
+<!-- ─── WARMTH ────────────────────────────────────── -->
 <section id="s-warmth" class="section" data-name="Warmth">
   <div class="warmth-grid">
-    <div class="warmth-photo" data-lightbox="./_DSC9447.jpg">
-      <img src="./_DSC9447.jpg" alt="台灣的人情味" loading="lazy">
+    <div class="warmth-photo reveal-photo" data-delay="0" data-lightbox="./_DSC8177.jpg">
+      <img src="./_DSC8177.jpg" alt="台灣日常的人情溫度" loading="lazy">
     </div>
-    <div class="warmth-photo" data-lightbox="./_DSC9758.jpg">
-      <img src="./_DSC9758.jpg" alt="" loading="lazy">
+    <div class="warmth-photo reveal-photo" data-delay="0.1" data-lightbox="./_DSC7733.jpg">
+      <img src="./_DSC7733.jpg" alt="夜市氣球攤 — 屬於台灣的庶民溫暖" loading="lazy">
     </div>
-    <div class="warmth-photo" data-lightbox="./_DSC9813.jpg">
-      <img src="./_DSC9813.jpg" alt="" loading="lazy">
+    <div class="warmth-photo reveal-photo" data-delay="0.2" data-lightbox="./IMG_5315.jpg">
+      <img src="./IMG_5315.jpg" alt="燈塔前的家人 — 土地與人的連結" loading="lazy">
     </div>
   </div>
   <div class="warmth-text">
-    <h2 class="warmth-title reveal">Warmth<span>人情味</span></h2>
-    <p class="warmth-quote reveal" data-delay="0.2">「不管你從哪裡來，<br>在台灣，你都是客人。」</p>
-    <p class="warmth-en reveal" data-delay="0.4">Taiwan's most untranslatable export<br>is not a product—it's a feeling.</p>
+    <h2 class="warmth-title reveal-up">Warmth <span>溫暖</span></h2>
+    <blockquote class="warmth-quote reveal-up" data-delay="0.2">人情味是台灣最獨特的性感</blockquote>
+    <p class="warmth-en reveal-up" data-delay="0.4">The warmth between strangers.<br>The meal shared without invitation.<br>This is Taiwan's most sensual quality.</p>
   </div>
 </section>
 
@@ -213,44 +214,50 @@
       <img src="./_DSC9612.jpg" alt="夜間勞動者 — 台灣草根的生命力" loading="lazy">
     </div>
     <div class="gr-item reveal-photo" data-delay="0.1" data-lightbox="./_DSC9758.jpg">
-      <img src="./_DSC9758.jpg" alt="" loading="lazy">
+      <img src="./_DSC9758.jpg" alt="街頭日常 — 台灣人的韌性" loading="lazy">
     </div>
-    <div class="gr-item reveal-photo" data-delay="0.2" data-lightbox="./_DSC9813.jpg">
-      <img src="./_DSC9813.jpg" alt="" loading="lazy">
+    <div class="gr-item reveal-photo" data-delay="0.2" data-lightbox="./IMG_4270.jpg">
+      <img src="./IMG_4270.jpg" alt="稻田 — 台灣的根在土地" loading="lazy">
     </div>
-    <div class="gr-item reveal-photo" data-delay="0.15" data-lightbox="./_DSC9447.jpg">
-      <img src="./_DSC9447.jpg" alt="" loading="lazy">
+    <div class="gr-item reveal-photo" data-delay="0.3" data-lightbox="./_DSC8165.jpg">
+      <img src="./_DSC8165.jpg" alt="台灣草根的生命韌性" loading="lazy">
     </div>
-    <div class="gr-item reveal-photo" data-delay="0.25" data-lightbox="./_DSC9382.jpg">
-      <img src="./_DSC9382.jpg" alt="" loading="lazy">
+    <div class="gr-item reveal-photo" data-delay="0.4" data-lightbox="./_DSC9184.jpg">
+      <img src="./_DSC9184.jpg" alt="台灣草根的生命力" loading="lazy">
     </div>
   </div>
-  <p class="grassroots-quote reveal-up">草根不是底層——是根基 · Grassroots are not the bottom. They are the foundation.</p>
+  <p class="grassroots-quote reveal-up" data-delay="0.3">生命從縫隙中長出來，那是台灣最真實的姿態。</p>
 </section>
 
 <!-- ─── FREEDOM ────────────────────────────────────── -->
 <section id="s-freedom" class="section" data-name="Freedom">
-  <div class="freedom-bg" style="background-image:url(./_DSC9813.jpg)"></div>
-  <div class="freedom-orbs">
-    <div class="f-orb" style="--x:12%;--s:2.4;--c:#B23A3A;--d:0s"></div>
-    <div class="f-orb" style="--x:28%;--s:1.8;--c:#C9A84C;--d:1.1s"></div>
-    <div class="f-orb" style="--x:44%;--s:3.1;--c:#2F5D9F;--d:0.4s"></div>
-    <div class="f-orb" style="--x:60%;--s:2.0;--c:#3A7D44;--d:1.8s"></div>
-    <div class="f-orb" style="--x:75%;--s:1.5;--c:#B23A3A;--d:0.7s"></div>
-    <div class="f-orb" style="--x:88%;--s:2.7;--c:#C9A84C;--d:2.3s"></div>
+  <div class="freedom-bg" style="background-image:url(./_DSC9308.jpg)"></div>
+  <div class="freedom-orbs" aria-hidden="true">
+    <span class="f-orb" style="--c:#B23A3A;--x:8%;--d:0s;--s:0.8"></span>
+    <span class="f-orb" style="--c:#E8721C;--x:22%;--d:1.3s;--s:1.1"></span>
+    <span class="f-orb" style="--c:#F5C842;--x:38%;--d:0.6s;--s:0.9"></span>
+    <span class="f-orb" style="--c:#3A7D44;--x:54%;--d:2.0s;--s:1.3"></span>
+    <span class="f-orb" style="--c:#2F5D9F;--x:70%;--d:0.9s;--s:0.7"></span>
+    <span class="f-orb" style="--c:#7B4F9E;--x:85%;--d:1.7s;--s:1.0"></span>
+    <span class="f-orb" style="--c:#B23A3A;--x:15%;--d:2.8s;--s:0.6"></span>
+    <span class="f-orb" style="--c:#F5C842;--x:48%;--d:3.4s;--s:1.2"></span>
+    <span class="f-orb" style="--c:#3A7D44;--x:32%;--d:4.1s;--s:0.85"></span>
+    <span class="f-orb" style="--c:#7B4F9E;--x:78%;--d:2.5s;--s:0.75"></span>
+    <span class="f-orb" style="--c:#E8721C;--x:62%;--d:3.9s;--s:1.05"></span>
+    <span class="f-orb" style="--c:#2F5D9F;--x:5%;--d:4.8s;--s:0.95"></span>
   </div>
   <div class="freedom-content">
-    <h2 class="freedom-title reveal">Freedom</h2>
-    <p class="freedom-zh reveal" data-delay="0.1">自由</p>
-    <div class="freedom-bars">
-      <div class="f-bar" style="background:var(--tw-red)"></div>
-      <div class="f-bar" style="background:var(--tw-blue)"></div>
-      <div class="f-bar" style="background:var(--tw-green)"></div>
-      <div class="f-bar" style="background:var(--gold)"></div>
-      <div class="f-bar" style="background:var(--tw-red)"></div>
-      <div class="f-bar" style="background:var(--tw-blue)"></div>
+    <h2 class="freedom-title reveal-up">Freedom</h2>
+    <p class="freedom-zh reveal-up" data-delay="0.1">自由</p>
+    <div class="freedom-bars reveal-up" data-delay="0.2">
+      <div class="f-bar" style="background:#B23A3A"></div>
+      <div class="f-bar" style="background:#E8721C"></div>
+      <div class="f-bar" style="background:#F5C842"></div>
+      <div class="f-bar" style="background:#3A7D44"></div>
+      <div class="f-bar" style="background:#2F5D9F"></div>
+      <div class="f-bar" style="background:#7B4F9E"></div>
     </div>
-    <p class="freedom-body reveal" data-delay="0.2">台灣是亞洲最自由的社會之一<br>不是因為沒有威脅<br>而是選擇了面對<br><br><em>Freedom here is not given.<br>It is practiced, daily.</em></p>
+    <p class="freedom-body reveal-up" data-delay="0.4">多元 · 平等 · 同婚<br><em>Diverse · Equal · Love is Love</em><br><br>台灣的自由，是用漫長的掙扎換來的。</p>
   </div>
 </section>
 
@@ -258,217 +265,242 @@
 <section id="s-culture" class="section" data-name="Culture">
   <div class="culture-header">
     <h2 class="culture-title reveal-up">Culture</h2>
-    <p class="culture-sub reveal-up" data-delay="0.1">文化 · 多元共生</p>
+    <p class="culture-sub reveal-up" data-delay="0.1">文化 · 辦桌 · 廟會 · 多元</p>
   </div>
   <div class="culture-grid">
-    <div class="cu-item cu-tall reveal-photo" data-delay="0" data-lightbox="./_DSC9612.jpg">
-      <img src="./_DSC9612.jpg" alt="" loading="lazy">
-      <div class="cu-overlay"><p>夜市文化<em>Night Market Culture</em></p></div>
+    <div class="cu-item cu-tall reveal-photo" data-delay="0" data-lightbox="./_DSC7318.jpg">
+      <img src="./_DSC7318.jpg" alt="廟宇屋頂 — 台灣宗教文化的DNA" loading="lazy">
+      <div class="cu-overlay"><p>廟宇是台灣文化的DNA<br><em>Temples are Taiwan's cultural heartbeat.</em></p></div>
     </div>
-    <div class="cu-item reveal-photo" data-delay="0.1" data-lightbox="./_DSC9447.jpg">
-      <img src="./_DSC9447.jpg" alt="" loading="lazy">
-      <div class="cu-overlay"><p>廟宇信仰<em>Temple Faith</em></p></div>
+    <div class="cu-item reveal-photo" data-delay="0.1" data-lightbox="./_DSC7406.jpg">
+      <img src="./_DSC7406.jpg" alt="廟前紅燈籠 — 節慶與信仰" loading="lazy">
+      <div class="cu-overlay"><p>燈籠照亮信仰<br><em>Lanterns light the way of faith.</em></p></div>
     </div>
-    <div class="cu-item reveal-photo" data-delay="0.15" data-lightbox="./_DSC9758.jpg">
-      <img src="./_DSC9758.jpg" alt="" loading="lazy">
-      <div class="cu-overlay"><p>街頭藝術<em>Street Art</em></p></div>
+    <div class="cu-item reveal-photo" data-delay="0.2" data-lightbox="./_DSC7828.jpg">
+      <img src="./_DSC7828.jpg" alt="街頭塗鴉 — 台灣的當代文化表達" loading="lazy">
+      <div class="cu-overlay"><p>街頭是另一種廟宇<br><em>The street is another kind of temple.</em></p></div>
     </div>
-    <div class="cu-item cu-wide reveal-photo" data-delay="0.2" data-lightbox="./_DSC9813.jpg">
-      <img src="./_DSC9813.jpg" alt="" loading="lazy">
-      <div class="cu-overlay"><p>山與海<em>Mountains &amp; Sea</em></p></div>
+    <div class="cu-item cu-wide reveal-photo" data-delay="0.3" data-lightbox="./_DSC9929.jpg">
+      <img src="./_DSC9929.jpg" alt="城市中的廟宇 — 傳統與現代共存" loading="lazy">
+      <div class="cu-overlay"><p>台灣的文化是一鍋永遠沸騰的湯<br><em>Taiwan's culture is a soup that never stops boiling.</em></p></div>
     </div>
   </div>
-</section>
 
-<!-- ─── BANQUET ────────────────────────────────────── -->
-<section id="s-banquet" class="section" data-name="Banquet" style="min-height:auto;display:block;">
+  <!-- ─── BANQUET HALF-CIRCLE ───────────────────────── -->
   <div class="banquet-wrap">
     <div class="banquet-label">
-      <p class="banquet-title">台灣辦桌 · The Banquet Table</p>
-      <p class="banquet-drag-hint">← drag to spin · click a dish to learn more →</p>
+      <span class="banquet-title">辦桌 · 台灣的餐桌文化</span>
+      <span class="banquet-drag-hint">← 拖曳旋轉，探索更多台灣特色小吃 →</span>
     </div>
     <div class="banquet-viewport" id="banquetViewport">
-      <svg id="banquetSvg" viewBox="0 0 800 430" xmlns="http://www.w3.org/2000/svg">
+      <svg class="banquet-svg" viewBox="0 0 800 430" id="banquetSvg" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="sketch" x="-8%" y="-8%" width="116%" height="116%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise" seed="9"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+          </filter>
+          <pattern id="cloth" width="32" height="32" patternUnits="userSpaceOnUse">
+            <rect width="32" height="32" fill="#f2e2c0"/>
+            <line x1="0" y1="16" x2="32" y2="16" stroke="#c8a870" stroke-width="0.8" opacity="0.4"/>
+            <line x1="16" y1="0" x2="16" y2="32" stroke="#c8a870" stroke-width="0.8" opacity="0.4"/>
+          </pattern>
+        </defs>
 
-        <!-- rotating table group -->
+        <!-- Rotating table surface, pivots around top-centre (400, 0) -->
         <g id="banquetRotate">
-          <!-- half-circle table: flat edge up (center 400,0 r=420) -->
-          <path d="M -20,0 A 420,420 0 0,0 820,0 Z"
-                fill="#1a1a1a" stroke="#333" stroke-width="1.5"/>
-          <!-- concentric ring decorations -->
-          <circle cx="400" cy="0" r="380" fill="none" stroke="#2a2a2a" stroke-width="1"/>
-          <circle cx="400" cy="0" r="320" fill="none" stroke="#2a2a2a" stroke-width="1"/>
-          <circle cx="400" cy="0" r="240" fill="none" stroke="#2a2a2a" stroke-width="1"/>
-          <!-- lazy susan center -->
-          <circle cx="400" cy="0" r="60" fill="#222" stroke="#444" stroke-width="1.5"/>
-          <circle cx="400" cy="0" r="40" fill="none" stroke="#333" stroke-width="1"/>
-          <!-- radial dividers -->
-          <line x1="400" y1="0" x2="400" y2="430" stroke="#2a2a2a" stroke-width="0.8"/>
-          <line x1="400" y1="0" x2="-20" y2="370" stroke="#2a2a2a" stroke-width="0.8"/>
-          <line x1="400" y1="0" x2="820" y2="370" stroke="#2a2a2a" stroke-width="0.8"/>
-          <line x1="400" y1="0" x2="134" y2="420" stroke="#2a2a2a" stroke-width="0.8"/>
-          <line x1="400" y1="0" x2="666" y2="420" stroke="#2a2a2a" stroke-width="0.8"/>
+          <circle cx="400" cy="0" r="420" fill="url(#cloth)" filter="url(#sketch)"/>
+          <circle cx="400" cy="0" r="420" fill="none" stroke="#8B5E3C" stroke-width="5" stroke-dasharray="14 7" filter="url(#sketch)"/>
+          <circle cx="400" cy="0" r="310" fill="none" stroke="#c8a870" stroke-width="1.5" stroke-dasharray="6 8" opacity="0.5"/>
+          <circle cx="400" cy="0" r="65" fill="#e8d0a0" opacity="0.22" filter="url(#sketch)"/>
         </g>
 
-        <!-- food items (outside rotate group — stay upright, JS translates only) -->
+        <!-- Fixed flat-edge accent line -->
+        <line x1="0" y1="1" x2="800" y2="1" stroke="#8B5E3C" stroke-width="4"/>
 
-        <!-- oyster omelette 蚵仔煎 theta=18° -->
-        <g class="banquet-food" data-food="oyster" data-theta="18" transform="translate(495,93)">
-          <circle r="34" fill="#2d1f0e" stroke="#8B6914" stroke-width="1.2"/>
-          <ellipse cx="0" cy="4" rx="22" ry="14" fill="#c8a045" opacity="0.9"/>
-          <ellipse cx="-5" cy="0" rx="8" ry="5" fill="#e8c870"/>
-          <ellipse cx="6" cy="2" rx="6" ry="4" fill="#d4a830"/>
-          <ellipse cx="0" cy="8" rx="14" ry="5" fill="#b85c1a" opacity="0.7"/>
+        <!-- ─ Food items (JS sets translate; items always stay upright) ─ -->
+
+        <!-- θ=15°  蚵仔煎 Oyster Omelette — initial (690, 78) -->
+        <g class="banquet-food" data-food="oyster" data-theta="15" transform="translate(690,78)">
+          <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
+          <ellipse cx="0" cy="-3" rx="30" ry="17" fill="#e8c060" opacity="0.88"/>
+          <ellipse cx="-9" cy="-5" rx="6" ry="4" fill="#4a4a4a" opacity="0.72"/>
+          <ellipse cx="5" cy="-8" rx="5" ry="3.5" fill="#4a4a4a" opacity="0.72"/>
+          <ellipse cx="2" cy="4" rx="6" ry="4" fill="#4a4a4a" opacity="0.72"/>
+          <path d="M-24 -3 Q0 10 24 -3" stroke="#c8a860" stroke-width="1" fill="none" opacity="0.5"/>
         </g>
 
-        <!-- taiwanese fried chicken 鹹酥雞 theta=46° -->
-        <g class="banquet-food" data-food="chicken" data-theta="46" transform="translate(568,185)">
-          <circle r="34" fill="#1a0f00" stroke="#8B6914" stroke-width="1.2"/>
-          <circle cx="-8" cy="-4" r="10" fill="#c8701a"/>
-          <circle cx="5" cy="-8" r="8" fill="#d4851f"/>
-          <circle cx="10" cy="5" r="9" fill="#bf6510"/>
-          <circle cx="-4" cy="7" r="7" fill="#c87515"/>
-          <ellipse cx="0" cy="0" rx="4" ry="6" fill="#2d5a1a" opacity="0.8" transform="rotate(-20)"/>
-          <ellipse cx="8" cy="-3" rx="3" ry="5" fill="#2d5a1a" opacity="0.7" transform="rotate(15)"/>
+        <!-- θ=50°  鹹酥雞 Taiwanese Fried Chicken — initial (593, 230) -->
+        <g class="banquet-food" data-food="chicken" data-theta="50" transform="translate(593,230)">
+          <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
+          <ellipse cx="-10" cy="-6" rx="14" ry="9" fill="#c27820" opacity="0.88"/>
+          <ellipse cx="9" cy="-7" rx="12" ry="8" fill="#d08020" opacity="0.85"/>
+          <ellipse cx="0" cy="8" rx="14" ry="8" fill="#b86818" opacity="0.9"/>
+          <ellipse cx="-13" cy="7" rx="5" ry="9" fill="#3a7a30" opacity="0.6"/>
         </g>
 
-        <!-- gua bao 割包 theta=74° -->
-        <g class="banquet-food" data-food="guabao" data-theta="74" transform="translate(580,295)">
-          <circle r="34" fill="#1a1208" stroke="#8B6914" stroke-width="1.2"/>
-          <ellipse cx="0" cy="0" rx="20" ry="13" fill="#f5f0e8"/>
-          <ellipse cx="0" cy="0" rx="20" ry="4" fill="#c8701a" opacity="0.8"/>
-          <ellipse cx="0" cy="-4" rx="18" ry="9" fill="#f0ece0" opacity="0.6"/>
+        <!-- θ=80°  割包 Gua Bao — initial (452, 295) -->
+        <g class="banquet-food" data-food="guabao" data-theta="80" transform="translate(452,295)">
+          <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
+          <ellipse cx="0" cy="-2" rx="32" ry="20" fill="#f5f0e0" stroke="#d4b890" stroke-width="1.5"/>
+          <path d="M-32 -2 Q0 8 32 -2" stroke="#d4b890" stroke-width="1.5" fill="none"/>
+          <ellipse cx="0" cy="4" rx="26" ry="8" fill="#8B4513" opacity="0.72"/>
+          <ellipse cx="-6" cy="2" rx="6" ry="3" fill="#f5e0a0" opacity="0.7"/>
         </g>
 
-        <!-- lu rou fan 滷肉飯 theta=106° -->
-        <g class="banquet-food" data-food="luroufan" data-theta="106" transform="translate(476,378)">
-          <circle r="34" fill="#110a00" stroke="#8B6914" stroke-width="1.2"/>
-          <ellipse cx="0" cy="3" rx="22" ry="14" fill="#f5f0e8"/>
-          <ellipse cx="-4" cy="-2" rx="14" ry="9" fill="#6b2d0a" opacity="0.85"/>
-          <ellipse cx="3" cy="-4" rx="10" ry="6" fill="#8b3d10" opacity="0.7"/>
+        <!-- θ=100° 滷肉飯 Lu Rou Fan — initial (348, 295) -->
+        <g class="banquet-food" data-food="luroufan" data-theta="100" transform="translate(348,295)">
+          <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
+          <ellipse cx="0" cy="8" rx="28" ry="10" fill="#c8a060"/>
+          <ellipse cx="0" cy="0" rx="28" ry="16" fill="#e8d8a0" stroke="#b8904a" stroke-width="1.5"/>
+          <ellipse cx="0" cy="-4" rx="22" ry="10" fill="#fffef5"/>
+          <ellipse cx="2" cy="-7" rx="16" ry="7" fill="#7a3210" opacity="0.82"/>
+          <ellipse cx="-4" cy="-5" rx="5" ry="3.5" fill="#f0d890" opacity="0.7"/>
         </g>
 
-        <!-- beef noodle 牛肉麵 theta=134° -->
-        <g class="banquet-food" data-food="beefnoodle" data-theta="134" transform="translate(324,378)">
-          <circle r="34" fill="#0f0800" stroke="#8B6914" stroke-width="1.2"/>
-          <ellipse cx="0" cy="4" rx="22" ry="12" fill="#8B2500" opacity="0.9"/>
-          <path d="M-15,0 Q-5,-8 5,-2 Q15,-10 18,2" stroke="#f5e8c8" stroke-width="2.5" fill="none"/>
-          <path d="M-12,4 Q0,-4 12,2" stroke="#f5e8c8" stroke-width="2" fill="none"/>
-          <circle cx="-6" cy="1" r="5" fill="#5a1800"/>
-          <circle cx="6" cy="-1" r="4" fill="#6b2000"/>
+        <!-- θ=130° 牛肉麵 Beef Noodle Soup — initial (207, 230) -->
+        <g class="banquet-food" data-food="beefnoodle" data-theta="130" transform="translate(207,230)">
+          <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
+          <ellipse cx="0" cy="8" rx="28" ry="10" fill="#c09050"/>
+          <ellipse cx="0" cy="0" rx="28" ry="17" fill="#c8a060" stroke="#9b7040" stroke-width="1.5"/>
+          <ellipse cx="0" cy="-3" rx="22" ry="12" fill="#a03020" opacity="0.75"/>
+          <path d="M-14 -4 Q-6 -11 4 -4 Q12 3 18 -4" stroke="#f5f0e0" stroke-width="2" fill="none"/>
+          <path d="M-16 2 Q-6 -5 4 2 Q12 8 16 2" stroke="#f5f0e0" stroke-width="1.5" fill="none" opacity="0.7"/>
         </g>
 
-        <!-- bubble tea 珍珠奶茶 theta=162° -->
-        <g class="banquet-food" data-food="bubbletea" data-theta="162" transform="translate(219,295)">
-          <circle r="34" fill="#0d0806" stroke="#8B6914" stroke-width="1.2"/>
-          <rect x="-10" y="-18" width="20" height="30" rx="4" fill="#d4a870" opacity="0.9"/>
-          <rect x="-8" y="4" width="16" height="8" rx="2" fill="#2a1a0a"/>
-          <circle cx="-4" cy="7" r="3" fill="#1a0a00"/>
-          <circle cx="4" cy="7" r="3" fill="#1a0a00"/>
-          <rect x="-1" y="-24" width="2" height="10" fill="#e8e0d0" rx="1"/>
+        <!-- θ=165° 珍珠奶茶 Bubble Tea — initial (110, 78) -->
+        <g class="banquet-food" data-food="bubbletea" data-theta="165" transform="translate(110,78)">
+          <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
+          <rect x="-16" y="-22" width="32" height="36" rx="4" fill="#d4c898" opacity="0.85"/>
+          <rect x="-13" y="-18" width="26" height="22" rx="2" fill="#7a4810" opacity="0.65"/>
+          <circle cx="-5" cy="9" r="4" fill="#1a0a00"/>
+          <circle cx="5" cy="9" r="4" fill="#1a0a00"/>
+          <circle cx="0" cy="11" r="3.5" fill="#1a0a00"/>
+          <rect x="3" y="-32" width="4" height="44" rx="2" fill="#e0b060" opacity="0.9"/>
         </g>
 
-        <!-- oyster vermicelli 大腸麵線 theta=-162° (198°) -->
-        <g class="banquet-food" data-food="miansian" data-theta="198" transform="translate(232,93)">
-          <circle r="34" fill="#100800" stroke="#8B6914" stroke-width="1.2"/>
-          <ellipse cx="0" cy="3" rx="22" ry="13" fill="#8B3A1A" opacity="0.9"/>
-          <path d="M-14,-2 Q-4,6 8,-4 Q16,4 14,8" stroke="#f0d8b0" stroke-width="2" fill="none"/>
-          <path d="M-10,4 Q2,-4 12,6" stroke="#f0d8b0" stroke-width="1.8" fill="none"/>
+        <!-- θ=−30° 大腸麵線 — hidden above viewBox, initial (660, −150) -->
+        <g class="banquet-food" data-food="miansian" data-theta="-30" transform="translate(660,-150)">
+          <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
+          <ellipse cx="0" cy="8" rx="28" ry="10" fill="#c09050"/>
+          <ellipse cx="0" cy="0" rx="28" ry="17" fill="#c8a060" stroke="#9b7040" stroke-width="1.5"/>
+          <ellipse cx="0" cy="-3" rx="22" ry="12" fill="#903820" opacity="0.78"/>
+          <path d="M-14 -4 Q-3 -12 6 -3 Q14 5 -4 0" stroke="#f5c880" stroke-width="2" fill="none" opacity="0.8"/>
+          <ellipse cx="-2" cy="-6" rx="8" ry="4" fill="#4a3020" opacity="0.6"/>
         </g>
 
-        <!-- coffin bread 棺材板 theta=-134° (226°) -->
-        <g class="banquet-food" data-food="coffin" data-theta="226" transform="translate(158,185)">
-          <circle r="34" fill="#120a00" stroke="#8B6914" stroke-width="1.2"/>
-          <rect x="-16" y="-10" width="32" height="20" rx="2" fill="#d4a840"/>
-          <rect x="-14" y="-8" width="28" height="16" rx="1" fill="#c89830"/>
-          <rect x="-10" y="-4" width="20" height="10" rx="1" fill="#e8c870" opacity="0.7"/>
+        <!-- θ=−70° 棺材板 — hidden above viewBox, initial (503, −282) -->
+        <g class="banquet-food" data-food="coffin" data-theta="-70" transform="translate(503,-282)">
+          <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
+          <rect x="-24" y="-16" width="48" height="32" rx="4" fill="#c89010" opacity="0.88"/>
+          <rect x="-20" y="-12" width="40" height="24" rx="3" fill="#e8b020" opacity="0.55"/>
+          <ellipse cx="0" cy="-4" rx="16" ry="8" fill="#d4e0c0" opacity="0.7"/>
+          <path d="M-20 -12 L20 -12 L20 16 L-20 16 Z" stroke="#a06e08" stroke-width="1.5" fill="none"/>
         </g>
 
-        <!-- stinky tofu 臭豆腐 theta=-106° (254°) -->
-        <g class="banquet-food" data-food="stinkytofu" data-theta="254" transform="translate(220,185)">
-          <circle r="34" fill="#0f0e08" stroke="#8B6914" stroke-width="1.2"/>
-          <rect x="-10" y="-10" width="20" height="20" rx="2" fill="#8b7a30"/>
-          <rect x="-8" y="-8" width="16" height="16" rx="1" fill="#a08a38"/>
-          <ellipse cx="0" cy="6" rx="14" ry="5" fill="#c83030" opacity="0.7"/>
-          <ellipse cx="0" cy="6" rx="10" ry="3" fill="#e84040" opacity="0.5"/>
+        <!-- θ=210° 臭豆腐 — hidden above viewBox, initial (140, −150) -->
+        <g class="banquet-food" data-food="stinkytofu" data-theta="210" transform="translate(140,-150)">
+          <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
+          <ellipse cx="0" cy="10" rx="28" ry="8" fill="#c0a070" opacity="0.7"/>
+          <rect x="-20" y="-12" width="18" height="18" rx="3" fill="#4a3010" opacity="0.88"/>
+          <rect x="3" y="-15" width="18" height="18" rx="3" fill="#5a3a14" opacity="0.85"/>
+          <rect x="-8" y="-3" width="16" height="14" rx="2" fill="#6a4018" opacity="0.78"/>
         </g>
 
-        <!-- ba-wan 肉圓 theta=-74° (286°) -->
-        <g class="banquet-food" data-food="bawan" data-theta="286" transform="translate(400,93)">
-          <circle r="34" fill="#100a10" stroke="#8B6914" stroke-width="1.2"/>
-          <ellipse cx="0" cy="0" rx="22" ry="16" fill="#d4c8e0" opacity="0.85"/>
-          <ellipse cx="0" cy="0" rx="14" ry="10" fill="#b8a8cc" opacity="0.7"/>
-          <ellipse cx="0" cy="2" rx="18" ry="6" fill="#c83030" opacity="0.4"/>
+        <!-- θ=250° 肉圓 — hidden above viewBox, initial (297, −282) -->
+        <g class="banquet-food" data-food="bawan" data-theta="250" transform="translate(297,-282)">
+          <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
+          <ellipse cx="0" cy="0" rx="30" ry="21" fill="#f0ece0" stroke="#b8a090" stroke-width="2"/>
+          <ellipse cx="0" cy="0" rx="22" ry="14" fill="#c09080" opacity="0.55"/>
+          <ellipse cx="-4" cy="-2" rx="10" ry="6" fill="#7a3a28" opacity="0.6"/>
         </g>
 
       </svg>
-    </div><!-- /banquet-viewport -->
-  </div><!-- /banquet-wrap -->
-
-  <!-- Banquet popup -->
-  <div id="banquetPopup">
-    <div id="bp-backdrop"></div>
-    <div id="bp-card">
-      <div id="bp-photo-wrap"><img id="bp-photo" src="" alt=""></div>
-      <div id="bp-info">
-        <p id="bp-name"></p>
-        <p id="bp-desc"></p>
-      </div>
-      <button id="bp-close" aria-label="Close">✕</button>
     </div>
   </div>
 </section>
 
 <!-- ─── ENDING ─────────────────────────────────────── -->
-<section id="s-ending" class="section" data-name="Ending">
+<section id="s-ending" class="section" data-name="Taiwan is ______">
   <div class="ending-content">
-    <p class="ending-prompt reveal">Taiwan is ___</p>
-    <div class="ending-blank">
+    <p class="ending-prompt reveal-up">Taiwan is</p>
+    <div class="ending-blank reveal-up" data-delay="0.2">
       <div class="drop-zone" id="dropZone">
-        <span class="drop-placeholder">?</span>
+        <span class="drop-placeholder">______</span>
         <span class="drop-word" id="dropWord"></span>
       </div>
     </div>
-    <div class="word-bank reveal" data-delay="0.2">
-      <button class="w-chip" data-word="Resilient">Resilient</button>
-      <button class="w-chip" data-word="Invisible">Invisible</button>
-      <button class="w-chip" data-word="Free">Free</button>
-      <button class="w-chip" data-word="Between">Between</button>
-      <button class="w-chip" data-word="Alive">Alive</button>
-      <button class="w-chip" data-word="Home">Home</button>
-      <button class="w-chip" data-word="Yours">Yours</button>
+    <div class="word-bank reveal-up" data-delay="0.4" id="wordBank">
+      <button class="w-chip" data-word="resilient">resilient</button>
+      <button class="w-chip" data-word="alive">alive</button>
+      <button class="w-chip" data-word="diverse">diverse</button>
+      <button class="w-chip" data-word="warm">warm</button>
+      <button class="w-chip" data-word="unresolved">unresolved</button>
+      <button class="w-chip" data-word="becoming">becoming</button>
+      <button class="w-chip" data-word="vibrant">vibrant</button>
+      <button class="w-chip" data-word="free">free</button>
+      <button class="w-chip" data-word="rooted">rooted</button>
+      <button class="w-chip" data-word="spirited">spirited</button>
+      <button class="w-chip" data-word="tender">tender</button>
+      <button class="w-chip" data-word="evolving">evolving</button>
+      <button class="w-chip" data-word="sovereign">sovereign</button>
+      <button class="w-chip" data-word="searching">searching</button>
+      <button class="w-chip" data-word="timeless">timeless</button>
+      <button class="w-chip" data-word="layered">layered</button>
+      <button class="w-chip" data-word="boundless">boundless</button>
+      <button class="w-chip" data-word="tenacious">tenacious</button>
+      <button class="w-chip" data-word="luminous">luminous</button>
+      <button class="w-chip" data-word="open">open</button>
+      <button class="w-chip" data-word="grounded">grounded</button>
+      <button class="w-chip" data-word="hopeful">hopeful</button>
+      <button class="w-chip" data-word="singular">singular</button>
+      <button class="w-chip" data-word="living">living</button>
     </div>
-    <p class="ending-core reveal" data-delay="0.4">不管答案是什麼，它都是真的。</p>
-    <div class="ending-artist reveal" data-delay="0.6">
-      <img src="./_DSC9758.jpg" alt="Artist" loading="lazy">
+    <p class="ending-core reveal-up" data-delay="0.7">台灣不是被定義，而是被感受。</p>
+    <div class="ending-artist reveal-up" data-delay="0.9">
+      <img src="./照片/me.jpg" alt="王昱韋 8rian Wang" loading="lazy">
       <div class="ending-artist-info">
-        <span>Brian Wang · 8rianW</span>
-        <a href="#">@8rianw</a>
+        <span>王昱韋 · 8rian Wang</span>
+        <a href="https://www.instagram.com/8rian.w/" target="_blank" rel="noopener">@8rian.w</a>
+        <a href="mailto:chribria228@gmail.com">chribria228@gmail.com</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ─── LIGHTBOX ───────────────────────────────────── -->
-<div id="lightbox">
-  <div class="lb-backdrop" id="lbBackdrop"></div>
-  <div class="lb-container">
-    <img class="lb-img" id="lbImg" src="" alt="">
-  </div>
-  <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
-</div>
+<footer>
+  <p>© Taiwan Sensuality · 王昱韋 · 希望人與自然土地永共存</p>
+</footer>
 
-<!-- ─── CELL LIGHTBOX ──────────────────────────────── -->
+<!-- ─── CELL LIGHTBOX ─────────────────────────────── -->
 <div id="cellBox">
   <div id="cellBoxBackdrop"></div>
   <img id="cellBoxImg" src="" alt="">
   <button id="cellBoxClose" aria-label="Close">✕</button>
 </div>
 
-<!-- ─── FOOTER ─────────────────────────────────────── -->
-<footer>
-  <p>© 2025 8rianW · Taiwan Online Exhibition · All images by Brian Wang</p>
-</footer>
+<!-- ─── LIGHTBOX ──────────────────────────────────── -->
+<div id="lightbox">
+  <div class="lb-backdrop" id="lbBackdrop"></div>
+  <div class="lb-container">
+    <img class="lb-img" id="lbImg" src="" alt="">
+    <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
+  </div>
+</div>
+
+<!-- ─── BANQUET POPUP ─────────────────────────────── -->
+<div id="banquetPopup">
+  <div id="bp-backdrop"></div>
+  <div id="bp-card">
+    <button id="bp-close" aria-label="Close">✕</button>
+    <div id="bp-photo-wrap">
+      <img id="bp-photo" src="" alt="" loading="lazy">
+    </div>
+    <div id="bp-info">
+      <div id="bp-name"></div>
+      <p id="bp-desc"></p>
+    </div>
+  </div>
+</div>
 
 <script src="js/exhibition.js"></script>
 </body>
