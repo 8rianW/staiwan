@@ -78,262 +78,241 @@ function initAll() {
   sections.forEach(s => sObs.observe(s));
 
   const fbObs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-  }, { threshold: 0.4 });
-  const fb = document.querySelector('.freedom-bars');
-  if (fb) fbObs.observe(fb);
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const img = e.target.querySelector('img');
+      if (img && img.dataset.src) { img.src = img.dataset.src; delete img.dataset.src; }
+      fbObs.unobserve(e.target);
+    });
+  }, { threshold: 0.05 });
+  document.querySelectorAll('.warmth-photo,.gr-item,.cu-item').forEach(el => fbObs.observe(el));
 
+  initCrisis();
   initSyntax();
   initChaos();
-  initEnding();
   initLightbox();
-  initGridCells();
-  initParallax();
-  initSpotlight();
   initBanquet();
+  initSpotlight();
 }
 
-/* ─── SYNTAX ─────────────────────────────────────── */
-const wordPairs = [
-  { from: 'CHAOS',  to: 'ACTION',    taiwan: ['C','A','O'] },
-  { from: 'CHAOS',  to: 'NATION',    taiwan: ['A','N'] },
-  { from: 'LOST',   to: 'STAND',     taiwan: ['T','A','N'] },
-  { from: 'MESS',   to: 'MEANS',     taiwan: ['A','N'] },
-  { from: 'NOISE',  to: 'ONSITE',    taiwan: ['I','N'] },
-  { from: 'WAIT',   to: 'TAIWAN',    taiwan: ['T','A','I','W','N'] },
-  { from: 'WIN',    to: 'TWIN',      taiwan: ['T','W','I','N'] },
-  { from: 'RAIN',   to: 'TRAIN',     taiwan: ['T','A','I','N'] },
-  { from: 'ANT',    to: 'WANT',      taiwan: ['W','A','N','T'] },
-  { from: 'OWN',    to: 'TOWN',      taiwan: ['T','W','N'] },
-  { from: 'NOT',    to: 'NOTION',    taiwan: ['N','T','I'] },
-  { from: 'WRIT',   to: 'WRITTEN',   taiwan: ['W','I','T','N'] },
-  { from: 'MOAN',   to: 'WOMAN',     taiwan: ['W','A','N'] },
-  { from: 'SPIN',   to: 'SPAIN',     taiwan: ['A','I','N'] },
-  { from: 'WINE',   to: 'TWINE',     taiwan: ['T','W','I','N'] },
-  { from: 'WIST',   to: 'TWIST',     taiwan: ['T','W','I'] },
-  { from: 'THIN',   to: 'WITHIN',    taiwan: ['W','T','I','N'] },
-  { from: 'AND',    to: 'WAND',      taiwan: ['W','A','N'] },
-  { from: 'WIT',    to: 'AWAIT',     taiwan: ['W','A','I','T'] },
-  { from: 'TWIN',   to: 'TWAIN',     taiwan: ['T','W','A','I','N'] },
-  { from: 'TAME',   to: 'ANIMATE',   taiwan: ['A','N','T'] },
-  { from: 'WANT',   to: 'WANTON',    taiwan: ['W','A','N','T'] },
-  { from: 'TAN',    to: 'TITAN',     taiwan: ['T','I','A','N'] },
-  { from: 'NATION', to: 'INNOVATION',taiwan: ['N','A','T','I'] },
-  { from: 'PLAIN',  to: 'CAPTAIN',   taiwan: ['T','A','I','N'] },
-  { from: 'STING',  to: 'WAITING',   taiwan: ['W','A','T','I','N'] },
-];
-let pairIdx = 0, isAnimating = false;
-const syntaxFrom = document.getElementById('syntaxFrom');
-const syntaxTo   = document.getElementById('syntaxTo');
-const syntaxBtn  = document.getElementById('syntaxNext');
+/* ─── IDENTITY CRISIS ─────────────────────────────── */
+function initCrisis() {
+  const cells = document.querySelectorAll('.grid-cell');
+  const cellBox    = document.getElementById('cellBox');
+  const cellBoxImg = document.getElementById('cellBoxImg');
+  const cellBoxClose = document.getElementById('cellBoxClose');
+  const cellBoxBd  = document.getElementById('cellBoxBackdrop');
+  if (!cellBox) return;
 
-function renderWord(el, word, tc) {
-  el.innerHTML = '';
-  word.split('').forEach(ch => {
-    const s = document.createElement('span');
-    s.className = 's-letter' + (tc.includes(ch) ? ' taiwan' : '');
-    s.textContent = ch;
-    el.appendChild(s);
+  let activeCell = null;
+
+  function openCell(cell) {
+    if (activeCell) closeCell();
+    activeCell = cell;
+    cell.classList.add('active-cell');
+    const photo = cell.dataset.photo;
+    if (!photo) return;
+    const rect = cell.getBoundingClientRect();
+    cellBoxImg.style.cssText = `top:${rect.top}px;left:${rect.left}px;width:${rect.width}px;height:${rect.height}px;opacity:0;`;
+    cellBoxImg.src = photo;
+    cellBox.classList.add('open');
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      const tw = Math.min(window.innerWidth * 0.85, 720);
+      const th = tw * 0.75;
+      const tx = (window.innerWidth - tw) / 2;
+      const ty = (window.innerHeight - th) / 2;
+      cellBoxImg.style.cssText = `top:${ty}px;left:${tx}px;width:${tw}px;height:${th}px;opacity:1;`;
+    }));
+  }
+
+  function closeCell() {
+    if (!activeCell) return;
+    const cell = activeCell;
+    const rect = cell.getBoundingClientRect();
+    cellBoxImg.style.cssText = `top:${rect.top}px;left:${rect.left}px;width:${rect.width}px;height:${rect.height}px;opacity:0;`;
+    cellBox.classList.remove('open');
+    setTimeout(() => { cell.classList.remove('active-cell'); if (activeCell === cell) activeCell = null; }, 480);
+  }
+
+  cells.forEach(cell => {
+    cell.addEventListener('click', e => {
+      e.stopPropagation();
+      if (activeCell === cell) closeCell();
+      else openCell(cell);
+    });
   });
+
+  if (cellBoxClose) cellBoxClose.addEventListener('click', closeCell);
+  if (cellBoxBd)    cellBoxBd.addEventListener('click', closeCell);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCell(); });
 }
-function animateTransform(fw, tw, tc) {
-  if (isAnimating) return;
-  isAnimating = true;
-  syntaxFrom.querySelectorAll('.s-letter').forEach((l, i) => {
-    setTimeout(() => l.classList.add('out'), i * 60);
-  });
-  const delay = fw.length * 60 + 200;
-  syntaxTo.innerHTML = '';
-  tw.split('').forEach((ch, i) => {
-    const s = document.createElement('span');
-    s.className = 's-letter in' + (tc.includes(ch) ? ' taiwan' : '');
-    s.textContent = ch;
-    syntaxTo.appendChild(s);
-    setTimeout(() => s.classList.remove('in'), delay + i * 70);
-  });
-  setTimeout(() => { renderWord(syntaxFrom, fw, tc); isAnimating = false; },
-    delay + tw.length * 70 + 300);
-}
+
+/* ─── SYNTAX ──────────────────────────────────────── */
 function initSyntax() {
-  const p = wordPairs[pairIdx];
-  renderWord(syntaxFrom, p.from, p.taiwan);
-  renderWord(syntaxTo,   p.to,   p.taiwan);
-  syntaxBtn.addEventListener('click', () => {
-    pairIdx = (pairIdx + 1) % wordPairs.length;
-    const n = wordPairs[pairIdx];
-    animateTransform(n.from, n.to, n.taiwan);
+  const fromEl = document.getElementById('syntaxFrom');
+  const toEl   = document.getElementById('syntaxTo');
+  const nextBtn = document.getElementById('syntaxNext');
+  if (!fromEl || !toEl || !nextBtn) return;
+
+  const TAIWAN = new Set(['T','A','I','W','A','N']);
+  const PAIRS = [
+    ['PAIN',   'PLAIN'],
+    ['WAR',    'WARM'],
+    ['WAIT',   'AWAIT'],
+    ['TAN',    'TITAN'],
+    ['TRAIN',  'TAIWAN'],
+    ['WANT',   'IANT'],
+    ['RAIN',   'TRAIN'],
+    ['WIN',    'TWIN'],
+    ['ANTI',   'AINT'],
+    ['TWIN',   'TWAIN'],
+    ['WAIN',   'TWAIN'],
+    ['AINT',   'AINT'],
+  ];
+  let idx = 0;
+
+  function countLetters(word) {
+    const c = {};
+    for (const ch of word.toUpperCase()) c[ch] = (c[ch] || 0) + 1;
+    return c;
+  }
+  function highlightTaiwan(from, to) {
+    const fc = countLetters(from);
+    const tc = countLetters(to);
+    const added = {};
+    for (const ch of to.toUpperCase()) {
+      const need = (tc[ch] || 0) - (fc[ch] || 0);
+      added[ch] = Math.max(0, need);
+    }
+    return added;
+  }
+
+  function renderWord(el, word, added) {
+    el.innerHTML = '';
+    const addCount = { ...added };
+    for (const ch of word.toUpperCase()) {
+      const span = document.createElement('span');
+      span.className = 's-letter';
+      span.textContent = ch;
+      if (addCount[ch] > 0 && TAIWAN.has(ch)) {
+        span.classList.add('taiwan');
+        addCount[ch]--;
+      }
+      el.appendChild(span);
+    }
+  }
+
+  function animateOut(el, cb) {
+    el.querySelectorAll('.s-letter').forEach((s, i) => {
+      setTimeout(() => s.classList.add('out'), i * 40);
+    });
+    setTimeout(cb, el.querySelectorAll('.s-letter').length * 40 + 200);
+  }
+  function animateIn(el) {
+    el.querySelectorAll('.s-letter').forEach((s, i) => {
+      s.classList.add('in');
+      setTimeout(() => s.classList.remove('in'), 50 + i * 55);
+    });
+  }
+
+  function showPair(i) {
+    const [from, to] = PAIRS[i];
+    const added = highlightTaiwan(from, to);
+    animateOut(fromEl, () => { renderWord(fromEl, from, {}); animateIn(fromEl); });
+    animateOut(toEl,   () => { renderWord(toEl,   to,   added); animateIn(toEl); });
+  }
+
+  const [f0, t0] = PAIRS[0];
+  renderWord(fromEl, f0, {});
+  renderWord(toEl, t0, highlightTaiwan(f0, t0));
+
+  nextBtn.addEventListener('click', () => {
+    idx = (idx + 1) % PAIRS.length;
+    showPair(idx);
   });
-  const sObs = new IntersectionObserver(entries => {
-    if (!entries[0].isIntersecting) return;
-    let auto = setInterval(() => {
-      pairIdx = (pairIdx + 1) % wordPairs.length;
-      const n = wordPairs[pairIdx];
-      animateTransform(n.from, n.to, n.taiwan);
-    }, 3500);
-    syntaxBtn.addEventListener('click', () => clearInterval(auto), { once: true });
-    sObs.unobserve(entries[0].target);
-  }, { threshold: 0.5 });
-  const ss = document.getElementById('s-syntax');
-  if (ss) sObs.observe(ss);
 }
 
-/* ─── CHAOS CANVAS ───────────────────────────────── */
+/* ─── CHAOS CANVAS ────────────────────────────────── */
 function initChaos() {
   const canvas = document.getElementById('chaosCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  const colors = ['#B23A3A','#2F5D9F','#3A7D44','#C9A84C','#7B4F9E'];
-  let particles = [], settled = false, W, H;
+  let W, H, particles = [], animId;
+  const COLORS = ['#B23A3A','#E8721C','#F5C842','#3A7D44','#2F5D9F','#7B4F9E','#F0EDE6'];
 
-  function resize() { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight; }
-  window.addEventListener('resize', resize, { passive: true });
+  function resize() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+  window.addEventListener('resize', resize);
   resize();
 
   class Particle {
     constructor() { this.reset(true); }
-    reset(rand) {
-      this.x     = rand ? Math.random() * W : W / 2;
-      this.y     = rand ? Math.random() * H : H / 2;
-      this.vx    = (Math.random() - .5) * (settled ? 1.5 : 3.5);
-      this.vy    = (Math.random() - .5) * (settled ? 1.5 : 3.5);
-      this.rad   = Math.random() * 2 + 1;
-      this.alpha = Math.random() * .6 + .3;
-      this.color = colors[Math.floor(Math.random() * colors.length)];
-      this.life  = Math.random() * 200 + 100;
-      this.age   = 0;
+    reset(initial = false) {
+      this.x  = Math.random() * W;
+      this.y  = initial ? Math.random() * H : H + 10;
+      this.vx = (Math.random() - 0.5) * 0.6;
+      this.vy = -(Math.random() * 1.2 + 0.4);
+      this.r  = Math.random() * 2.5 + 0.5;
+      this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+      this.alpha = Math.random() * 0.6 + 0.2;
+      this.life  = 0;
+      this.maxLife = Math.random() * 200 + 100;
     }
     update() {
-      if (settled) {
-        this.vx += (Math.sin(this.y * .012 + Date.now() * .0005) - this.vx) * .06;
-        this.vy += (Math.cos(this.x * .012 + Date.now() * .0005) - this.vy) * .06;
-      } else {
-        this.vx += (Math.random() - .5) * .3;
-        this.vy += (Math.random() - .5) * .3;
-      }
-      this.x += this.vx; this.y += this.vy; this.age++;
-      if (this.age > this.life || this.x < -10 || this.x > W + 10 || this.y < -10 || this.y > H + 10)
-        this.reset(false);
+      this.x += this.vx; this.y += this.vy; this.life++;
+      this.vx += (Math.random() - 0.5) * 0.04;
+      if (this.y < -10 || this.life > this.maxLife) this.reset();
     }
     draw() {
+      ctx.globalAlpha = this.alpha * (1 - this.life / this.maxLife);
+      ctx.fillStyle = this.color;
       ctx.beginPath();
-      ctx.arc(this.x, this.y, this.rad, 0, Math.PI * 2);
-      ctx.fillStyle = this.color + Math.floor(this.alpha * 255).toString(16).padStart(2, '00');
+      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
       ctx.fill();
     }
   }
 
-  for (let i = 0; i < 200; i++) particles.push(new Particle());
+  for (let i = 0; i < 180; i++) particles.push(new Particle());
+
+  const chaosSection = document.getElementById('s-chaos');
+  let visible = false;
+  const vObs = new IntersectionObserver(entries => {
+    visible = entries[0].isIntersecting;
+    if (visible && !animId) loop();
+  }, { threshold: 0.1 });
+  if (chaosSection) vObs.observe(chaosSection);
+
   function loop() {
-    ctx.fillStyle = 'rgba(0,0,0,0.18)';
-    ctx.fillRect(0, 0, W, H);
+    if (!visible) { animId = null; return; }
+    animId = requestAnimationFrame(loop);
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalAlpha = 1;
     particles.forEach(p => { p.update(); p.draw(); });
-    requestAnimationFrame(loop);
-  }
-  loop();
-
-  function burst(bx, by, count) {
-    for (let i = 0; i < count; i++) {
-      const p = new Particle();
-      p.x = bx; p.y = by;
-      p.vx = (Math.random() - .5) * 7;
-      p.vy = (Math.random() - .5) * 7;
-      p.rad = Math.random() * 3 + 1;
-      particles.push(p);
-    }
-    if (particles.length > 320) particles.splice(0, particles.length - 320);
-  }
-
-  const isMobile = window.matchMedia('(pointer: coarse)').matches;
-  let autoBurst = null;
-
-  const cObs = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting) {
-      setTimeout(() => { settled = true; }, 1800);
-      if (isMobile && !autoBurst) {
-        autoBurst = setInterval(() => {
-          if (W && H) burst(W * 0.2 + Math.random() * W * 0.6, H * 0.2 + Math.random() * H * 0.6, 14);
-        }, 2200);
-      }
-    } else {
-      settled = false;
-      if (autoBurst) { clearInterval(autoBurst); autoBurst = null; }
-    }
-  }, { threshold: 0.4 });
-  const cs = document.getElementById('s-chaos');
-  if (cs) cObs.observe(cs);
-
-  canvas.addEventListener('click', e => {
-    const r = canvas.getBoundingClientRect();
-    burst(e.clientX - r.left, e.clientY - r.top, 24);
-  });
-  if (isMobile) {
-    canvas.style.pointerEvents = 'none';
-    const content = document.querySelector('.chaos-content');
-    if (content) {
-      content.style.pointerEvents = 'auto';
-      content.addEventListener('touchend', () => {
-        if (W && H) burst(W * 0.25 + Math.random() * W * 0.5, H * 0.25 + Math.random() * H * 0.5, 22);
-      }, { passive: true });
-    }
-  } else {
-    canvas.addEventListener('touchend', e => {
-      const r = canvas.getBoundingClientRect();
-      const t = e.changedTouches[0];
-      burst(t.clientX - r.left, t.clientY - r.top, 24);
-    }, { passive: true });
+    ctx.globalAlpha = 1;
   }
 }
 
-/* ─── ENDING ─────────────────────────────────────── */
-function initEnding() {
-  const chips       = document.querySelectorAll('.w-chip');
-  const dropWord    = document.getElementById('dropWord');
-  const placeholder = document.querySelector('.drop-placeholder');
-  const dropZone    = document.getElementById('dropZone');
+/* ─── LIGHTBOX ───────────────────────────────────── */
+function initLightbox() {
+  const lb      = document.getElementById('lightbox');
+  const lbImg   = document.getElementById('lbImg');
+  const lbClose = document.getElementById('lbClose');
+  const lbBd    = document.getElementById('lbBackdrop');
+  if (!lb) return;
 
-  function setWord(word, activeChip) {
-    chips.forEach(c => c.classList.remove('selected'));
-    if (activeChip) activeChip.classList.add('selected');
-    dropWord.classList.remove('show');
-    placeholder.classList.add('hidden');
-    dropZone.classList.add('active');
-    setTimeout(() => { dropWord.textContent = word; dropWord.classList.add('show'); }, 200);
-  }
-
-  chips.forEach(chip => {
-    chip.addEventListener('click', () => {
-      setWord(chip.dataset.word, chip);
-    });
-    chip.setAttribute('draggable', true);
-    chip.addEventListener('dragstart', e => {
-      e.dataTransfer.setData('text/plain', chip.dataset.word);
-      chip.classList.add('selected');
+  document.querySelectorAll('[data-lightbox]').forEach(el => {
+    el.addEventListener('click', () => {
+      lbImg.src = el.dataset.lightbox;
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
     });
   });
-  dropZone.addEventListener('dragover',  e => { e.preventDefault(); dropZone.classList.add('active'); });
-  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('active'));
-  dropZone.addEventListener('drop', e => {
-    e.preventDefault();
-    const w = e.dataTransfer.getData('text/plain');
-    const match = Array.from(chips).find(c => c.dataset.word === w);
-    setWord(w, match || null);
-  });
-}
-
-/* ─── SPOTLIGHT ──────────────────────────────────── */
-function initSpotlight() {
-  const section = document.getElementById('s-marginal');
-  if (!section) return;
-  let lit = false;
-  const obs = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting && !lit) {
-      setTimeout(() => {
-        section.classList.add('spotlight-active');
-        lit = true;
-      }, 1000);
-    }
-  }, { threshold: 0.5 });
-  obs.observe(section);
+  function closeLb() { lb.classList.remove('open'); document.body.style.overflow = ''; }
+  if (lbClose) lbClose.addEventListener('click', closeLb);
+  if (lbBd)    lbBd.addEventListener('click', closeLb);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
 }
 
 /* ─── BANQUET ─────────────────────────────────────── */
@@ -348,7 +327,7 @@ function initBanquet() {
     chicken:    { zh: '鹹酥雞',  en: 'Taiwanese Fried Chicken', desc: '香酥的雞塊與九層塔一同入鍋炸製，鹹香酥脆，是台灣宵夜文化的靈魂小吃。',               wiki: 'Taiwanese_fried_chicken', fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Yansuj%C3%AD.jpg/640px-Yansuj%C3%AD.jpg' },
     guabao:     { zh: '割包',    en: 'Gua Bao',                 desc: '鬆軟白麵包夾入滷製五花肉、花生粉與酸菜，軟嫩酥脆並存，被譽為「台灣漢堡」。',           wiki: 'Gua_bao',                 fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Gua_bao_2.jpg/640px-Gua_bao_2.jpg' },
     luroufan:   { zh: '滷肉飯',  en: 'Lu Rou Fan',              desc: '肥瘦相間的豬五花以醬油、米酒、冰糖慢燉後澆在白飯上，是台灣家常滋味的最高代表。',       wiki: 'Lu_rou_fan',              fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Luroufan.jpg/640px-Luroufan.jpg' },
-    beefnoodle: { zh: '牛肉麵',  en: 'Beef Noodle Soup',        desc: '以紅燒湯底燉煮軟爛牛腱，搭配彈牙麵條，是台灣最驕傲的國民美食，每年舉辦比賽選出最佳口味。', wiki: 'Beef_noodle_soup',        fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Taiwan_beef_noodle_soup.jpg/640px-Taiwan_beef_noodle_soup.jpg' },
+    beefnoodle: { zh: '牛肉麵',  en: 'Beef Noodle Soup',        desc: '以紅燒湯底燉煮軟爛牛腱，搭配彈牙麵條，是台灣最驕傲的國民美食，每年舉辦比賽選出最佳口味。', wiki: 'Beef_noodle_soup',        fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Taiwan_beef_noodle_soup.jpg/640px-Taiwan_beef_noodle_soup.jpg', imgOverride: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Beef_noodle_soup_by_ayustety_in_Taipei.jpg/640px-Beef_noodle_soup_by_ayustety_in_Taipei.jpg' },
     bubbletea:  { zh: '珍珠奶茶', en: 'Bubble Tea',             desc: '1980年代發源於台灣台中，Q彈珍珠搭配奶茶，是台灣對世界飲料文化最大的貢獻。',           wiki: 'Bubble_tea',              fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Bubble_tea_at_Fantaasia_2015.jpg/640px-Bubble_tea_at_Fantaasia_2015.jpg' },
     miansian:   { zh: '大腸麵線', en: 'Oyster Vermicelli',      desc: '以豬大腸與蚵仔燉入勾芡的麵線湯中，口感滑順，是廟會與夜市中最撫慰人心的平民小吃。',   wiki: 'Oyster_vermicelli',       fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Mian_xian.jpg/640px-Mian_xian.jpg' },
     coffin:     { zh: '棺材板',  en: 'Coffin Bread',            desc: '發源於台南，以厚片土司挖空後填入濃郁奶油燉料，外酥內滑，名稱怪異卻深受喜愛。',       wiki: 'Coffin_bread',            fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Coffin_bread.jpg/640px-Coffin_bread.jpg' },
@@ -378,6 +357,9 @@ function initBanquet() {
     bpPhoto.src           = '';
     popup.classList.add('open');
     document.body.style.overflow = 'hidden';
+
+    // 0. Direct override — skip all API lookups
+    if (food.imgOverride) { showPhoto(food.imgOverride); return; }
 
     // 1. Wikipedia REST summary API
     try {
@@ -431,153 +413,106 @@ function initBanquet() {
   if (bpBd)    bpBd.addEventListener('click', closePopup);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closePopup(); });
 
-  let rotation = 0, isDragging = false, startX = 0, startRot = 0, didDrag = false;
+  /* ── rotation ── */
+  const SVG_W = 800, SVG_H = 430;
+  const PIVOT_X = 400, PIVOT_Y = 0;
+  const RADIUS  = 380;
+  let   angle   = 0;
+  let   dragging = false, lastX = 0, lastY = 0, angVel = 0;
 
-  function applyRotation(deg) {
-    rotateG.setAttribute('transform', `rotate(${deg}, 400, 0)`);
-    const rad = deg * Math.PI / 180;
-    foodEls.forEach(item => {
-      const theta = parseFloat(item.dataset.theta) * Math.PI / 180;
-      const nx = 400 + 300 * Math.cos(theta + rad);
-      const ny = 300 * Math.sin(theta + rad);
-      item.setAttribute('transform', `translate(${nx.toFixed(1)},${ny.toFixed(1)})`);
+  function positionFoods() {
+    foodEls.forEach(el => {
+      const theta = (parseFloat(el.dataset.theta) || 0) * Math.PI / 180;
+      const a = (angle + theta);
+      const x = PIVOT_X + RADIUS * Math.sin(a);
+      const y = PIVOT_Y + RADIUS * (1 - Math.cos(a));
+      el.setAttribute('transform', `translate(${x.toFixed(1)},${y.toFixed(1)})`);
     });
   }
 
-  applyRotation(0);
+  function applyRotation() {
+    rotateG.setAttribute('transform', `rotate(${(angle * 180 / Math.PI).toFixed(3)},${PIVOT_X},${PIVOT_Y})`);
+    positionFoods();
+  }
 
-  viewport.addEventListener('mousedown', e => {
-    isDragging = true; didDrag = false; startX = e.clientX; startRot = rotation;
-  });
-  document.addEventListener('mousemove', e => {
-    if (!isDragging) return;
-    if (Math.abs(e.clientX - startX) > 3) didDrag = true;
-    rotation = startRot + (e.clientX - startX) * 0.45;
-    applyRotation(rotation);
-  });
-  document.addEventListener('mouseup', () => { isDragging = false; });
+  let rafId = null;
+  function animate() {
+    if (Math.abs(angVel) < 0.0001) { angVel = 0; rafId = null; return; }
+    angVel *= 0.97;
+    angle  += angVel;
+    applyRotation();
+    rafId = requestAnimationFrame(animate);
+  }
 
-  viewport.addEventListener('touchstart', e => {
-    isDragging = true; didDrag = false; startX = e.touches[0].clientX; startRot = rotation;
-  }, { passive: true });
-  viewport.addEventListener('touchmove', e => {
-    if (!isDragging) return;
+  function svgPoint(e) {
+    const svg = document.getElementById('banquetSvg');
+    const pt  = svg.createSVGPoint();
+    const src = e.touches ? e.touches[0] : e;
+    pt.x = src.clientX; pt.y = src.clientY;
+    return pt.matrixTransform(svg.getScreenCTM().inverse());
+  }
+
+  function onDown(e) {
+    const tgt = e.target.closest('.banquet-food');
+    if (tgt) return;
+    dragging = true;
+    angVel   = 0;
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+    const p = svgPoint(e);
+    lastX = p.x; lastY = p.y;
     e.preventDefault();
-    if (Math.abs(e.touches[0].clientX - startX) > 3) didDrag = true;
-    rotation = startRot + (e.touches[0].clientX - startX) * 0.45;
-    applyRotation(rotation);
-  }, { passive: false });
-  viewport.addEventListener('touchend', e => {
-    isDragging = false;
-    if (!didDrag && e.changedTouches.length > 0) {
-      const t  = e.changedTouches[0];
-      const el = document.elementFromPoint(t.clientX, t.clientY);
-      const fg = el?.closest?.('.banquet-food');
+  }
+  function onMove(e) {
+    if (!dragging) return;
+    const p  = svgPoint(e);
+    const dx = p.x - lastX;
+    lastX = p.x; lastY = p.y;
+    angVel = dx * 0.003;
+    angle += angVel;
+    applyRotation();
+    e.preventDefault();
+  }
+  function onUp() {
+    if (!dragging) return;
+    dragging = false;
+    if (Math.abs(angVel) > 0.0001) rafId = requestAnimationFrame(animate);
+  }
+
+  viewport.addEventListener('mousedown',  onDown,  { passive: false });
+  viewport.addEventListener('touchstart', onDown,  { passive: false });
+  window.addEventListener ('mousemove',   onMove,  { passive: false });
+  window.addEventListener ('touchmove',   onMove,  { passive: false });
+  window.addEventListener ('mouseup',     onUp);
+  window.addEventListener ('touchend',    onUp);
+
+  foodEls.forEach(el => {
+    el.addEventListener('click', e => {
+      const fg = e.currentTarget;
+      if (Math.abs(angVel) > 0.005) return;
       if (fg) openPopup(fg.dataset.food);
-    }
-  });
-
-  foodEls.forEach(item => {
-    item.addEventListener('click', e => {
-      if (didDrag) return;
-      e.stopPropagation();
-      openPopup(item.dataset.food);
     });
+    el.addEventListener('touchend', e => {
+      const item = e.currentTarget;
+      if (Math.abs(angVel) > 0.005) return;
+      openPopup(item.dataset.food);
+    }, { passive: true });
   });
+
+  applyRotation();
 }
 
-/* ─── LIGHTBOX ────────────────────────────────────── */
-function initLightbox() {
-  const lb         = document.getElementById('lightbox');
-  const lbImg      = document.getElementById('lbImg');
-  const lbClose    = document.getElementById('lbClose');
-  const lbBackdrop = document.getElementById('lbBackdrop');
-
-  function open(src) {
-    lbImg.src = src;
-    lb.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function close() {
-    lb.classList.remove('open');
-    document.body.style.overflow = '';
-    setTimeout(() => { lbImg.src = ''; }, 400);
-  }
-
-  document.querySelectorAll('[data-lightbox]').forEach(el => {
-    el.addEventListener('click', () => open(el.dataset.lightbox));
-  });
-  lbClose.addEventListener('click', close);
-  lbBackdrop.addEventListener('click', close);
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
-  window.addEventListener('pagehide', close);
-}
-
-/* ─── GRID CELLS ─────────────────────────────────── */
-function initGridCells() {
-  const cells        = document.querySelectorAll('.grid-cell');
-  const cellBox      = document.getElementById('cellBox');
-  const cellBoxImg   = document.getElementById('cellBoxImg');
-  const cellBoxBd    = document.getElementById('cellBoxBackdrop');
-  const cellBoxClose = document.getElementById('cellBoxClose');
-  let activeCell     = null;
-
-  function openCellBox(cell) {
-    const photo = cell.dataset.photo;
-    const rect  = cell.getBoundingClientRect();
-    activeCell  = cell;
-
-    cellBoxImg.src          = photo;
-    cellBoxImg.style.top    = rect.top    + 'px';
-    cellBoxImg.style.left   = rect.left   + 'px';
-    cellBoxImg.style.width  = rect.width  + 'px';
-    cellBoxImg.style.height = rect.height + 'px';
-
-    cellBox.classList.add('open');
-    document.body.style.overflow = 'hidden';
-
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      const pad = 40;
-      const tw  = Math.min(window.innerWidth  - pad * 2, 1100);
-      const th  = Math.min(window.innerHeight - pad * 2, 820);
-      cellBoxImg.style.top    = (window.innerHeight - th) / 2 + 'px';
-      cellBoxImg.style.left   = (window.innerWidth  - tw) / 2 + 'px';
-      cellBoxImg.style.width  = tw + 'px';
-      cellBoxImg.style.height = th + 'px';
-    }));
-  }
-
-  function closeCellBox() {
-    if (!activeCell) return;
-    const rect = activeCell.getBoundingClientRect();
-    cellBoxImg.style.top    = rect.top    + 'px';
-    cellBoxImg.style.left   = rect.left   + 'px';
-    cellBoxImg.style.width  = rect.width  + 'px';
-    cellBoxImg.style.height = rect.height + 'px';
-    setTimeout(() => {
-      cellBox.classList.remove('open');
-      document.body.style.overflow = '';
-      activeCell = null;
-      setTimeout(() => { cellBoxImg.src = ''; }, 50);
-    }, 460);
-  }
-
-  cells.forEach(cell => {
-    cell.addEventListener('click', e => { e.stopPropagation(); openCellBox(cell); });
-  });
-  cellBoxClose.addEventListener('click', closeCellBox);
-  cellBoxBd.addEventListener('click', closeCellBox);
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCellBox(); });
-}
-
-/* ─── PARALLAX ───────────────────────────────────── */
-function initParallax() {
-  if (window.matchMedia('(pointer: coarse)').matches) return;
-  const bg = document.querySelector('#s-opening .section-bg');
-  if (!bg) return;
-  document.addEventListener('mousemove', e => {
-    const x = (e.clientX / window.innerWidth  - 0.5) * 18;
-    const y = (e.clientY / window.innerHeight - 0.5) * 18;
-    bg.style.transform = `translate(${x}px,${y}px) scale(1.06)`;
-  });
+/* ─── SPOTLIGHT ───────────────────────────────────── */
+function initSpotlight() {
+  const section = document.getElementById('s-marginal');
+  if (!section) return;
+  let lit = false;
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting && !lit) {
+      setTimeout(() => {
+        section.classList.add('spotlight-active');
+        lit = true;
+      }, 1000);
+    }
+  }, { threshold: 0.5 });
+  obs.observe(section);
 }
