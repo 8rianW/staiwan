@@ -455,6 +455,8 @@ function initBanquet() {
   function onDown(e) {
     const tgt = e.target.closest('.banquet-food');
     if (tgt) return;
+    const hint = document.getElementById('rotateHint');
+    if (hint) hint.classList.add('hidden');
     dragging = true;
     angVel   = 0;
     if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
