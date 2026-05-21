@@ -1285,10 +1285,33 @@ footer p {
   font-weight: 200;
 }
 .banquet-drag-hint {
-  font-size: 10px;
-  letter-spacing: 0.25em;
+  font-size: 9px;
+  letter-spacing: 0.35em;
   color: var(--dim);
   font-family: var(--sans);
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+.hint-dash-ring {
+  animation: dashSpin 5s linear infinite;
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+@keyframes dashSpin {
+  to { stroke-dashoffset: -201; }
+}
+#rotateHint {
+  animation: hintBreath 3s ease-in-out infinite;
+  transition: opacity 0.9s ease;
+}
+#rotateHint.hidden {
+  opacity: 0;
+  pointer-events: none;
+  animation: none;
+}
+@keyframes hintBreath {
+  0%, 100% { opacity: 0.45; }
+  50%       { opacity: 0.9; }
 }
 .banquet-viewport {
   width: min(640px, 100vw);
