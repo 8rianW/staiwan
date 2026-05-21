@@ -320,8 +320,12 @@
             <stop offset="55%"  stop-color="#ffffff" stop-opacity="0.03"/>
             <stop offset="100%" stop-color="#000000" stop-opacity="0.14"/>
           </radialGradient>
+          <clipPath id="tableClip">
+            <circle cx="400" cy="0" r="420"/>
+          </clipPath>
         </defs>
 
+        <g clip-path="url(#tableClip)">
         <!-- Rotating table surface, pivots around top-centre (400, 0) -->
         <g id="banquetRotate">
           <circle cx="400" cy="0" r="420" fill="url(#woodBase)"/>
@@ -347,8 +351,8 @@
 
         <!-- ─ Food items (JS sets translate; items always stay upright) ─ -->
 
-        <!-- θ=15°  蚵仔煎 Oyster Omelette — initial (690, 78) -->
-        <g class="banquet-food" data-food="oyster" data-theta="15" transform="translate(690,78)">
+        <!-- θ=20°  蚵仔煎 Oyster Omelette -->
+        <g class="banquet-food" data-food="oyster" data-theta="20" transform="translate(682,103)">
           <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
           <ellipse cx="0" cy="-3" rx="30" ry="17" fill="#e8c060" opacity="0.88"/>
           <ellipse cx="-9" cy="-5" rx="6" ry="4" fill="#4a4a4a" opacity="0.72"/>
@@ -357,8 +361,8 @@
           <path d="M-24 -3 Q0 10 24 -3" stroke="#c8a860" stroke-width="1" fill="none" opacity="0.5"/>
         </g>
 
-        <!-- θ=50°  鹹酥雞 Taiwanese Fried Chicken — initial (593, 230) -->
-        <g class="banquet-food" data-food="chicken" data-theta="50" transform="translate(593,230)">
+        <!-- θ=48°  鹹酥雞 Taiwanese Fried Chicken -->
+        <g class="banquet-food" data-food="chicken" data-theta="48" transform="translate(601,223)">
           <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
           <ellipse cx="-10" cy="-6" rx="14" ry="9" fill="#c27820" opacity="0.88"/>
           <ellipse cx="9" cy="-7" rx="12" ry="8" fill="#d08020" opacity="0.85"/>
@@ -366,8 +370,8 @@
           <ellipse cx="-13" cy="7" rx="5" ry="9" fill="#3a7a30" opacity="0.6"/>
         </g>
 
-        <!-- θ=80°  割包 Gua Bao — initial (452, 295) -->
-        <g class="banquet-food" data-food="guabao" data-theta="80" transform="translate(452,295)">
+        <!-- θ=76°  割包 Gua Bao -->
+        <g class="banquet-food" data-food="guabao" data-theta="76" transform="translate(473,291)">
           <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
           <ellipse cx="0" cy="-2" rx="32" ry="20" fill="#f5f0e0" stroke="#d4b890" stroke-width="1.5"/>
           <path d="M-32 -2 Q0 8 32 -2" stroke="#d4b890" stroke-width="1.5" fill="none"/>
@@ -375,8 +379,8 @@
           <ellipse cx="-6" cy="2" rx="6" ry="3" fill="#f5e0a0" opacity="0.7"/>
         </g>
 
-        <!-- θ=100° 滷肉飯 Lu Rou Fan — initial (348, 295) -->
-        <g class="banquet-food" data-food="luroufan" data-theta="100" transform="translate(348,295)">
+        <!-- θ=104° 滷肉飯 Lu Rou Fan -->
+        <g class="banquet-food" data-food="luroufan" data-theta="104" transform="translate(327,291)">
           <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
           <ellipse cx="0" cy="8" rx="28" ry="10" fill="#c8a060"/>
           <ellipse cx="0" cy="0" rx="28" ry="16" fill="#e8d8a0" stroke="#b8904a" stroke-width="1.5"/>
@@ -385,8 +389,8 @@
           <ellipse cx="-4" cy="-5" rx="5" ry="3.5" fill="#f0d890" opacity="0.7"/>
         </g>
 
-        <!-- θ=130° 牛肉麵 Beef Noodle Soup — initial (207, 230) -->
-        <g class="banquet-food" data-food="beefnoodle" data-theta="130" transform="translate(207,230)">
+        <!-- θ=132° 牛肉麵 Beef Noodle Soup -->
+        <g class="banquet-food" data-food="beefnoodle" data-theta="132" transform="translate(199,223)">
           <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
           <ellipse cx="0" cy="8" rx="28" ry="10" fill="#c09050"/>
           <ellipse cx="0" cy="0" rx="28" ry="17" fill="#c8a060" stroke="#9b7040" stroke-width="1.5"/>
@@ -395,8 +399,8 @@
           <path d="M-16 2 Q-6 -5 4 2 Q12 8 16 2" stroke="#f5f0e0" stroke-width="1.5" fill="none" opacity="0.7"/>
         </g>
 
-        <!-- θ=165° 珍珠奶茶 Bubble Tea — initial (110, 78) -->
-        <g class="banquet-food" data-food="bubbletea" data-theta="165" transform="translate(110,78)">
+        <!-- θ=160° 珍珠奶茶 Bubble Tea -->
+        <g class="banquet-food" data-food="bubbletea" data-theta="160" transform="translate(118,103)">
           <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
           <rect x="-16" y="-22" width="32" height="36" rx="4" fill="#d4c898" opacity="0.85"/>
           <rect x="-13" y="-18" width="26" height="22" rx="2" fill="#7a4810" opacity="0.65"/>
@@ -406,7 +410,7 @@
           <rect x="3" y="-32" width="4" height="44" rx="2" fill="#e0b060" opacity="0.9"/>
         </g>
 
-        <!-- θ=−30° 大腸麵線 — hidden above viewBox, initial (660, −150) -->
+        <!-- θ=−30° 大腸麵線 — hidden above viewBox -->
         <g class="banquet-food" data-food="miansian" data-theta="-30" transform="translate(660,-150)">
           <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
           <ellipse cx="0" cy="8" rx="28" ry="10" fill="#c09050"/>
@@ -416,7 +420,7 @@
           <ellipse cx="-2" cy="-6" rx="8" ry="4" fill="#4a3020" opacity="0.6"/>
         </g>
 
-        <!-- θ=−70° 棺材板 — hidden above viewBox, initial (503, −282) -->
+        <!-- θ=−70° 棺材板 — hidden above viewBox -->
         <g class="banquet-food" data-food="coffin" data-theta="-70" transform="translate(503,-282)">
           <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
           <rect x="-24" y="-16" width="48" height="32" rx="4" fill="#c89010" opacity="0.88"/>
@@ -425,7 +429,7 @@
           <path d="M-20 -12 L20 -12 L20 16 L-20 16 Z" stroke="#a06e08" stroke-width="1.5" fill="none"/>
         </g>
 
-        <!-- θ=210° 臭豆腐 — hidden above viewBox, initial (140, −150) -->
+        <!-- θ=210° 臭豆腐 — hidden above viewBox -->
         <g class="banquet-food" data-food="stinkytofu" data-theta="210" transform="translate(140,-150)">
           <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
           <ellipse cx="0" cy="10" rx="28" ry="8" fill="#c0a070" opacity="0.7"/>
@@ -434,7 +438,7 @@
           <rect x="-8" y="-3" width="16" height="14" rx="2" fill="#6a4018" opacity="0.78"/>
         </g>
 
-        <!-- θ=250° 肉圓 — hidden above viewBox, initial (297, −282) -->
+        <!-- θ=250° 肉圓 — hidden above viewBox -->
         <g class="banquet-food" data-food="bawan" data-theta="250" transform="translate(297,-282)">
           <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
           <ellipse cx="0" cy="0" rx="30" ry="21" fill="#f0ece0" stroke="#b8a090" stroke-width="2"/>
@@ -442,6 +446,7 @@
           <ellipse cx="-4" cy="-2" rx="10" ry="6" fill="#7a3a28" opacity="0.6"/>
         </g>
 
+        </g><!-- end tableClip -->
       </svg>
     </div>
   </div>
