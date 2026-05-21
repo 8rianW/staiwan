@@ -280,7 +280,7 @@ function initChaos() {
   let visible = false;
   const vObs = new IntersectionObserver(entries => {
     visible = entries[0].isIntersecting;
-    if (visible && !animId) loop();
+    if (visible) { resize(); if (!animId) loop(); }
   }, { threshold: 0.1 });
   if (chaosSection) vObs.observe(chaosSection);
 
@@ -327,7 +327,7 @@ function initBanquet() {
     chicken:    { zh: '鹹酥雞',  en: 'Taiwanese Fried Chicken', desc: '香酥的雞塊與九層塔一同入鍋炸製，鹹香酥脆，是台灣宵夜文化的靈魂小吃。',               wiki: 'Taiwanese_fried_chicken', fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Yansuj%C3%AD.jpg/640px-Yansuj%C3%AD.jpg' },
     guabao:     { zh: '割包',    en: 'Gua Bao',                 desc: '鬆軟白麵包夾入滷製五花肉、花生粉與酸菜，軟嫩酥脆並存，被譽為「台灣漢堡」。',           wiki: 'Gua_bao',                 fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Gua_bao_2.jpg/640px-Gua_bao_2.jpg' },
     luroufan:   { zh: '滷肉飯',  en: 'Lu Rou Fan',              desc: '肥瘦相間的豬五花以醬油、米酒、冰糖慢燉後澆在白飯上，是台灣家常滋味的最高代表。',       wiki: 'Lu_rou_fan',              fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Luroufan.jpg/640px-Luroufan.jpg' },
-    beefnoodle: { zh: '牛肉麵',  en: 'Beef Noodle Soup',        desc: '以紅燒湯底燉煮軟爛牛腱，搭配彈牙麵條，是台灣最驕傲的國民美食，每年舉辦比賽選出最佳口味。', wiki: 'Beef_noodle_soup',        fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Taiwan_beef_noodle_soup.jpg/640px-Taiwan_beef_noodle_soup.jpg', imgOverride: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Beef_noodle_soup_by_ayustety_in_Taipei.jpg/640px-Beef_noodle_soup_by_ayustety_in_Taipei.jpg' },
+    beefnoodle: { zh: '牛肉麵',  en: 'Beef Noodle Soup',        desc: '以紅燒湯底燉煮軟爛牛腱，搭配彈牙麵條，是台灣最驕傲的國民美食，每年舉辦比賽選出最佳口味。', wiki: 'Beef_noodle_soup',        fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Taiwan_beef_noodle_soup.jpg/640px-Taiwan_beef_noodle_soup.jpg', imgOverride: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Taiwan_beef_noodle_soup.jpg/640px-Taiwan_beef_noodle_soup.jpg' },
     bubbletea:  { zh: '珍珠奶茶', en: 'Bubble Tea',             desc: '1980年代發源於台灣台中，Q彈珍珠搭配奶茶，是台灣對世界飲料文化最大的貢獻。',           wiki: 'Bubble_tea',              fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Bubble_tea_at_Fantaasia_2015.jpg/640px-Bubble_tea_at_Fantaasia_2015.jpg' },
     miansian:   { zh: '大腸麵線', en: 'Oyster Vermicelli',      desc: '以豬大腸與蚵仔燉入勾芡的麵線湯中，口感滑順，是廟會與夜市中最撫慰人心的平民小吃。',   wiki: 'Oyster_vermicelli',       fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Mian_xian.jpg/640px-Mian_xian.jpg' },
     coffin:     { zh: '棺材板',  en: 'Coffin Bread',            desc: '發源於台南，以厚片土司挖空後填入濃郁奶油燉料，外酥內滑，名稱怪異卻深受喜愛。',       wiki: 'Coffin_bread',            fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Coffin_bread.jpg/640px-Coffin_bread.jpg' },
@@ -416,7 +416,7 @@ function initBanquet() {
   /* ── rotation ── */
   const SVG_W = 800, SVG_H = 430;
   const PIVOT_X = 400, PIVOT_Y = 0;
-  const RADIUS  = 380;
+  const RADIUS  = 300;
   let   angle   = 0;
   let   dragging = false, lastX = 0, lastY = 0, angVel = 0;
 
@@ -424,8 +424,8 @@ function initBanquet() {
     foodEls.forEach(el => {
       const theta = (parseFloat(el.dataset.theta) || 0) * Math.PI / 180;
       const a = (angle + theta);
-      const x = PIVOT_X + RADIUS * Math.sin(a);
-      const y = PIVOT_Y + RADIUS * (1 - Math.cos(a));
+      const x = PIVOT_X + RADIUS * Math.cos(a);
+      const y = PIVOT_Y + RADIUS * Math.sin(a);
       el.setAttribute('transform', `translate(${x.toFixed(1)},${y.toFixed(1)})`);
     });
   }
