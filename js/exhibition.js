@@ -467,7 +467,7 @@ function initBanquet() {
     const p  = svgPoint(e);
     const dx = p.x - lastX;
     lastX = p.x; lastY = p.y;
-    angVel = dx * 0.003;
+    angVel = -dx * 0.003;
     angle += angVel;
     applyRotation();
     e.preventDefault();
