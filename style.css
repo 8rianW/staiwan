@@ -1211,7 +1211,7 @@ footer p {
   z-index: 1;
   pointer-events: none;
   background: url(./_DSC9382.jpg) center / cover no-repeat;
-  filter: brightness(3.2) contrast(1.08) saturate(0.85);
+  filter: brightness(1.8) contrast(1.04) saturate(0.9);
   clip-path: circle(138px at 26% 67%);
   opacity: 0;
   transition: opacity 1.8s ease;
