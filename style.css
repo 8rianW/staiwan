@@ -1216,22 +1216,25 @@ footer p {
   opacity: 0;
   transition: opacity 1.8s ease;
 }
-.marginal-lens-ring {
+.marginal-lens-svg {
   position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   z-index: 2;
   pointer-events: none;
-  width: 276px;
-  height: 276px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(255,255,255,0.28);
-  left: calc(26% - 138px);
-  top: calc(67% - 138px);
-  box-shadow: 0 0 24px 4px rgba(255,255,255,0.08);
   opacity: 0;
   transition: opacity 1.8s ease;
 }
 #s-marginal.spotlight-active .marginal-spotlight,
-#s-marginal.spotlight-active .marginal-lens-ring { opacity: 1; }
+#s-marginal.spotlight-active .marginal-lens-svg { opacity: 1; }
+#s-marginal.spotlight-active:not(.ring-morphed) #marginalRingPath {
+  animation: ringPulse 3s ease-in-out infinite;
+}
+@keyframes ringPulse {
+  0%, 100% { stroke-opacity: 0.45; }
+  50%       { stroke-opacity: 1; }
+}
 
 /* ─── FREEDOM ORBS ─────────────────────────────────────── */
 .freedom-orbs {

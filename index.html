@@ -188,7 +188,15 @@
 <section id="s-marginal" class="section" data-name="Marginalization">
   <div class="section-bg" style="background-image:url(./_DSC9382.jpg)"></div>
   <div class="marginal-spotlight" aria-hidden="true"></div>
-  <div class="marginal-lens-ring" aria-hidden="true"></div>
+  <svg id="marginalRingSvg" class="marginal-lens-svg" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="marginalGlow" x="-30%" y="-30%" width="160%" height="160%">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+    <path id="marginalRingPath" fill="none" stroke="#2F5D9F" stroke-width="1.8" filter="url(#marginalGlow)"/>
+  </svg>
   <div class="marginal-content">
     <div class="taiwan-svg-wrap reveal-up">
       <svg class="taiwan-svg" viewBox="0 0 180 400" xmlns="http://www.w3.org/2000/svg">

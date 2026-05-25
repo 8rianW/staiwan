@@ -237,60 +237,99 @@ function initChaos() {
   const canvas = document.getElementById('chaosCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  let W, H, particles = [], animId;
-  const COLORS = ['#B23A3A','#E8721C','#F5C842','#3A7D44','#2F5D9F','#7B4F9E','#F0EDE6'];
+  const COLORS = ['#B23A3A','#2F5D9F','#3A7D44','#C9A84C','#7B4F9E'];
+  let particles = [], settled = false, W, H, animId = null;
 
   function resize() {
     W = canvas.width  = canvas.offsetWidth;
     H = canvas.height = canvas.offsetHeight;
   }
-  window.addEventListener('resize', resize);
+  window.addEventListener('resize', resize, { passive: true });
   resize();
 
   class Particle {
     constructor() { this.reset(true); }
-    reset(initial = false) {
-      this.x  = Math.random() * W;
-      this.y  = initial ? Math.random() * H : H + 10;
-      this.vx = (Math.random() - 0.5) * 0.6;
-      this.vy = -(Math.random() * 1.2 + 0.4);
-      this.r  = Math.random() * 2.5 + 0.5;
+    reset(rand) {
+      this.x     = rand ? Math.random() * W : W / 2;
+      this.y     = rand ? Math.random() * H : H / 2;
+      this.vx    = (Math.random() - .5) * (settled ? 1.5 : 3.5);
+      this.vy    = (Math.random() - .5) * (settled ? 1.5 : 3.5);
+      this.rad   = Math.random() * 2 + 1;
+      this.alpha = Math.random() * .6 + .3;
       this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
-      this.alpha = Math.random() * 0.6 + 0.2;
-      this.life  = 0;
-      this.maxLife = Math.random() * 200 + 100;
+      this.life  = Math.random() * 200 + 100;
+      this.age   = 0;
     }
     update() {
-      this.x += this.vx; this.y += this.vy; this.life++;
-      this.vx += (Math.random() - 0.5) * 0.04;
-      if (this.y < -10 || this.life > this.maxLife) this.reset();
+      if (settled) {
+        this.vx += (Math.sin(this.y * .012 + Date.now() * .0005) - this.vx) * .06;
+        this.vy += (Math.cos(this.x * .012 + Date.now() * .0005) - this.vy) * .06;
+      } else {
+        this.vx += (Math.random() - .5) * .3;
+        this.vy += (Math.random() - .5) * .3;
+      }
+      this.x += this.vx; this.y += this.vy; this.age++;
+      if (this.age > this.life || this.x < -10 || this.x > W+10 || this.y < -10 || this.y > H+10)
+        this.reset(false);
     }
     draw() {
-      ctx.globalAlpha = this.alpha * (1 - this.life / this.maxLife);
-      ctx.fillStyle = this.color;
       ctx.beginPath();
-      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+      ctx.arc(this.x, this.y, this.rad, 0, Math.PI * 2);
+      ctx.fillStyle = this.color + Math.floor(this.alpha * 255).toString(16).padStart(2, '0');
       ctx.fill();
     }
   }
 
-  for (let i = 0; i < 180; i++) particles.push(new Particle());
+  for (let i = 0; i < 200; i++) particles.push(new Particle());
+
+  let visible = false, settleTimer = null;
+  const isMobile = window.matchMedia('(pointer: coarse)').matches;
+  let autoBurst = null;
 
   const chaosSection = document.getElementById('s-chaos');
-  let visible = false;
   const vObs = new IntersectionObserver(entries => {
     visible = entries[0].isIntersecting;
-    if (visible) { resize(); if (!animId) loop(); }
+    if (visible) {
+      resize();
+      settled = false;
+      if (settleTimer) clearTimeout(settleTimer);
+      settleTimer = setTimeout(() => { settled = true; }, 1800);
+      if (!animId) loop();
+      if (isMobile && !autoBurst) {
+        autoBurst = setInterval(() => {
+          if (W && H) burst(W * .2 + Math.random() * W * .6, H * .2 + Math.random() * H * .6, 14);
+        }, 2200);
+      }
+    } else {
+      settled = false;
+      if (settleTimer) clearTimeout(settleTimer);
+      if (autoBurst) { clearInterval(autoBurst); autoBurst = null; }
+    }
   }, { threshold: 0.1 });
   if (chaosSection) vObs.observe(chaosSection);
 
   function loop() {
     if (!visible) { animId = null; return; }
     animId = requestAnimationFrame(loop);
-    ctx.clearRect(0, 0, W, H);
-    ctx.globalAlpha = 1;
+    ctx.fillStyle = 'rgba(0,0,0,0.18)';
+    ctx.fillRect(0, 0, W, H);
     particles.forEach(p => { p.update(); p.draw(); });
-    ctx.globalAlpha = 1;
+  }
+
+  function burst(bx, by, count) {
+    for (let i = 0; i < count; i++) {
+      const p = new Particle();
+      p.x = bx; p.y = by;
+      p.vx = (Math.random() - .5) * 7;
+      p.vy = (Math.random() - .5) * 7;
+      p.rad = Math.random() * 3 + 1;
+      particles.push(p);
+    }
+    if (particles.length > 320) particles.splice(0, particles.length - 320);
+  }
+
+  if (!isMobile) {
+    canvas.addEventListener('click', e => burst(e.offsetX, e.offsetY, 20));
   }
 }
 
@@ -452,38 +491,56 @@ function initBanquet() {
     return pt.matrixTransform(svg.getScreenCTM().inverse());
   }
 
+  let touchStartX = 0, touchStartY = 0, touchDir = null;
+
   function onDown(e) {
     const tgt = e.target.closest('.banquet-food');
     if (tgt) return;
     const hint = document.getElementById('rotateHint');
     if (hint) hint.classList.add('hidden');
     dragging = true;
+    touchDir = null;
     angVel   = 0;
     if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
     const p = svgPoint(e);
     lastX = p.x; lastY = p.y;
-    e.preventDefault();
+    if (e.touches) {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      window.addEventListener('touchmove', onMove, { passive: false });
+    } else {
+      e.preventDefault();
+    }
   }
   function onMove(e) {
     if (!dragging) return;
+    if (e.touches) {
+      if (touchDir === null) {
+        const dx = Math.abs(e.touches[0].clientX - touchStartX);
+        const dy = Math.abs(e.touches[0].clientY - touchStartY);
+        if (dx + dy < 8) return;
+        touchDir = dx >= dy ? 'h' : 'v';
+      }
+      if (touchDir === 'v') { dragging = false; window.removeEventListener('touchmove', onMove); return; }
+    }
     const p  = svgPoint(e);
     const dx = p.x - lastX;
     lastX = p.x; lastY = p.y;
     angVel = -dx * 0.003;
     angle += angVel;
     applyRotation();
-    e.preventDefault();
+    if (e.cancelable) e.preventDefault();
   }
   function onUp() {
     if (!dragging) return;
     dragging = false;
+    window.removeEventListener('touchmove', onMove);
     if (Math.abs(angVel) > 0.0001) rafId = requestAnimationFrame(animate);
   }
 
   viewport.addEventListener('mousedown',  onDown,  { passive: false });
-  viewport.addEventListener('touchstart', onDown,  { passive: false });
+  viewport.addEventListener('touchstart', onDown,  { passive: true });
   window.addEventListener ('mousemove',   onMove,  { passive: false });
-  window.addEventListener ('touchmove',   onMove,  { passive: false });
   window.addEventListener ('mouseup',     onUp);
   window.addEventListener ('touchend',    onUp);
 
@@ -505,16 +562,84 @@ function initBanquet() {
 
 /* ─── SPOTLIGHT ───────────────────────────────────── */
 function initSpotlight() {
-  const section = document.getElementById('s-marginal');
+  const section  = document.getElementById('s-marginal');
+  const ringPath = document.getElementById('marginalRingPath');
   if (!section) return;
-  let lit = false;
+
+  let lit = false, morphed = false, morphing = false;
+  const RING_R = 138, RING_N = 120;
+
+  function getRingCenter() {
+    return {
+      cx: (section.offsetWidth  || window.innerWidth)  * 0.26,
+      cy: (section.offsetHeight || window.innerHeight) * 0.67,
+    };
+  }
+
+  function drawRing() {
+    if (!ringPath) return;
+    const { cx, cy } = getRingCenter();
+    const pts = Array.from({ length: RING_N }, (_, i) => {
+      const a = (i / RING_N) * Math.PI * 2;
+      const j = (Math.sin(i * 2.1) + Math.sin(i * 3.7)) * 5;
+      return [(cx + (RING_R + j) * Math.cos(a)).toFixed(1),
+              (cy + (RING_R + j) * Math.sin(a)).toFixed(1)];
+    });
+    ringPath.setAttribute('d', 'M' + pts.map(p => p.join(',')).join('L') + 'Z');
+  }
+
+  drawRing();
+  window.addEventListener('resize', () => { if (!morphed) drawRing(); }, { passive: true });
+
   const obs = new IntersectionObserver(entries => {
     if (entries[0].isIntersecting && !lit) {
-      setTimeout(() => {
-        section.classList.add('spotlight-active');
-        lit = true;
-      }, 1000);
+      setTimeout(() => { section.classList.add('spotlight-active'); lit = true; }, 1000);
     }
   }, { threshold: 0.5 });
   obs.observe(section);
+
+  section.addEventListener('click', e => {
+    if (e.target.closest('.marginal-content')) return;
+    if (!lit || morphing || morphed) return;
+    const tw = document.getElementById('taiwanPath');
+    if (!tw) return;
+    morphing = true;
+
+    const { cx, cy } = getRingCenter();
+
+    const circlePts = Array.from({ length: RING_N }, (_, i) => {
+      const a = (i / RING_N) * Math.PI * 2;
+      const j = (Math.sin(i * 2.1) + Math.sin(i * 3.7)) * 5;
+      return [cx + (RING_R + j) * Math.cos(a), cy + (RING_R + j) * Math.sin(a)];
+    });
+
+    const pathLen = tw.getTotalLength();
+    const rawPts  = Array.from({ length: RING_N }, (_, i) => {
+      const pt = tw.getPointAtLength(i / RING_N * pathLen);
+      return [pt.x, pt.y];
+    });
+
+    const xs = rawPts.map(p => p[0]), ys = rawPts.map(p => p[1]);
+    const twCx = (Math.min(...xs) + Math.max(...xs)) / 2;
+    const twCy = (Math.min(...ys) + Math.max(...ys)) / 2;
+    const sc   = (RING_R * 2) / (Math.max(...ys) - Math.min(...ys));
+
+    const taiwanPts = rawPts.map(p => [
+      cx + (p[0] - twCx) * sc,
+      cy + (p[1] - twCy) * sc,
+    ]);
+
+    const dur = 1400, t0 = performance.now();
+    (function step(now) {
+      const t    = Math.min((now - t0) / dur, 1);
+      const ease = t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3) / 2;
+      const pts  = circlePts.map((c, i) => [
+        (c[0] + (taiwanPts[i][0] - c[0]) * ease).toFixed(1),
+        (c[1] + (taiwanPts[i][1] - c[1]) * ease).toFixed(1),
+      ]);
+      if (ringPath) ringPath.setAttribute('d', 'M' + pts.map(p => p.join(',')).join('L') + 'Z');
+      if (t < 1) requestAnimationFrame(step);
+      else { morphed = true; morphing = false; section.classList.add('ring-morphed'); }
+    })(t0);
+  });
 }
