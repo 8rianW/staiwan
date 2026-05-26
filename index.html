@@ -51,20 +51,30 @@
 
 <!-- ─── OPENING ──────────────────────────────────── -->
 <section id="s-opening" class="section" data-name="Opening">
-  <div class="section-bg" style="background-image:url(./_DSC9559.jpg)"></div>
+  <div class="section-bg" id="openingBg" style="background-image:url(./_DSC9559.jpg)"></div>
   <div class="texture-overlay"></div>
-  <div class="opening-content">
-    <div class="opening-eyebrow reveal">Online Exhibition</div>
-    <h1 class="opening-title">
-      <span class="opening-zh reveal" data-delay="0.2">台灣性感</span>
-      <span class="opening-en reveal" data-delay="0.5">Taiwan Sensuality</span>
-    </h1>
-    <p class="opening-tagline reveal" data-delay="0.8">
-      Taiwan was never missing.<br>It was always becoming.
-    </p>
-    <div class="opening-scroll reveal" data-delay="1.2">
-      <span>Scroll</span>
-      <div class="opening-scroll-line"></div>
+  <div class="opening-wrapper">
+    <div class="opening-content">
+      <div class="opening-eyebrow reveal">Online Exhibition</div>
+      <h1 class="opening-title">
+        <span class="opening-zh reveal" data-delay="0.2">台灣性感</span>
+        <span class="opening-en reveal" data-delay="0.5">Taiwan Sensuality</span>
+      </h1>
+      <p class="opening-tagline reveal" data-delay="0.8">
+        Taiwan was never missing.<br>It was always becoming.
+      </p>
+      <div class="opening-scroll reveal" data-delay="1.2">
+        <span>Scroll</span>
+        <div class="opening-scroll-line"></div>
+      </div>
+    </div>
+    <div class="opening-photo-col" aria-hidden="true">
+      <div class="op-photo op-photo-a reveal-photo" data-delay="0.4">
+        <img src="./_DSC7642.jpg" alt="台灣的溫暖" loading="eager">
+      </div>
+      <div class="op-photo op-photo-b reveal-photo" data-delay="0.7">
+        <img src="./_DSC9337.jpg" alt="台灣的自由" loading="eager">
+      </div>
     </div>
   </div>
 </section>
@@ -524,6 +534,39 @@
 <footer>
   <p>© Taiwan Sensuality · 王昱韋 · 希望人與自然土地永共存</p>
 </footer>
+<!-- ─── LIGHTBOX ─────────────────────────────────── -->
+<div id="lightbox">
+  <div class="lb-backdrop" id="lbBackdrop"></div>
+  <div class="lb-container">
+    <img class="lb-img" id="lbImg" src="" alt="">
+    <p class="lb-caption" id="lbCaption"></p>
+  </div>
+  <button class="lb-close" id="lbClose">×</button>
+</div>
+
+<!-- ─── CELL LIGHTBOX ─────────────────────────────── -->
+<div id="cellBox">
+  <div id="cellBoxBackdrop"></div>
+  <img id="cellBoxImg" src="" alt="">
+  <p id="cellBoxCaption"></p>
+  <button id="cellBoxClose">×</button>
+</div>
+
+<!-- ─── BANQUET POPUP ─────────────────────────────── -->
+<div id="banquetPopup">
+  <div id="bp-backdrop"></div>
+  <div id="bp-card">
+    <div id="bp-photo-wrap">
+      <img id="bp-photo" src="" alt="">
+    </div>
+    <div id="bp-info">
+      <div id="bp-name"></div>
+      <p id="bp-desc"></p>
+    </div>
+    <button id="bp-close">×</button>
+  </div>
+</div>
+
 <script src="js/exhibition.js"></script>
 </body>
 </html>

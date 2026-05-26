@@ -87,12 +87,30 @@ function initAll() {
   }, { threshold: 0.05 });
   document.querySelectorAll('.warmth-photo,.gr-item,.cu-item').forEach(el => fbObs.observe(el));
 
+  initParallax();
   initCrisis();
   initSyntax();
   initChaos();
   initLightbox();
   initBanquet();
   initSpotlight();
+}
+
+/* ─── PARALLAX ────────────────────────────────────── */
+function initParallax() {
+  const bg = document.getElementById('openingBg');
+  if (!bg || window.matchMedia('(pointer: coarse)').matches) return;
+  let tX = 0, tY = 0, cX = 0, cY = 0;
+  document.addEventListener('mousemove', e => {
+    tX = (e.clientX / window.innerWidth  - 0.5) * -22;
+    tY = (e.clientY / window.innerHeight - 0.5) * -22;
+  }, { passive: true });
+  (function lerp() {
+    cX += (tX - cX) * 0.06;
+    cY += (tY - cY) * 0.06;
+    bg.style.transform = `translate(${cX.toFixed(2)}px,${cY.toFixed(2)}px)`;
+    requestAnimationFrame(lerp);
+  })();
 }
 
 /* ─── IDENTITY CRISIS ─────────────────────────────── */
@@ -112,6 +130,11 @@ function initCrisis() {
     cell.classList.add('active-cell');
     const photo = cell.dataset.photo;
     if (!photo) return;
+    const capEl = document.getElementById('cellBoxCaption');
+    if (capEl) {
+      const descP = cell.querySelector('.gc-desc p');
+      capEl.textContent = descP ? descP.textContent : '';
+    }
     const rect = cell.getBoundingClientRect();
     cellBoxImg.style.cssText = `top:${rect.top}px;left:${rect.left}px;width:${rect.width}px;height:${rect.height}px;opacity:0;`;
     cellBoxImg.src = photo;
@@ -131,6 +154,8 @@ function initCrisis() {
     const rect = cell.getBoundingClientRect();
     cellBoxImg.style.cssText = `top:${rect.top}px;left:${rect.left}px;width:${rect.width}px;height:${rect.height}px;opacity:0;`;
     cellBox.classList.remove('open');
+    const capEl = document.getElementById('cellBoxCaption');
+    if (capEl) capEl.textContent = '';
     setTimeout(() => { cell.classList.remove('active-cell'); if (activeCell === cell) activeCell = null; }, 480);
   }
 
@@ -156,18 +181,12 @@ function initSyntax() {
 
   const TAIWAN = new Set(['T','A','I','W','A','N']);
   const PAIRS = [
-    ['PAIN',   'PLAIN'],
-    ['WAR',    'WARM'],
-    ['WAIT',   'AWAIT'],
-    ['TAN',    'TITAN'],
-    ['TRAIN',  'TAIWAN'],
-    ['WANT',   'IANT'],
-    ['RAIN',   'TRAIN'],
-    ['WIN',    'TWIN'],
-    ['ANTI',   'AINT'],
-    ['TWIN',   'TWAIN'],
-    ['WAIN',   'TWAIN'],
-    ['AINT',   'AINT'],
+    ['PAIN',  'PAINT'],   // 痛苦→彩繪  (+T from TAIWAN)
+    ['RAIN',  'TRAIN'],   // 阻礙→成長  (+T from TAIWAN)
+    ['ILL',   'WILL'],    // 病弱→意志  (+W from TAIWAN)
+    ['WAIT',  'AWAIT'],   // 苦等→期待  (+A from TAIWAN)
+    ['WIN',   'TWIN'],    // 孤勝→並肩  (+T from TAIWAN)
+    ['WAIN',  'TWAIN'],   // 重擔→二元  (+T from TAIWAN)
   ];
   let idx = 0;
 
@@ -339,11 +358,14 @@ function initLightbox() {
   const lbImg   = document.getElementById('lbImg');
   const lbClose = document.getElementById('lbClose');
   const lbBd    = document.getElementById('lbBackdrop');
+  const lbCap   = document.getElementById('lbCaption');
   if (!lb) return;
 
   document.querySelectorAll('[data-lightbox]').forEach(el => {
     el.addEventListener('click', () => {
       lbImg.src = el.dataset.lightbox;
+      const img = el.querySelector('img');
+      if (lbCap) lbCap.textContent = img?.alt || el.dataset.caption || '';
       lb.classList.add('open');
       document.body.style.overflow = 'hidden';
     });
@@ -397,10 +419,8 @@ function initBanquet() {
     popup.classList.add('open');
     document.body.style.overflow = 'hidden';
 
-    // 0. Direct override — skip all API lookups
     if (food.imgOverride) { showPhoto(food.imgOverride); return; }
 
-    // 1. Wikipedia REST summary API
     try {
       const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(food.wiki)}`);
       if (res.ok) {
@@ -410,7 +430,6 @@ function initBanquet() {
       }
     } catch (_) {}
 
-    // 2. Wikipedia action API
     try {
       const title = encodeURIComponent(food.wiki.replace(/_/g, ' '));
       const res  = await fetch(`https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&titles=${title}&piprop=thumbnail&pithumbsize=640&redirects=1&format=json&origin=*`);
@@ -420,7 +439,6 @@ function initBanquet() {
       if (src) { showPhoto(src); return; }
     } catch (_) {}
 
-    // 3. Wikimedia Commons search (try English name, then wiki title)
     for (const q of [food.en, food.wiki.replace(/_/g, ' ')]) {
       try {
         const res = await fetch(`https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrnamespace=6&gsrsearch=${encodeURIComponent(q)}&prop=imageinfo&iiprop=url&iiurlwidth=640&gsrlimit=8&format=json&origin=*`);
@@ -437,7 +455,6 @@ function initBanquet() {
       } catch (_) {}
     }
 
-    // 4. Hardcoded last-resort fallback
     if (food.fallback) showPhoto(food.fallback);
   }
 
@@ -452,7 +469,6 @@ function initBanquet() {
   if (bpBd)    bpBd.addEventListener('click', closePopup);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closePopup(); });
 
-  /* ── rotation ── */
   const SVG_W = 800, SVG_H = 430;
   const PIVOT_X = 400, PIVOT_Y = 0;
   const RADIUS  = 300;
@@ -566,7 +582,7 @@ function initSpotlight() {
   const ringPath = document.getElementById('marginalRingPath');
   if (!section) return;
 
-  let lit = false, morphed = false, morphing = false;
+  let lit = false, morphed = false, morphing = false, ringAnimId = null;
   const RING_R = 138, RING_N = 120;
 
   function getRingCenter() {
@@ -576,7 +592,7 @@ function initSpotlight() {
     };
   }
 
-  function drawRing() {
+  function drawStaticRing() {
     if (!ringPath) return;
     const { cx, cy } = getRingCenter();
     const pts = Array.from({ length: RING_N }, (_, i) => {
@@ -588,12 +604,40 @@ function initSpotlight() {
     ringPath.setAttribute('d', 'M' + pts.map(p => p.join(',')).join('L') + 'Z');
   }
 
-  drawRing();
-  window.addEventListener('resize', () => { if (!morphed) drawRing(); }, { passive: true });
+  function startRingAnim() {
+    if (ringAnimId || morphed || morphing) return;
+    function frame(ts) {
+      if (morphed || morphing) { ringAnimId = null; return; }
+      const { cx, cy } = getRingCenter();
+      const t = ts * 0.00055;
+      const pts = Array.from({ length: RING_N }, (_, i) => {
+        const a = (i / RING_N) * Math.PI * 2;
+        const j = (Math.sin(i * 2.1 + t) + Math.sin(i * 3.7 + t * 0.71)) * 6;
+        return [(cx + (RING_R + j) * Math.cos(a)).toFixed(1),
+                (cy + (RING_R + j) * Math.sin(a)).toFixed(1)];
+      });
+      if (ringPath) ringPath.setAttribute('d', 'M' + pts.map(p => p.join(',')).join('L') + 'Z');
+      ringAnimId = requestAnimationFrame(frame);
+    }
+    ringAnimId = requestAnimationFrame(frame);
+  }
+
+  function stopRingAnim() {
+    if (ringAnimId) { cancelAnimationFrame(ringAnimId); ringAnimId = null; }
+  }
+
+  drawStaticRing();
+  window.addEventListener('resize', () => { if (!morphed && !ringAnimId) drawStaticRing(); }, { passive: true });
 
   const obs = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting && !lit) {
-      setTimeout(() => { section.classList.add('spotlight-active'); lit = true; }, 1000);
+    if (entries[0].isIntersecting) {
+      if (!lit) {
+        setTimeout(() => { section.classList.add('spotlight-active'); lit = true; startRingAnim(); }, 1000);
+      } else {
+        startRingAnim();
+      }
+    } else {
+      stopRingAnim();
     }
   }, { threshold: 0.5 });
   obs.observe(section);
@@ -604,6 +648,7 @@ function initSpotlight() {
     const tw = document.getElementById('taiwanPath');
     if (!tw) return;
     morphing = true;
+    stopRingAnim();
 
     const { cx, cy } = getRingCenter();
 
