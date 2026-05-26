@@ -33,7 +33,7 @@ a { color: inherit; text-decoration: none; }
 img { display: block; width: 100%; height: 100%; object-fit: cover; }
 button { font-family: inherit; cursor: none; border: none; background: none; }
 
-/* ─── TEXTURE ──────────────────────────────────────── */
+/* ─── TEXTURE ───────────────────────────────────────── */
 .texture-overlay {
   position: absolute;
   inset: 0;
@@ -215,7 +215,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
 }
 .section.active .section-bg { filter: brightness(0.28) saturate(0.55); }
 
-/* ─── REVEAL ANIMATIONS ─────────────────────────────────── */
+/* ─── REVEAL ANIMATIONS ────────────────────────────────── */
 .reveal, .reveal-up {
   opacity: 0;
   transform: translateY(28px);
@@ -233,16 +233,46 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
 
 /* ─── OPENING ────────────────────────────────────────── */
 #s-opening { height: 100vh; }
+#s-opening .section-bg { inset: -28px; }
+.opening-wrapper {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 60px;
+  gap: 52px;
+}
 .opening-content {
   position: relative;
   z-index: 2;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 20px;
-  padding: 0 24px;
-  text-align: center;
+  text-align: left;
 }
+.opening-wrapper .opening-title { align-items: flex-start; }
+.opening-photo-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.op-photo {
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.op-photo-a { height: min(52vh, 380px); }
+.op-photo-b { height: min(36vh, 260px); }
+.op-photo img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: brightness(0.76) saturate(0.70);
+  transition: filter 0.9s ease;
+}
+.op-photo:hover img { filter: brightness(0.90) saturate(0.88); }
 .opening-eyebrow {
   font-size: 10px;
   letter-spacing: 0.55em;
@@ -298,7 +328,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   animation: scrollPulse 2.2s ease-in-out infinite;
 }
 
-/* ─── WHO ARE WE ─────────────────────────────────────── */
+/* ─── WHO ARE WE ───────────────────────────────────── */
 #s-who { background: var(--bg2); }
 .who-content {
   text-align: center;
@@ -327,7 +357,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   letter-spacing: 0.25em;
 }
 
-/* ─── IDENTITY CRISIS ──────────────────────────────────── */
+/* ─── IDENTITY CRISIS ─────────────────────────────────── */
 #s-crisis {
   background: var(--bg);
   flex-direction: column;
@@ -471,7 +501,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   letter-spacing: 0.2em;
 }
 
-/* ─── SYNTAX ──────────────────────────────────────────── */
+/* ─── SYNTAX ─────────────────────────────────────────── */
 #s-syntax {
   background: var(--bg3);
   flex-direction: column;
@@ -541,7 +571,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   background: rgba(201,168,76,0.07);
 }
 
-/* ─── CHAOS ─────────────────────────────────────────────── */
+/* ─── CHAOS ───────────────────────────────────────────── */
 #s-chaos { background: #000; height: 100vh; }
 #chaosCanvas {
   position: absolute;
@@ -589,7 +619,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   letter-spacing: 0.22em;
 }
 
-/* ─── WARMTH ──────────────────────────────────────────── */
+/* ─── WARMTH ────────────────────────────────────────── */
 #s-warmth {
   background: var(--bg2);
   min-height: 100vh;
@@ -689,7 +719,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   line-height: 2;
 }
 
-/* ─── MARGINALIZATION ────────────────────────────────────── */
+/* ─── MARGINALIZATION ─────────────────────────────────── */
 #s-marginal { background: var(--bg); }
 .marginal-content {
   position: relative;
@@ -746,7 +776,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   font-size: 0.9em;
 }
 
-/* ─── GRASSROOTS ─────────────────────────────────────── */
+/* ─── GRASSROOTS ──────────────────────────────────── */
 #s-grassroots {
   background: var(--bg);
   flex-direction: column;
@@ -811,7 +841,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   width: 100%;
 }
 
-/* ─── FREEDOM ───────────────────────────────────────────── */
+/* ─── FREEDOM ────────────────────────────────────────── */
 #s-freedom { background: var(--bg); }
 .freedom-bg {
   position: absolute;
@@ -880,7 +910,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   color: var(--dim);
 }
 
-/* ─── CULTURE ───────────────────────────────────────────── */
+/* ─── CULTURE ────────────────────────────────────────── */
 #s-culture {
   background: var(--bg);
   flex-direction: column;
@@ -961,7 +991,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   margin-top: 4px;
 }
 
-/* ─── ENDING ─────────────────────────────────────────────── */
+/* ─── ENDING ─────────────────────────────────────────── */
 #s-ending { background: var(--bg2); }
 .ending-content {
   text-align: center;
@@ -1085,7 +1115,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
 }
 .ending-artist-info a:hover { color: var(--gold); }
 
-/* ─── FOOTER ──────────────────────────────────────────────── */
+/* ─── FOOTER ──────────────────────────────────────────── */
 footer {
   background: var(--bg);
   border-top: 1px solid var(--border);
@@ -1100,7 +1130,7 @@ footer p {
   letter-spacing: 0.25em;
 }
 
-/* ─── LIGHTBOX ────────────────────────────────────────────── */
+/* ─── LIGHTBOX ────────────────────────────────────────── */
 #lightbox {
   position: fixed;
   inset: 0;
@@ -1122,12 +1152,14 @@ footer p {
   position: relative;
   z-index: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 14px;
 }
 .lb-img {
   max-width: 88vw;
-  max-height: 85vh;
+  max-height: 80vh;
   object-fit: contain;
   display: block;
   width: auto;
@@ -1136,6 +1168,15 @@ footer p {
   transition: transform 0.4s var(--ease);
 }
 #lightbox.open .lb-img { transform: scale(1); }
+.lb-caption {
+  font-family: var(--zh);
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.14em;
+  text-align: center;
+  max-width: 80vw;
+  font-weight: 200;
+}
 .lb-close {
   position: fixed;
   top: 24px;
@@ -1154,7 +1195,7 @@ footer p {
 }
 .lb-close:hover { border-color: var(--gold); color: var(--gold); }
 
-/* ─── CELL LIGHTBOX (九宮格投射展開) ────────────────────────── */
+/* ─── CELL LIGHTBOX (九宮格投射展開) ────────────────────── */
 #cellBox {
   position: fixed;
   inset: 0;
@@ -1182,6 +1223,24 @@ footer p {
     opacity 0.25s ease;
 }
 #cellBox.open #cellBoxImg { opacity: 1; }
+#cellBoxCaption {
+  position: fixed;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--zh);
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.14em;
+  z-index: 9402;
+  opacity: 0;
+  transition: opacity 0.35s ease 0.2s;
+  text-align: center;
+  max-width: 80vw;
+  font-weight: 200;
+  pointer-events: none;
+}
+#cellBox.open #cellBoxCaption { opacity: 1; }
 #cellBoxClose {
   position: fixed;
   top: 24px;
@@ -1204,7 +1263,7 @@ footer p {
 #cellBox.open #cellBoxClose { opacity: 1; pointer-events: auto; }
 #cellBoxClose:hover { border-color: var(--gold); color: var(--gold); }
 
-/* ─── MARGINALIZATION LENS ──────────────────────────────────── */
+/* ─── MARGINALIZATION LENS ────────────────────────────────── */
 .marginal-spotlight {
   position: absolute;
   inset: 0;
@@ -1236,7 +1295,7 @@ footer p {
   50%       { stroke-opacity: 1; }
 }
 
-/* ─── FREEDOM ORBS ─────────────────────────────────────── */
+/* ─── FREEDOM ORBS ───────────────────────────────────── */
 .freedom-orbs {
   position: absolute;
   inset: 0;
@@ -1263,7 +1322,7 @@ footer p {
   100% { transform: translateY(-100vh) scale(0.25); opacity: 0; }
 }
 
-/* ─── BANQUET HALF-CIRCLE ─────────────────────────────────────── */
+/* ─── BANQUET HALF-CIRCLE ─────────────────────────────────── */
 .banquet-wrap {
   width: 100%;
   padding: 60px 0 0;
@@ -1336,7 +1395,7 @@ footer p {
 }
 .banquet-food { cursor: pointer; }
 
-/* ─── BANQUET POPUP ───────────────────────────────────────── */
+/* ─── BANQUET POPUP ───────────────────────────────────── */
 #banquetPopup {
   position: fixed;
   inset: 0;
@@ -1421,7 +1480,7 @@ footer p {
 }
 #bp-close:hover { border-color: var(--gold); color: var(--gold); }
 
-/* ─── KEYFRAMES ──────────────────────────────────────────────── */
+/* ─── KEYFRAMES ──────────────────────────────────────────── */
 @keyframes scrollPulse {
   0%   { transform: scaleY(0); transform-origin: top; }
   49%  { transform: scaleY(1); transform-origin: top; }
@@ -1429,7 +1488,7 @@ footer p {
   100% { transform: scaleY(0); transform-origin: bottom; }
 }
 
-/* ─── TABLET ──────────────────────────────────────────────── */
+/* ─── TABLET ──────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .marginal-content {
     grid-template-columns: 180px 1fr;
@@ -1446,13 +1505,23 @@ footer p {
   .grassroots-grid { grid-template-columns: 3fr 2fr 2fr; }
 }
 
-/* ─── MOBILE ──────────────────────────────────────────────── */
+/* ─── MOBILE ──────────────────────────────────────────── */
 @media (max-width: 768px) {
   #nav { padding: 14px 20px; }
   #nav.scrolled { padding: 10px 20px; }
   .nav-section-name { display: none; }
   .nav-dots { gap: 6px; }
   .nav-dot { width: 5px; height: 5px; }
+
+  .opening-wrapper {
+    grid-template-columns: 1fr;
+    padding: 0 24px;
+    gap: 24px;
+  }
+  .opening-wrapper .opening-content { align-items: center; text-align: center; }
+  .opening-wrapper .opening-title { align-items: center; }
+  .opening-photo-col { flex-direction: row; height: 38vw; }
+  .op-photo-a, .op-photo-b { flex: 1; height: 100%; }
 
   #s-crisis { padding: 60px 20px; gap: 28px; }
   .nine-grid { max-width: 100%; }
