@@ -237,24 +237,23 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
 .opening-wrapper {
   position: relative;
   z-index: 2;
-  display: grid;
-  grid-template-columns: 1fr 360px;
+  display: flex;
   align-items: center;
+  justify-content: center;
   width: 100%;
-  max-width: 1200px;
+  max-width: 900px;
   padding: 0 60px;
-  gap: 52px;
 }
 .opening-content {
   position: relative;
   z-index: 2;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 20px;
-  text-align: left;
+  text-align: center;
 }
-.opening-wrapper .opening-title { align-items: flex-start; }
+.opening-wrapper .opening-title { align-items: center; }
 .opening-photo-col {
   display: flex;
   flex-direction: column;
