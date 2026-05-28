@@ -94,6 +94,7 @@ function initAll() {
   initLightbox();
   initBanquet();
   initSpotlight();
+  initEnding();
 }
 
 /* ─── PARALLAX ────────────────────────────────────── */
@@ -574,6 +575,73 @@ function initBanquet() {
   });
 
   applyRotation();
+}
+
+/* ─── ENDING ─────────────────────────────────────── */
+function initEnding() {
+  const chips       = document.querySelectorAll('.w-chip');
+  const dropZone    = document.getElementById('dropZone');
+  const dropWord    = document.getElementById('dropWord');
+  const placeholder = dropZone?.querySelector('.drop-placeholder');
+  if (!chips.length || !dropZone || !dropWord) return;
+
+  function spawnParticles(fromEl) {
+    const rect = fromEl.getBoundingClientRect();
+    const cx = rect.left + rect.width  / 2;
+    const cy = rect.top  + rect.height / 2;
+    const count = 16;
+    for (let i = 0; i < count; i++) {
+      const el = document.createElement('span');
+      const size = 3 + Math.random() * 4;
+      const dur  = 420 + Math.random() * 280;
+      el.style.cssText = [
+        'position:fixed',
+        `width:${size}px`,
+        `height:${size}px`,
+        'border-radius:50%',
+        `background:${Math.random() > 0.4 ? 'var(--gold)' : 'var(--text)'}`,
+        `left:${cx}px`,
+        `top:${cy}px`,
+        'pointer-events:none',
+        'z-index:9999',
+        'opacity:0.85',
+        `transition:transform ${dur}ms cubic-bezier(0.1,0,0.2,1),opacity ${dur}ms ease`,
+        'transform:translate(-50%,-50%)',
+      ].join(';');
+      document.body.appendChild(el);
+      const angle = (i / count) * Math.PI * 2 + (Math.random() - 0.5) * 0.4;
+      const dist  = 36 + Math.random() * 64;
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        el.style.transform = `translate(calc(-50% + ${(Math.cos(angle) * dist).toFixed(1)}px), calc(-50% + ${(Math.sin(angle) * dist).toFixed(1)}px)) scale(0.15)`;
+        el.style.opacity   = '0';
+      }));
+      setTimeout(() => el.remove(), dur + 50);
+    }
+  }
+
+  function flashZone() {
+    dropZone.classList.add('flash');
+    setTimeout(() => dropZone.classList.remove('flash'), 600);
+  }
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const word = chip.dataset.word;
+      chips.forEach(c => c.classList.remove('selected'));
+      chip.classList.add('selected');
+
+      spawnParticles(chip);
+
+      dropWord.classList.remove('show');
+      dropWord.getBoundingClientRect(); // force reflow
+      dropWord.textContent = word;
+      if (placeholder) placeholder.classList.add('hidden');
+      dropZone.classList.add('active');
+      flashZone();
+
+      requestAnimationFrame(() => dropWord.classList.add('show'));
+    });
+  });
 }
 
 /* ─── SPOTLIGHT ───────────────────────────────────── */
