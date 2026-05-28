@@ -723,27 +723,13 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
 .marginal-content {
   position: relative;
   z-index: 3;
-  display: grid;
-  grid-template-columns: 240px 1fr;
-  gap: 80px;
+  display: flex;
   align-items: center;
+  justify-content: center;
   padding: 80px 60px;
-  max-width: 960px;
+  max-width: 700px;
   width: 100%;
 }
-.taiwan-svg-wrap { display: flex; justify-content: center; }
-.taiwan-svg { width: 100%; max-width: 160px; height: auto; }
-#taiwanPath {
-  fill: none;
-  stroke: var(--tw-blue);
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-dasharray: 1200;
-  stroke-dashoffset: 1200;
-  transition: stroke-dashoffset 2.5s var(--ease);
-}
-#s-marginal.active #taiwanPath { stroke-dashoffset: 0; }
 .marginal-title {
   font-family: var(--serif);
   font-size: clamp(32px, 5vw, 60px);
@@ -1274,25 +1260,7 @@ footer p {
   opacity: 0;
   transition: opacity 1.8s ease;
 }
-.marginal-lens-svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 1.8s ease;
-}
-#s-marginal.spotlight-active .marginal-spotlight,
-#s-marginal.spotlight-active .marginal-lens-svg { opacity: 1; }
-#s-marginal.spotlight-active:not(.ring-morphed) #marginalRingPath {
-  animation: ringPulse 3s ease-in-out infinite;
-}
-@keyframes ringPulse {
-  0%, 100% { stroke-opacity: 0.45; }
-  50%       { stroke-opacity: 1; }
-}
+#s-marginal.spotlight-active .marginal-spotlight { opacity: 1; }
 
 /* ─── FREEDOM ORBS ───────────────────────────────────── */
 .freedom-orbs {
@@ -1490,8 +1458,6 @@ footer p {
 /* ─── TABLET ──────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .marginal-content {
-    grid-template-columns: 180px 1fr;
-    gap: 48px;
     padding: 60px 40px;
   }
   .warmth-text { padding: 48px 40px; }
@@ -1545,12 +1511,9 @@ footer p {
   .warmth-text { padding: 40px 24px; }
 
   .marginal-content {
-    grid-template-columns: 1fr;
-    gap: 32px;
     padding: 60px 24px;
     text-align: center;
   }
-  .taiwan-svg { max-width: 100px; }
 
   .grassroots-header { padding: 0 24px; }
   .grassroots-grid {
