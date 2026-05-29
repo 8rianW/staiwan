@@ -108,6 +108,7 @@ function initAudio() {
   let audioCtx = null;
   let musicPlaying = false;
   let volRafId = null;
+  let pendingOff = null;
   const lastSfx = {};
 
   const SEC_VOL = {
@@ -290,8 +291,9 @@ function initAudio() {
   function toggleMusic() {
     if (!bgMusic) return;
     if (!musicPlaying) {
+      if (pendingOff) { clearTimeout(pendingOff); pendingOff = null; }
       getCtx();
-      bgMusic.volume = 0;
+      if (bgMusic.paused) bgMusic.volume = 0;
       bgMusic.play().then(function() {
         musicPlaying = true;
         updateBtn();
@@ -303,11 +305,12 @@ function initAudio() {
         fadeTo(typeof v === 'number' ? v : 0.15, 2500);
       }).catch(function() {});
     } else {
+      musicPlaying = false;
+      updateBtn();
       fadeTo(0, 2000);
-      setTimeout(function() {
-        if (bgMusic) { bgMusic.pause(); }
-        musicPlaying = false;
-        updateBtn();
+      pendingOff = setTimeout(function() {
+        if (bgMusic && !musicPlaying) bgMusic.pause();
+        pendingOff = null;
       }, 2200);
     }
   }
