@@ -491,11 +491,11 @@ function initSyntax() {
           f.style.filter     = 'blur(0.5px)';
         }, 80 + i * 200);
       });
-      if (addChs.length) later(() => window._sfx && window._sfx.particle(), 90);
+      if (addChs.length) later(() => syntaxVisible && window._sfx && window._sfx.particle(), 90);
 
       /* Phase 3: Cinematic dissolve — no scatter */
       later(() => {
-        window._sfx && window._sfx.magnetic();
+        syntaxVisible && window._sfx && window._sfx.magnetic();
         /* FROM letters: slow vertical dissolve upward, no fly-out */
         fromSpans.forEach((el, i) => {
           later(() => {
@@ -548,7 +548,7 @@ function initSyntax() {
           });
 
           later(() => meaning.classList.add('visible'), 700);
-          later(() => window._sfx && window._sfx.resonance(), 60 + pair.to.length * 100 + 60);
+          later(() => syntaxVisible && window._sfx && window._sfx.resonance(), 60 + pair.to.length * 100 + 60);
 
           later(() => {
             if (toWrap.isConnected)
@@ -573,8 +573,10 @@ function initSyntax() {
 
   const section = document.getElementById('s-syntax');
   let started = false;
+  let syntaxVisible = false;
   const obs = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting && !started) {
+    syntaxVisible = entries[0].isIntersecting;
+    if (syntaxVisible && !started) {
       started = true;
       later(() => runPair(0), 600);
     }
