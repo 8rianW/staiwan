@@ -106,6 +106,7 @@ function initAudio() {
   const audioBtn = document.getElementById('audioBtn');
 
   let audioCtx = null;
+  let gainNode = null;
   let musicPlaying = false;
   let volRafId = null;
   let pendingOff = null;
@@ -132,16 +133,29 @@ function initAudio() {
     return audioCtx;
   }
 
+  function setupGain() {
+    if (gainNode) return;
+    try {
+      const c = getCtx();
+      gainNode = c.createGain();
+      gainNode.gain.value = 0;
+      c.createMediaElementSource(bgMusic).connect(gainNode);
+      gainNode.connect(c.destination);
+    } catch (_) {}
+  }
+
   function fadeTo(vol, ms) {
     if (!bgMusic) return;
     if (volRafId) { cancelAnimationFrame(volRafId); volRafId = null; }
-    const t0 = performance.now(), v0 = bgMusic.volume;
+    const t0 = performance.now();
+    const v0 = gainNode ? gainNode.gain.value : bgMusic.volume;
     (function step(now) {
       const p = Math.min((now - t0) / ms, 1);
       const e = p < .5 ? 2*p*p : -1+(4-2*p)*p;
-      bgMusic.volume = v0 + (vol - v0) * e;
+      const val = v0 + (vol - v0) * e;
+      if (gainNode) gainNode.gain.value = val; else bgMusic.volume = val;
       if (p < 1) volRafId = requestAnimationFrame(step);
-      else bgMusic.volume = vol;
+      else { if (gainNode) gainNode.gain.value = vol; else bgMusic.volume = vol; }
     })(performance.now());
   }
 
@@ -344,7 +358,8 @@ function initAudio() {
     if (!musicPlaying) {
       if (pendingOff) { clearTimeout(pendingOff); pendingOff = null; }
       getCtx();
-      if (bgMusic.paused) bgMusic.volume = 0;
+      setupGain();
+      if (bgMusic.paused && !gainNode) bgMusic.volume = 0;
       musicPlaying = true;
       updateBtn();
       bgMusic.play().then(function() {
