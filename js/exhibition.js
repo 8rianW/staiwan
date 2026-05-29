@@ -458,14 +458,14 @@ function initCrisis() {
     setTimeout(() => { cell.classList.remove('active-cell'); if (activeCell === cell) activeCell = null; }, 480);
   }
 
-  // preload all thumbnails when section enters viewport
+  // preload photos into browser cache when section enters viewport
+  // (use Image objects — never touch .gc-photo img src to avoid broken-icon artifact)
   const crisisSection = document.getElementById('s-crisis');
   if (crisisSection) {
     const preloadObs = new IntersectionObserver(entries => {
       if (!entries[0].isIntersecting) return;
       cells.forEach(cell => {
-        const img = cell.querySelector('.gc-photo img');
-        if (img && cell.dataset.photo && !img.src) img.src = cell.dataset.photo;
+        if (cell.dataset.photo) { const p = new Image(); p.src = cell.dataset.photo; }
       });
       preloadObs.disconnect();
     }, { threshold: 0.2 });
@@ -473,10 +473,12 @@ function initCrisis() {
   }
 
   cells.forEach(cell => {
-    // desktop: start loading on hover so click is near-instant
+    // desktop: warm cache on hover so click is near-instant
     cell.addEventListener('mouseenter', () => {
-      const img = cell.querySelector('.gc-photo img');
-      if (img && cell.dataset.photo && !img.src) img.src = cell.dataset.photo;
+      if (cell.dataset.photo && !cell._preloaded) {
+        cell._preloaded = true;
+        const p = new Image(); p.src = cell.dataset.photo;
+      }
     });
     cell.addEventListener('click', e => {
       e.stopPropagation();
