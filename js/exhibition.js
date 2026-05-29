@@ -256,6 +256,55 @@ function initAudio() {
     } catch (_) {}
   }
 
+  function vinylPlace(vol) {
+    vol = vol != null ? vol : 0.16;
+    try {
+      const c = getCtx(), now = c.currentTime;
+      const mk = (delay, dur, type, freq, Q, amp) => {
+        const n = Math.floor(c.sampleRate * dur);
+        const buf = c.createBuffer(1, n, c.sampleRate);
+        const d = buf.getChannelData(0);
+        for (let i = 0; i < n; i++) d[i] = (Math.random()*2-1) * Math.pow(1-i/n, 2);
+        const src = c.createBufferSource(); src.buffer = buf;
+        const f = c.createBiquadFilter(); f.type = type; f.frequency.value = freq;
+        if (Q) f.Q.value = Q;
+        const g = c.createGain();
+        g.gain.setValueAtTime(vol * amp, now + delay);
+        g.gain.exponentialRampToValueAtTime(0.0001, now + delay + dur);
+        src.connect(f); f.connect(g); g.connect(c.destination); src.start(now + delay);
+      };
+      mk(0,     0.150, 'lowpass',  160,  0,   1.00);
+      mk(0.007, 0.180, 'bandpass', 300,  3.0, 0.48);
+      mk(0.020, 0.065, 'highpass', 2500, 0,   0.28);
+    } catch (_) {}
+  }
+
+  function vinylTap(vol) {
+    vol = vol != null ? vol : 0.13;
+    try {
+      const c = getCtx(), now = c.currentTime;
+      const dur = 0.040;
+      const n = Math.floor(c.sampleRate * dur);
+      const buf = c.createBuffer(1, n, c.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < n; i++) d[i] = (Math.random()*2-1) * Math.pow(1-i/n, 4);
+      const src = c.createBufferSource(); src.buffer = buf;
+      const f = c.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 1300; f.Q.value = 1.3;
+      const g = c.createGain();
+      g.gain.setValueAtTime(vol, now);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+      src.connect(f); f.connect(g); g.connect(c.destination); src.start(now);
+      [[1080, 0.55, 0.17], [1740, 0.27, 0.10]].forEach(([freq, amp, decay]) => {
+        const o = c.createOscillator(), gn = c.createGain();
+        o.connect(gn); gn.connect(c.destination); o.type = 'sine'; o.frequency.value = freq;
+        gn.gain.setValueAtTime(0, now);
+        gn.gain.linearRampToValueAtTime(vol * amp, now + 0.002);
+        gn.gain.exponentialRampToValueAtTime(0.0001, now + decay);
+        o.start(now); o.stop(now + decay + 0.02);
+      });
+    } catch (_) {}
+  }
+
   window._sfx = {
     particle: particle,
     magnetic: magnetic,
@@ -279,6 +328,8 @@ function initAudio() {
     },
     drop: function(vol) { settle(vol != null ? vol : .12); },
     whoosh: function(vol) { paperSlide(vol != null ? vol : .09); },
+    vinylPlace: vinylPlace,
+    vinylTap: vinylTap,
   };
 
   function updateBtn() {
@@ -746,7 +797,7 @@ function initBanquet() {
   async function openPopup(key) {
     const food = FOOD_DATA[key];
     if (!food || !popup) return;
-    window._sfx?.resonance(0.09);
+    window._sfx?.vinylPlace(0.16);
     bpName.textContent    = `${food.zh}　${food.en}`;
     bpDesc.textContent    = food.desc;
     bpPhoto.style.opacity = '0';
@@ -795,7 +846,7 @@ function initBanquet() {
 
   function closePopup() {
     if (!popup) return;
-    window._sfx?.settle(0.07);
+    window._sfx?.vinylTap(0.13);
     popup.classList.remove('open');
     document.body.style.overflow = '';
     setTimeout(() => { if (bpPhoto) bpPhoto.src = ''; }, 400);
