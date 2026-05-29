@@ -500,74 +500,131 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   letter-spacing: 0.2em;
 }
 
-/* ─── SYNTAX ─────────────────────────────────────────── */
+/* ─── SYNTAX (Language Installation Art) ─────────────── */
 #s-syntax {
-  background: var(--bg3);
+  background: var(--bg);
+  min-height: 140vh;
   flex-direction: column;
-  gap: 32px;
-  padding: 80px 40px;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding: 100px 24px;
+  gap: 0;
 }
-.syntax-label {
-  font-size: 10px;
-  letter-spacing: 0.55em;
+#s-syntax::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg,
+      transparent, transparent 3px,
+      rgba(58,125,68,0.022) 3px, rgba(58,125,68,0.022) 4px),
+    repeating-linear-gradient(90deg,
+      transparent, transparent 5px,
+      rgba(47,93,159,0.015) 5px, rgba(47,93,159,0.015) 6px),
+    repeating-linear-gradient(135deg,
+      transparent, transparent 9px,
+      rgba(178,58,58,0.01) 9px, rgba(178,58,58,0.01) 10px);
+  pointer-events: none;
+  z-index: 0;
+}
+#s-syntax > * { position: relative; z-index: 1; }
+.syn-header {
+  text-align: center;
+  margin-bottom: clamp(60px, 10vh, 96px);
+  max-width: 620px;
+}
+.syn-title {
+  font-family: var(--serif);
+  font-size: clamp(20px, 3vw, 34px);
+  font-weight: 300;
+  letter-spacing: 0.38em;
+  color: #F2F2F2;
   text-transform: uppercase;
-  color: var(--gold);
+  margin-bottom: 28px;
 }
-.syntax-sub {
+.syn-concept {
+  font-size: clamp(11px, 1.4vw, 13px);
+  color: rgba(255,255,255,0.30);
+  letter-spacing: 0.05em;
+  line-height: 1.9;
+  margin-bottom: 10px;
+}
+.syn-concept-zh {
   font-family: var(--zh);
-  font-size: clamp(12px, 1.5vw, 14px);
-  color: var(--muted);
-  letter-spacing: 0.2em;
+  font-size: clamp(11px, 1.3vw, 12px);
+  color: rgba(255,255,255,0.17);
+  line-height: 1.9;
   font-weight: 200;
 }
-.syntax-stage {
+.syn-stage {
+  width: 100%;
+  max-width: 900px;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+.syn-word-area {
+  position: relative;
+  min-height: 160px;
+  width: 100%;
   display: flex;
   align-items: center;
-  gap: 32px;
-  flex-wrap: wrap;
   justify-content: center;
 }
-.syntax-word-wrap {
-  min-width: 180px;
-  text-align: center;
+.syn-from-word,
+.syn-to-word {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  gap: 0.03em;
 }
-.syntax-word { display: inline-flex; gap: 3px; }
-.s-letter {
+.syn-l {
   font-family: var(--serif);
-  font-size: clamp(40px, 8vw, 96px);
+  font-size: clamp(52px, 9vw, 108px);
   font-weight: 300;
-  color: var(--text);
+  color: #F0EDE6;
   display: inline-block;
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  line-height: 1;
 }
-.s-letter.taiwan { color: var(--gold); }
-.s-letter.out { opacity: 0; transform: translateY(-20px); }
-.s-letter.in  { opacity: 0; transform: translateY(20px); }
-.syntax-arrow {
-  font-size: clamp(24px, 4vw, 48px);
-  color: var(--dim);
-  font-weight: 300;
-  flex-shrink: 0;
-}
-.syntax-rule {
+.syn-l.tw { text-shadow: 0 0 24px currentColor; }
+.syn-meaning {
   font-family: var(--zh);
-  font-size: clamp(11px, 1.4vw, 13px);
-  color: var(--dim);
-  letter-spacing: 0.25em;
+  font-size: clamp(13px, 1.6vw, 16px);
+  color: rgba(255,255,255,0);
+  letter-spacing: 0.14em;
+  text-align: center;
+  min-height: 24px;
+  transition: color 0.8s ease;
+  font-weight: 200;
 }
-.syntax-next {
-  border: 1px solid var(--border);
-  color: var(--muted);
-  padding: 10px 28px;
-  font-size: 12px;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  transition: border-color 0.3s, color 0.3s, background 0.3s;
+.syn-meaning.visible { color: rgba(255,255,255,0.26); }
+.syn-float-l {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(44px, 7.5vw, 92px);
+  line-height: 1;
+  pointer-events: none;
 }
-.syntax-next:hover {
-  border-color: var(--gold);
-  color: var(--gold);
-  background: rgba(201,168,76,0.07);
+@keyframes synWordBreathe {
+  0%, 100% { transform: translate(-50%,-50%) scale(1); }
+  50%       { transform: translate(-50%,-50%) scale(1.012); }
+}
+@keyframes synTwBreathe {
+  0%, 100% { text-shadow: 0 0 20px currentColor; }
+  50%       { text-shadow: 0 0 36px currentColor, 0 0 60px currentColor; }
 }
 
 /* ─── CHAOS ───────────────────────────────────────────── */
@@ -1186,7 +1243,7 @@ footer p {
 }
 .lb-close:hover { border-color: var(--gold); color: var(--gold); }
 
-/* ─── CELL LIGHTBOX (九宮格投射展開) ────────────────────── */
+/* ─── CELL LIGHTBOX ────────────────────────────────────── */
 #cellBox {
   position: fixed;
   inset: 0;
@@ -1453,6 +1510,40 @@ footer p {
 }
 #bp-close:hover { border-color: var(--gold); color: var(--gold); }
 
+/* ─── AUDIO BUTTON ───────────────────────────────────────── */
+#audioBtn {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border);
+  background: rgba(13,13,13,0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  z-index: 990;
+  cursor: none;
+  transition: border-color 0.35s ease, color 0.35s ease;
+}
+#audioBtn svg { width: 18px; height: 18px; flex-shrink: 0; }
+#audioBtn:hover { border-color: var(--gold); color: var(--gold); }
+#audioBtn.playing {
+  border-color: rgba(201,168,76,0.6);
+  color: var(--gold);
+  animation: audioPulse 3s ease-in-out infinite;
+}
+#audioBtn.playing .audio-mute-line { display: none; }
+@keyframes audioPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0.22); }
+  50%       { box-shadow: 0 0 0 7px rgba(201,168,76,0); }
+}
+@media (pointer: coarse) { #audioBtn { cursor: pointer; } }
+
 /* ─── KEYFRAMES ──────────────────────────────────────────── */
 @keyframes scrollPulse {
   0%   { transform: scaleY(0); transform-origin: top; }
@@ -1500,8 +1591,9 @@ footer p {
   .gc-titles em { font-size: 18px; }
   .gc-desc p { font-size: 10px; }
 
-  #s-syntax { padding: 60px 20px; gap: 20px; }
-  .syntax-stage { gap: 16px; }
+  #s-syntax { padding: 60px 20px; }
+  .syn-header { margin-bottom: 48px; }
+  .syn-title { letter-spacing: 0.22em; }
 
   #s-warmth {
     display: block;
@@ -1554,8 +1646,7 @@ footer p {
 @media (max-width: 480px) {
   .opening-zh { letter-spacing: 0.2em; }
   .opening-en { letter-spacing: 0.35em; }
-  .syntax-stage { flex-direction: column; gap: 8px; }
-  .syntax-arrow { transform: rotate(90deg); }
+  .syn-l { font-size: clamp(40px, 11vw, 72px); }
   .chaos-words { flex-direction: column; gap: 8px; }
   .chaos-arr { transform: rotate(90deg); }
   .culture-grid {

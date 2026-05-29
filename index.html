@@ -23,6 +23,9 @@
   </div>
 </div>
 
+<!-- ─── AUDIO ──────────────────────────────────────── -->
+<audio id="bgMusic" src="audio_bg.mp3" loop preload="auto"></audio>
+
 <!-- ─── CURSOR ─────────────────────────────────────── -->
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
@@ -142,15 +145,15 @@
 
 <!-- ─── SYNTAX ────────────────────────────────────── -->
 <section id="s-syntax" class="section" data-name="Syntax of Taiwan">
-  <div class="syntax-label reveal-up">Syntax of Taiwan</div>
-  <div class="syntax-sub reveal-up" data-delay="0.1">字母重組系統 · Letter Transformation</div>
-  <div class="syntax-stage">
-    <div class="syntax-word-wrap"><div class="syntax-word" id="syntaxFrom"></div></div>
-    <div class="syntax-arrow reveal-up" data-delay="0.3">→</div>
-    <div class="syntax-word-wrap"><div class="syntax-word" id="syntaxTo"></div></div>
+  <div class="syn-header">
+    <h2 class="syn-title reveal-up">Syntax of Taiwan</h2>
+    <p class="syn-concept reveal-up" data-delay="0.15">Taiwan does not erase the original word.<br>It lets it become something new.</p>
+    <p class="syn-concept-zh reveal-up" data-delay="0.25">台灣不是抹去原本的詞，<br>而是讓它長出新的意義。</p>
   </div>
-  <p class="syntax-rule reveal-up" data-delay="0.4">T · A · I · W · A · N &nbsp;字母參與每一次轉化</p>
-  <button class="syntax-next reveal-up" data-delay="0.5" id="syntaxNext">Next →</button>
+  <div class="syn-stage">
+    <div class="syn-word-area" id="synWordArea"></div>
+    <p class="syn-meaning" id="synMeaning"></p>
+  </div>
 </section>
 
 <!-- ─── CHAOS ─────────────────────────────────────── -->
@@ -322,7 +325,6 @@
         </defs>
 
         <g clip-path="url(#tableClip)">
-        <!-- Rotating table surface, pivots around top-centre (400, 0) -->
         <g id="banquetRotate">
           <circle cx="400" cy="0" r="420" fill="url(#woodBase)"/>
           <circle cx="400" cy="0" r="420" fill="#9b5525" opacity="0.42" filter="url(#grain)"/>
@@ -342,12 +344,8 @@
           <circle cx="400" cy="0" r="310" fill="none" stroke="#c8943a" stroke-width="1.5" stroke-dasharray="10 7" opacity="0.50"/>
         </g>
 
-        <!-- Fixed flat-edge accent line -->
         <line x1="0" y1="1" x2="800" y2="1" stroke="#8B5E3C" stroke-width="4"/>
 
-        <!-- ─ Food items (JS sets translate; items always stay upright) ─ -->
-
-        <!-- θ=18°  蚵仔煎 Oyster Omelette -->
         <g class="banquet-food" data-food="oyster" data-theta="18" transform="translate(685,93)">
           <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
           <ellipse cx="0" cy="-3" rx="30" ry="17" fill="#e8c060" opacity="0.88"/>
@@ -357,7 +355,6 @@
           <path d="M-24 -3 Q0 10 24 -3" stroke="#c8a860" stroke-width="1" fill="none" opacity="0.5"/>
         </g>
 
-        <!-- θ=54°  鹹酥雞 Taiwanese Fried Chicken -->
         <g class="banquet-food" data-food="chicken" data-theta="54" transform="translate(576,243)">
           <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
           <ellipse cx="-10" cy="-6" rx="14" ry="9" fill="#c27820" opacity="0.88"/>
@@ -366,7 +363,6 @@
           <ellipse cx="-13" cy="7" rx="5" ry="9" fill="#3a7a30" opacity="0.6"/>
         </g>
 
-        <!-- θ=90°  割包 Gua Bao -->
         <g class="banquet-food" data-food="guabao" data-theta="90" transform="translate(400,300)">
           <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
           <ellipse cx="0" cy="-2" rx="32" ry="20" fill="#f5f0e0" stroke="#d4b890" stroke-width="1.5"/>
@@ -375,7 +371,6 @@
           <ellipse cx="-6" cy="2" rx="6" ry="3" fill="#f5e0a0" opacity="0.7"/>
         </g>
 
-        <!-- θ=126° 滷肉飯 Lu Rou Fan -->
         <g class="banquet-food" data-food="luroufan" data-theta="126" transform="translate(224,243)">
           <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
           <ellipse cx="0" cy="8" rx="28" ry="10" fill="#c8a060"/>
@@ -385,7 +380,6 @@
           <ellipse cx="-4" cy="-5" rx="5" ry="3.5" fill="#f0d890" opacity="0.7"/>
         </g>
 
-        <!-- θ=162° 牛肉麵 Beef Noodle Soup -->
         <g class="banquet-food" data-food="beefnoodle" data-theta="162" transform="translate(115,93)">
           <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
           <ellipse cx="0" cy="8" rx="28" ry="10" fill="#c09050"/>
@@ -395,7 +389,6 @@
           <path d="M-16 2 Q-6 -5 4 2 Q12 8 16 2" stroke="#f5f0e0" stroke-width="1.5" fill="none" opacity="0.7"/>
         </g>
 
-        <!-- θ=198° 珍珠奶茶 Bubble Tea (hidden above) -->
         <g class="banquet-food" data-food="bubbletea" data-theta="198" transform="translate(115,-93)">
           <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
           <rect x="-16" y="-22" width="32" height="36" rx="4" fill="#d4c898" opacity="0.85"/>
@@ -406,7 +399,6 @@
           <rect x="3" y="-32" width="4" height="44" rx="2" fill="#e0b060" opacity="0.9"/>
         </g>
 
-        <!-- θ=234° 大腸麵線 (hidden above) -->
         <g class="banquet-food" data-food="miansian" data-theta="234" transform="translate(224,-243)">
           <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
           <ellipse cx="0" cy="8" rx="28" ry="10" fill="#c09050"/>
@@ -416,7 +408,6 @@
           <ellipse cx="-2" cy="-6" rx="8" ry="4" fill="#4a3020" opacity="0.6"/>
         </g>
 
-        <!-- θ=270° 棺材板 (hidden above) -->
         <g class="banquet-food" data-food="coffin" data-theta="270" transform="translate(400,-300)">
           <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
           <rect x="-24" y="-16" width="48" height="32" rx="4" fill="#c89010" opacity="0.88"/>
@@ -425,7 +416,6 @@
           <path d="M-20 -12 L20 -12 L20 16 L-20 16 Z" stroke="#a06e08" stroke-width="1.5" fill="none"/>
         </g>
 
-        <!-- θ=306° 臭豆腐 (hidden above) -->
         <g class="banquet-food" data-food="stinkytofu" data-theta="306" transform="translate(576,-243)">
           <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
           <ellipse cx="0" cy="10" rx="28" ry="8" fill="#c0a070" opacity="0.7"/>
@@ -434,7 +424,6 @@
           <rect x="-8" y="-3" width="16" height="14" rx="2" fill="#6a4018" opacity="0.78"/>
         </g>
 
-        <!-- θ=342° 肉圓 (hidden above) -->
         <g class="banquet-food" data-food="bawan" data-theta="342" transform="translate(685,-93)">
           <circle cx="0" cy="0" r="46" fill="#fdfaf2" stroke="#9b6b35" stroke-width="2.5"/>
           <ellipse cx="0" cy="0" rx="30" ry="21" fill="#f0ece0" stroke="#b8a090" stroke-width="2"/>
@@ -442,7 +431,6 @@
           <ellipse cx="-4" cy="-2" rx="10" ry="6" fill="#7a3a28" opacity="0.6"/>
         </g>
 
-        <!-- ─ Rotation indicator (fixed — not inside banquetRotate) ─ -->
         <g id="rotateHint" transform="translate(400,185)" style="pointer-events:none">
           <circle cx="0" cy="0" r="32" fill="none" stroke="#c8943a"
                   stroke-width="1.2" stroke-dasharray="80 121"
@@ -455,7 +443,7 @@
                 letter-spacing="0.38em" font-family="'Space Grotesk', sans-serif">DRAG</text>
         </g>
 
-        </g><!-- end tableClip -->
+        </g>
       </svg>
     </div>
   </div>
@@ -546,5 +534,15 @@
 </div>
 
 <script src="js/exhibition.js"></script>
+
+<!-- ─── AUDIO BUTTON ─────────────────────────────── -->
+<button id="audioBtn" aria-label="Toggle background music">
+  <svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M9.5 17.5V5L19.5 3V15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="7" cy="17.5" r="2.5" stroke="currentColor" stroke-width="1.5"/>
+    <circle cx="17" cy="15" r="2.5" stroke="currentColor" stroke-width="1.5"/>
+    <line class="audio-mute-line" x1="3" y1="3" x2="19" y2="19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+  </svg>
+</button>
 </body>
 </html>
