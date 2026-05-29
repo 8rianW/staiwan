@@ -1,6 +1,6 @@
 'use strict';
 
-/* ─── LOADER ─────────────────────────────────────── */
+/* ─── LOADER ─────────────────────────────────── */
 const loader = document.getElementById('loader');
 const loaderFill = document.querySelector('.loader-fill');
 window.addEventListener('load', () => {
@@ -8,7 +8,7 @@ window.addEventListener('load', () => {
   setTimeout(() => { loader.classList.add('hidden'); initAll(); }, 2000);
 });
 
-/* ─── CURSOR ─────────────────────────────────────── */
+/* ─── CURSOR ─────────────────────────────────── */
 const cur = document.getElementById('cursor');
 const ring = document.getElementById('cursor-ring');
 let cx = 0, cy = 0, rx = 0, ry = 0;
@@ -26,7 +26,7 @@ document.querySelectorAll('a,button,.grid-cell,.warmth-photo,.gr-item,.cu-item')
   el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
 });
 
-/* ─── NAV ─────────────────────────────────────────── */
+/* ─── NAV ───────────────────────────────────────── */
 const nav = document.getElementById('nav');
 const navName = document.getElementById('navSectionName');
 const navDots = document.querySelectorAll('.nav-dot');
@@ -38,6 +38,7 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 navDots.forEach(dot => {
   dot.addEventListener('click', () => {
+    window._sfx?.drop(0.08);
     document.getElementById(dot.dataset.target)?.scrollIntoView({ behavior: 'smooth' });
   });
 });
@@ -51,14 +52,14 @@ function updateNavDots() {
   navName.textContent = sections[active]?.dataset.name || '';
 }
 
-/* ─── SCROLL PROGRESS ─────────────────────────────── */
+/* ─── SCROLL PROGRESS ───────────────────────────── */
 const scrollFill = document.getElementById('scroll-fill');
 function updateScrollProgress() {
   const total = document.body.scrollHeight - window.innerHeight;
   if (total > 0) scrollFill.style.height = (window.scrollY / total * 100) + '%';
 }
 
-/* ─── INIT ─────────────────────────────────────────── */
+/* ─── INIT ───────────────────────────────────────── */
 function initAll() {
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => {
@@ -87,6 +88,7 @@ function initAll() {
   }, { threshold: 0.05 });
   document.querySelectorAll('.warmth-photo,.gr-item,.cu-item').forEach(el => fbObs.observe(el));
 
+  initAudio();
   initParallax();
   initCrisis();
   initSyntax();
@@ -97,7 +99,109 @@ function initAll() {
   initEnding();
 }
 
-/* ─── PARALLAX ────────────────────────────────────── */
+/* ─── AUDIO ────────────────────────────────────── */
+function initAudio() {
+  const bgMusic = document.getElementById('bgMusic');
+  const audioBtn = document.getElementById('audioBtn');
+  if (!bgMusic || !audioBtn) return;
+
+  let audioCtx = null;
+  let musicPlaying = false;
+
+  function getCtx() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    return audioCtx;
+  }
+
+  function playTone(freq, type = 'sine', duration = 0.4, vol = 0.1) {
+    try {
+      const ctx = getCtx();
+      const osc = ctx.createOscillator();
+      const gn  = ctx.createGain();
+      osc.connect(gn); gn.connect(ctx.destination);
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, ctx.currentTime);
+      gn.gain.setValueAtTime(vol, ctx.currentTime);
+      gn.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + duration + 0.05);
+    } catch (_) {}
+  }
+
+  function playDrop(vol = 0.12) {
+    try {
+      const ctx = getCtx();
+      const osc = ctx.createOscillator();
+      const gn  = ctx.createGain();
+      osc.connect(gn); gn.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(1400, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(480, ctx.currentTime + 0.07);
+      gn.gain.setValueAtTime(vol, ctx.currentTime);
+      gn.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.14);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.16);
+    } catch (_) {}
+  }
+
+  function playWhoosh(vol = 0.06) {
+    try {
+      const ctx = getCtx();
+      const bufSize = Math.floor(ctx.sampleRate * 0.35);
+      const buf  = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+      const d    = buf.getChannelData(0);
+      for (let i = 0; i < bufSize; i++) d[i] = Math.random() * 2 - 1;
+      const src  = ctx.createBufferSource();
+      src.buffer = buf;
+      const filt = ctx.createBiquadFilter();
+      filt.type  = 'bandpass';
+      filt.frequency.setValueAtTime(280, ctx.currentTime);
+      filt.frequency.exponentialRampToValueAtTime(2800, ctx.currentTime + 0.28);
+      filt.Q.value = 0.5;
+      const gn = ctx.createGain();
+      gn.gain.setValueAtTime(vol, ctx.currentTime);
+      gn.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.35);
+      src.connect(filt); filt.connect(gn); gn.connect(ctx.destination);
+      src.start();
+    } catch (_) {}
+  }
+
+  window._sfx = { tone: playTone, drop: playDrop, whoosh: playWhoosh };
+
+  function toggleMusic() {
+    if (!musicPlaying) {
+      getCtx();
+      bgMusic.volume = 0;
+      bgMusic.play().then(() => {
+        musicPlaying = true;
+        audioBtn.classList.add('playing');
+        let vol = 0;
+        const id = setInterval(() => {
+          vol = Math.min(vol + 0.005, 0.18);
+          bgMusic.volume = vol;
+          if (vol >= 0.18) clearInterval(id);
+        }, 55);
+      }).catch(() => {});
+    } else {
+      let vol = bgMusic.volume;
+      const id = setInterval(() => {
+        vol = Math.max(vol - 0.012, 0);
+        bgMusic.volume = vol;
+        if (vol <= 0) {
+          clearInterval(id);
+          bgMusic.pause();
+          musicPlaying = false;
+          audioBtn.classList.remove('playing');
+        }
+      }, 55);
+    }
+  }
+
+  audioBtn.addEventListener('click', toggleMusic);
+}
+
+/* ─── PARALLAX ───────────────────────────────────── */
 function initParallax() {
   const bg = document.getElementById('openingBg');
   if (!bg || window.matchMedia('(pointer: coarse)').matches) return;
@@ -126,6 +230,7 @@ function initCrisis() {
   let activeCell = null;
 
   function openCell(cell) {
+    window._sfx?.tone(523, 'sine', 0.5, 0.09);
     if (activeCell) closeCell();
     activeCell = cell;
     cell.classList.add('active-cell');
@@ -151,6 +256,7 @@ function initCrisis() {
 
   function closeCell() {
     if (!activeCell) return;
+    window._sfx?.tone(440, 'sine', 0.3, 0.06);
     const cell = activeCell;
     const rect = cell.getBoundingClientRect();
     cellBoxImg.style.cssText = `top:${rect.top}px;left:${rect.left}px;width:${rect.width}px;height:${rect.height}px;opacity:0;`;
@@ -175,84 +281,175 @@ function initCrisis() {
 
 /* ─── SYNTAX ──────────────────────────────────────── */
 function initSyntax() {
-  const fromEl = document.getElementById('syntaxFrom');
-  const toEl   = document.getElementById('syntaxTo');
-  const nextBtn = document.getElementById('syntaxNext');
-  if (!fromEl || !toEl || !nextBtn) return;
+  const wordArea = document.getElementById('synWordArea');
+  const meaning  = document.getElementById('synMeaning');
+  if (!wordArea || !meaning) return;
 
-  const TAIWAN = new Set(['T','A','I','W','A','N']);
+  const COLORS = { T:'#E05555', A:'#D4A843', I:'#5B88D4', W:'#5DB86A', N:'#D4A843' };
+  const GLOW   = {
+    T:'rgba(178,58,58,0.55)', A:'rgba(201,168,76,0.55)',
+    I:'rgba(47,93,159,0.55)', W:'rgba(58,125,68,0.55)',  N:'rgba(201,168,76,0.55)',
+  };
+
   const PAIRS = [
-    ['PAIN',  'PAINT'],   // 痛苦→彩繪  (+T from TAIWAN)
-    ['RAIN',  'TRAIN'],   // 阻礙→成長  (+T from TAIWAN)
-    ['ILL',   'WILL'],    // 病弱→意志  (+W from TAIWAN)
-    ['WAIT',  'AWAIT'],   // 苦等→期待  (+A from TAIWAN)
-    ['WIN',   'TWIN'],    // 孤勝→並肩  (+T from TAIWAN)
-    ['WAIN',  'TWAIN'],   // 重擔→二元  (+T from TAIWAN)
+    { from:'PAIN',  to:'PAINT',  twIdx:[4],     zh:'痛苦 → 創作' },
+    { from:'CHAOS', to:'ACTION', twIdx:[2,3,5], zh:'混亂 → 行動' },
+    { from:'SIN',   to:'SAINT',  twIdx:[1,4],   zh:'罪惡 → 聖潔' },
+    { from:'ILL',   to:'WILL',   twIdx:[0],     zh:'病態 → 意志' },
+    { from:'RUST',  to:'TRUST',  twIdx:[0],     zh:'锈黎 → 信任' },
+    { from:'FEAR',  to:'AWARE',  twIdx:[1,2],   zh:'恐懼 → 覺察' },
+    { from:'DARK',  to:'DAWN',   twIdx:[2,3],   zh:'黑暗 → 鳨明' },
+    { from:'WEAK',  to:'AWAKE',  twIdx:[0],     zh:'虛弱 → 覺醒' },
+    { from:'HURT',  to:'TRUTH',  twIdx:[0],     zh:'傷痛 → 真實' },
+    { from:'ASH',   to:'WASH',   twIdx:[0],     zh:'灰燼 → 洗淨' },
   ];
+
   let idx = 0;
+  let timers = [];
 
-  function countLetters(word) {
-    const c = {};
-    for (const ch of word.toUpperCase()) c[ch] = (c[ch] || 0) + 1;
-    return c;
-  }
-  function highlightTaiwan(from, to) {
-    const fc = countLetters(from);
-    const tc = countLetters(to);
-    const added = {};
-    for (const ch of to.toUpperCase()) {
-      const need = (tc[ch] || 0) - (fc[ch] || 0);
-      added[ch] = Math.max(0, need);
-    }
-    return added;
-  }
+  function later(fn, ms) { const id = setTimeout(fn, ms); timers.push(id); return id; }
+  function clearAll() { timers.forEach(clearTimeout); timers = []; }
 
-  function renderWord(el, word, added) {
-    el.innerHTML = '';
-    const addCount = { ...added };
-    for (const ch of word.toUpperCase()) {
-      const span = document.createElement('span');
-      span.className = 's-letter';
-      span.textContent = ch;
-      if (addCount[ch] > 0 && TAIWAN.has(ch)) {
-        span.classList.add('taiwan');
-        addCount[ch]--;
-      }
-      el.appendChild(span);
-    }
-  }
+  function runPair(pairIdx) {
+    clearAll();
+    const pair   = PAIRS[pairIdx];
+    const twSet  = new Set(pair.twIdx);
+    const addChs = [...twSet].map(i => pair.to[i]);
 
-  function animateOut(el, cb) {
-    el.querySelectorAll('.s-letter').forEach((s, i) => {
-      setTimeout(() => s.classList.add('out'), i * 40);
+    wordArea.innerHTML = '';
+    meaning.className  = 'syn-meaning';
+    meaning.textContent = pair.zh;
+
+    /* Phase 1: FROM word drifts in */
+    const fromWrap = document.createElement('div');
+    fromWrap.className = 'syn-from-word';
+    wordArea.appendChild(fromWrap);
+
+    const fromSpans = pair.from.split('').map((ch, i) => {
+      const s = document.createElement('span');
+      s.className = 'syn-l';
+      s.textContent = ch;
+      s.style.opacity   = '0';
+      s.style.transform = 'translateY(16px)';
+      s.style.filter    = 'blur(4px)';
+      fromWrap.appendChild(s);
+      later(() => {
+        s.style.transition = 'opacity 0.7s ease, transform 0.7s ease, filter 0.7s ease';
+        s.style.opacity    = '1';
+        s.style.transform  = 'translateY(0)';
+        s.style.filter     = 'blur(0)';
+      }, i * 100);
+      return s;
     });
-    setTimeout(cb, el.querySelectorAll('.s-letter').length * 40 + 200);
-  }
-  function animateIn(el) {
-    el.querySelectorAll('.s-letter').forEach((s, i) => {
-      s.classList.add('in');
-      setTimeout(() => s.classList.remove('in'), 50 + i * 55);
-    });
+
+    /* Phase 2: Taiwan letters float in from darkness */
+    const floaters = [];
+    later(() => {
+      addChs.forEach((ch, i) => {
+        const f   = document.createElement('span');
+        f.className = 'syn-float-l';
+        const col  = COLORS[ch] || '#C9A84C';
+        const glow = GLOW[ch]   || 'rgba(201,168,76,0.5)';
+        const ex   = (i - (addChs.length - 1) / 2) * 60;
+        const sx   = ex + (Math.random() - 0.5) * 140;
+        const sy   = -110 - Math.random() * 60;
+        const ey   = -82 - i * 18;
+        f.style.color      = col;
+        f.style.textShadow = `0 0 22px ${glow}`;
+        f.style.opacity    = '0';
+        f.style.transform  = `translate(calc(-50% + ${sx}px), calc(-50% + ${sy}px))`;
+        f.style.filter     = 'blur(10px)';
+        wordArea.appendChild(f);
+        floaters.push({ el: f, ex, ey });
+
+        later(() => {
+          f.style.transition = 'opacity 1s ease, transform 1s ease, filter 1s ease';
+          f.style.transform  = `translate(calc(-50% + ${ex}px), calc(-50% + ${ey}px))`;
+          f.style.opacity    = '0.88';
+          f.style.filter     = 'blur(0.5px)';
+        }, 60 + i * 210);
+      });
+
+      /* Phase 3: Scatter + reform */
+      later(() => {
+        fromSpans.forEach((el, i) => {
+          const ang = (i / fromSpans.length) * Math.PI * 2 + (Math.random() - 0.5) * 1.4;
+          const d   = 38 + Math.random() * 54;
+          el.style.transition = `opacity 0.5s ease ${i*22}ms, transform 0.5s ease ${i*22}ms, filter 0.4s ease`;
+          el.style.transform  = `translate(${(Math.cos(ang)*d).toFixed(0)}px,${(Math.sin(ang)*d).toFixed(0)}px)`;
+          el.style.opacity    = '0';
+          el.style.filter     = 'blur(5px)';
+        });
+        floaters.forEach(({ el: f }) => {
+          f.style.transition = 'opacity 0.45s ease, transform 0.45s ease, filter 0.45s ease';
+          f.style.transform  = 'translate(-50%, -50%) scale(0.55)';
+          f.style.opacity    = '0';
+          f.style.filter     = 'blur(7px)';
+        });
+
+        /* Phase 4: TO word emerges */
+        later(() => {
+          wordArea.innerHTML = '';
+          const toWrap = document.createElement('div');
+          toWrap.className = 'syn-to-word';
+          wordArea.appendChild(toWrap);
+
+          pair.to.split('').forEach((ch, i) => {
+            const s   = document.createElement('span');
+            const isTw = twSet.has(i);
+            s.className   = 'syn-l' + (isTw ? ' tw' : '');
+            s.textContent = ch;
+            if (isTw) s.style.color = COLORS[ch] || '#C9A84C';
+            s.style.opacity   = '0';
+            s.style.transform = 'translateY(14px)';
+            s.style.filter    = 'blur(5px)';
+            toWrap.appendChild(s);
+
+            later(() => {
+              s.style.transition = 'opacity 0.85s ease, transform 0.85s ease, filter 0.85s ease';
+              s.style.opacity    = '1';
+              s.style.transform  = 'translateY(0)';
+              s.style.filter     = 'blur(0)';
+              if (isTw) {
+                later(() => {
+                  if (s.isConnected) s.style.animation = 'synTwBreathe 3s ease-in-out infinite';
+                }, 950);
+              }
+            }, 80 + i * 110);
+          });
+
+          later(() => meaning.classList.add('visible'), 500);
+
+          later(() => {
+            if (toWrap.isConnected)
+              toWrap.style.animation = 'synWordBreathe 4s ease-in-out infinite';
+          }, 1400);
+
+          /* Fade out then next pair */
+          later(() => {
+            toWrap.style.transition = 'opacity 0.8s ease';
+            toWrap.style.opacity    = '0';
+            meaning.classList.remove('visible');
+            later(() => { idx = (idx + 1) % PAIRS.length; runPair(idx); }, 850);
+          }, 3000);
+
+        }, 680);
+      }, 1200);
+    }, 1500);
   }
 
-  function showPair(i) {
-    const [from, to] = PAIRS[i];
-    const added = highlightTaiwan(from, to);
-    animateOut(fromEl, () => { renderWord(fromEl, from, {}); animateIn(fromEl); });
-    animateOut(toEl,   () => { renderWord(toEl,   to,   added); animateIn(toEl); });
-  }
-
-  const [f0, t0] = PAIRS[0];
-  renderWord(fromEl, f0, {});
-  renderWord(toEl, t0, highlightTaiwan(f0, t0));
-
-  nextBtn.addEventListener('click', () => {
-    idx = (idx + 1) % PAIRS.length;
-    showPair(idx);
-  });
+  const section = document.getElementById('s-syntax');
+  let started = false;
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting && !started) {
+      started = true;
+      later(() => runPair(0), 500);
+    }
+  }, { threshold: 0.35 });
+  if (section) obs.observe(section);
 }
 
-/* ─── CHAOS CANVAS ────────────────────────────────── */
+/* ─── CHAOS CANVAS ─────────────────────────────────── */
 function initChaos() {
   const canvas = document.getElementById('chaosCanvas');
   if (!canvas) return;
@@ -364,6 +561,7 @@ function initLightbox() {
 
   document.querySelectorAll('[data-lightbox]').forEach(el => {
     el.addEventListener('click', () => {
+      window._sfx?.whoosh(0.07);
       lbImg.src = el.dataset.lightbox;
       const img = el.querySelector('img');
       if (lbCap) lbCap.textContent = img?.alt || el.dataset.caption || '';
@@ -371,13 +569,13 @@ function initLightbox() {
       document.body.style.overflow = 'hidden';
     });
   });
-  function closeLb() { lb.classList.remove('open'); document.body.style.overflow = ''; }
+  function closeLb() { window._sfx?.tone(494, 'sine', 0.25, 0.06); lb.classList.remove('open'); document.body.style.overflow = ''; }
   if (lbClose) lbClose.addEventListener('click', closeLb);
   if (lbBd)    lbBd.addEventListener('click', closeLb);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
 }
 
-/* ─── BANQUET ─────────────────────────────────────── */
+/* ─── BANQUET ───────────────────────────────────────── */
 function initBanquet() {
   const viewport = document.getElementById('banquetViewport');
   const rotateG  = document.getElementById('banquetRotate');
@@ -385,15 +583,15 @@ function initBanquet() {
   if (!viewport || !rotateG || !foodEls.length) return;
 
   const FOOD_DATA = {
-    oyster:     { zh: '蚵仔煎',  en: 'Oyster Omelette',        desc: '以地瓜粉、雞蛋與新鮮蚵仔煎製而成，淋上特調甜辣醬，是台灣夜市最具代表性的小吃。',       wiki: 'Oyster_omelette',         fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Orh-Nee-Jian-Oyster-Omelette.jpg/640px-Orh-Nee-Jian-Oyster-Omelette.jpg' },
-    chicken:    { zh: '鹹酥雞',  en: 'Taiwanese Fried Chicken', desc: '香酥的雞塊與九層塔一同入鍋炸製，鹹香酥脆，是台灣宵夜文化的靈魂小吃。',               wiki: 'Taiwanese_fried_chicken', fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Yansuj%C3%AD.jpg/640px-Yansuj%C3%AD.jpg' },
-    guabao:     { zh: '割包',    en: 'Gua Bao',                 desc: '鬆軟白麵包夾入滷製五花肉、花生粉與酸菜，軟嫩酥脆並存，被譽為「台灣漢堡」。',           wiki: 'Gua_bao',                 fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Gua_bao_2.jpg/640px-Gua_bao_2.jpg' },
-    luroufan:   { zh: '滷肉飯',  en: 'Lu Rou Fan',              desc: '肥瘦相間的豬五花以醬油、米酒、冰糖慢燉後澆在白飯上，是台灣家常滋味的最高代表。',       wiki: 'Lu_rou_fan',              fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Luroufan.jpg/640px-Luroufan.jpg' },
-    beefnoodle: { zh: '牛肉麵',  en: 'Beef Noodle Soup',        desc: '以紅燒湯底燉煮軟爛牛腱，搭配彈牙麵條，是台灣最驕傲的國民美食，每年舉辦比賽選出最佳口味。', wiki: 'Beef_noodle_soup',        fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Taiwan_beef_noodle_soup.jpg/640px-Taiwan_beef_noodle_soup.jpg', imgOverride: 'https://tokyo-kitchen.icook.network/uploads/recipe/cover/338564/8869cd181686929d.jpg' },
-    bubbletea:  { zh: '珍珠奶茶', en: 'Bubble Tea',             desc: '1980年代發源於台灣台中，Q彈珍珠搭配奶茶，是台灣對世界飲料文化最大的貢獻。',           wiki: 'Bubble_tea',              fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Bubble_tea_at_Fantaasia_2015.jpg/640px-Bubble_tea_at_Fantaasia_2015.jpg', imgOverride: 'https://doqvf81n9htmm.cloudfront.net/data/crop_article/91169/shutterstock_1271869054.jpg_1140x855.jpg' },
-    miansian:   { zh: '大腸麵線', en: 'Oyster Vermicelli',      desc: '以豬大腸與蚵仔燉入勾芡的麵線湯中，口感滑順，是廟會與夜市中最撫慰人心的平民小吃。',   wiki: 'Oyster_vermicelli',       fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Mian_xian.jpg/640px-Mian_xian.jpg' },
-    coffin:     { zh: '棺材板',  en: 'Coffin Bread',            desc: '發源於台南，以厚片土司挖空後填入濃郁奶油燉料，外酥內滑，名稱怪異卻深受喜愛。',       wiki: 'Coffin_bread',            fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Coffin_bread.jpg/640px-Coffin_bread.jpg' },
-    stinkytofu: { zh: '臭豆腐',  en: 'Stinky Tofu',             desc: '炸至金黃酥脆後配上酸辣泡菜，「聞起來臭，吃起來香」，是台灣夜市最具挑戰性的美食。',   wiki: 'Stinky_tofu',             fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Stinky_tofu_in_Jiufen.jpg/640px-Stinky_tofu_in_Jiufen.jpg' },
+    oyster:     { zh: '蚵仙4煎',  en: 'Oyster Omelette',        desc: '以地瓜粉、雞蛋與新鮮蚵仙4煎製而成，淋上特調甜辣醬，是台灣夜市最具代表性的小吃。',       wiki: 'Oyster_omelette',         fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Orh-Nee-Jian-Oyster-Omelette.jpg/640px-Orh-Nee-Jian-Oyster-Omelette.jpg' },
+    chicken:    { zh: '鸹鄭雞',  en: 'Taiwanese Fried Chicken', desc: '香鄭的雞塊與九層塔一同入鍋炸製，鸹香鄭脆，是台灣宵夜文化的靈魂小吃。',               wiki: 'Taiwanese_fried_chicken', fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Yansuj%C3%AD.jpg/640px-Yansuj%C3%AD.jpg' },
+    guabao:     { zh: '割包',    en: 'Gua Bao',                 desc: '鬆軟白麵包夾入滇製五花肉、花生粉與酸菜，軟嫩鄭脆並存，被譽為「台灣漢堡」。',           wiki: 'Gua_bao',                 fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Gua_bao_2.jpg/640px-Gua_bao_2.jpg' },
+    luroufan:   { zh: '滇肉飯',  en: 'Lu Rou Fan',              desc: '肥瘦相間的豬五花以醬油、米酒、冰糖慢燉後澆在白飯上，是台灣家常滋味的最高代表。',       wiki: 'Lu_rou_fan',              fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Luroufan.jpg/640px-Luroufan.jpg' },
+    beefnoodle: { zh: '牛肉麵',  en: 'Beef Noodle Soup',        desc: '以紅燒湯底燉煮軟裛牛踱，搞配彈牙麵條，是台灣最驕傲的國民美食，每年舉辦比賽選出最佳口味。', wiki: 'Beef_noodle_soup',        fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Taiwan_beef_noodle_soup.jpg/640px-Taiwan_beef_noodle_soup.jpg', imgOverride: 'https://tokyo-kitchen.icook.network/uploads/recipe/cover/338564/8869cd181686929d.jpg' },
+    bubbletea:  { zh: '珍珠奶茶', en: 'Bubble Tea',             desc: '1980年代發源於台灣台中，Q很珍珠搞配奶茶，是台灣對世界飲料文化最大的貢獻。',           wiki: 'Bubble_tea',              fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Bubble_tea_at_Fantaasia_2015.jpg/640px-Bubble_tea_at_Fantaasia_2015.jpg', imgOverride: 'https://doqvf81n9htmm.cloudfront.net/data/crop_article/91169/shutterstock_1271869054.jpg_1140x855.jpg' },
+    miansian:   { zh: '大腸麵線', en: 'Oyster Vermicelli',      desc: '以豬大腸與蚵仙4燉入勾芝的麵線湯中，口感滑順，是廟會與夜市中最殫慰人心的平民小吃。',   wiki: 'Oyster_vermicelli',       fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Mian_xian.jpg/640px-Mian_xian.jpg' },
+    coffin:     { zh: '棺材板',  en: 'Coffin Bread',            desc: '發源於台南，以厚片土司挖空後填入濃郁奶油燉料，外鄭內滑，名稱怪異卻深受喜愛。',       wiki: 'Coffin_bread',            fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Coffin_bread.jpg/640px-Coffin_bread.jpg' },
+    stinkytofu: { zh: '臭豆腥',  en: 'Stinky Tofu',             desc: '炸至金黃鄭脆後配上酸辣泡菜，「聞起來臭，吃起來香」，是台灣夜市最具挑戰性的美食。',   wiki: 'Stinky_tofu',             fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Stinky_tofu_in_Jiufen.jpg/640px-Stinky_tofu_in_Jiufen.jpg' },
     bawan:      { zh: '肉圓',    en: 'Ba-Wan',                  desc: '以地瓜粉製成半透明外皮，包裹豬絞肉、竹筍與香菇，清蒸或油炸後淋上甜辣醬，是彰化、台南的在地驕傲。', wiki: 'Ba-wan',            fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Bawan.jpg/640px-Bawan.jpg' },
   };
 
@@ -413,6 +611,7 @@ function initBanquet() {
   async function openPopup(key) {
     const food = FOOD_DATA[key];
     if (!food || !popup) return;
+    window._sfx?.tone(784, 'sine', 0.6, 0.1);
     bpName.textContent    = `${food.zh}　${food.en}`;
     bpDesc.textContent    = food.desc;
     bpPhoto.style.opacity = '0';
@@ -461,6 +660,7 @@ function initBanquet() {
 
   function closePopup() {
     if (!popup) return;
+    window._sfx?.tone(523, 'sine', 0.3, 0.06);
     popup.classList.remove('open');
     document.body.style.overflow = '';
     setTimeout(() => { if (bpPhoto) bpPhoto.src = ''; }, 400);
@@ -577,7 +777,7 @@ function initBanquet() {
   applyRotation();
 }
 
-/* ─── ENDING ─────────────────────────────────────── */
+/* ─── ENDING ───────────────────────────────────────── */
 function initEnding() {
   const chips       = document.querySelectorAll('.w-chip');
   const dropZone    = document.getElementById('dropZone');
@@ -626,6 +826,8 @@ function initEnding() {
 
   chips.forEach(chip => {
     chip.addEventListener('click', () => {
+      window._sfx?.drop(0.14);
+      window._sfx?.tone(880, 'sine', 0.45, 0.07);
       const word = chip.dataset.word;
       chips.forEach(c => c.classList.remove('selected'));
       chip.classList.add('selected');
@@ -633,7 +835,7 @@ function initEnding() {
       spawnParticles(chip);
 
       dropWord.classList.remove('show');
-      dropWord.getBoundingClientRect(); // force reflow
+      dropWord.getBoundingClientRect();
       dropWord.textContent = word;
       if (placeholder) placeholder.classList.add('hidden');
       dropZone.classList.add('active');
@@ -644,7 +846,7 @@ function initEnding() {
   });
 }
 
-/* ─── SPOTLIGHT ───────────────────────────────────── */
+/* ─── SPOTLIGHT ───────────────────────────────────────── */
 function initSpotlight() {
   const section  = document.getElementById('s-marginal');
   const ringPath = document.getElementById('marginalRingPath');
