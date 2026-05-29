@@ -294,16 +294,19 @@ function initAudio() {
       if (pendingOff) { clearTimeout(pendingOff); pendingOff = null; }
       getCtx();
       if (bgMusic.paused) bgMusic.volume = 0;
+      musicPlaying = true;
+      updateBtn();
       bgMusic.play().then(function() {
-        musicPlaying = true;
-        updateBtn();
         const active = Array.from(document.querySelectorAll('.section')).find(function(s) {
           const r = s.getBoundingClientRect();
           return r.top <= window.innerHeight * .5 && r.bottom > 0;
         });
         const v = active ? (SEC_VOL[active.id] != null ? SEC_VOL[active.id] : 0.20) : 0.15;
         fadeTo(typeof v === 'number' ? v : 0.15, 2500);
-      }).catch(function() {});
+      }).catch(function() {
+        musicPlaying = false;
+        updateBtn();
+      });
     } else {
       musicPlaying = false;
       updateBtn();
@@ -720,7 +723,7 @@ function initBanquet() {
     beefnoodle: { zh: '牛肉麵',  en: 'Beef Noodle Soup',        desc: '以紅燒湯底燉煮軟裸牛蹄，搞配彈牙麵條，是台灣最驕傲的國民美食，每年舉辦比賽選出最佳口味。', wiki: 'Beef_noodle_soup',        fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Taiwan_beef_noodle_soup.jpg/640px-Taiwan_beef_noodle_soup.jpg', imgOverride: 'https://tokyo-kitchen.icook.network/uploads/recipe/cover/338564/8869cd181686929d.jpg' },
     bubbletea:  { zh: '珍珠奶茶', en: 'Bubble Tea',             desc: '1980年代發源於台灣台中，Q很珍珠搞配奶茶，是台灣對世界飲料文化最大的貢獻。',           wiki: 'Bubble_tea',              fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Bubble_tea_at_Fantaasia_2015.jpg/640px-Bubble_tea_at_Fantaasia_2015.jpg', imgOverride: 'https://doqvf81n9htmm.cloudfront.net/data/crop_article/91169/shutterstock_1271869054.jpg_1140x855.jpg' },
     miansian:   { zh: '大腸麵線', en: 'Oyster Vermicelli',      desc: '以豬大腸與蛔仑54燉入劾苝的麵線湯中，口感滑順，是廟會與夜市中最沙慕人心的平民小吃。',   wiki: 'Oyster_vermicelli',       fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Mian_xian.jpg/640px-Mian_xian.jpg' },
-    coffin:     { zh: '棺材板',  en: 'Coffin Bread',            desc: '發源於台南，以厚片土司挖空後填入濃鬱奶油燉料，外邳5e9e9內滑，名稱怪異卻深受喜愛。',       wiki: 'Coffin_bread',            fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Coffin_bread.jpg/640px-Coffin_bread.jpg' },
+    coffin:     { zh: '棺材板',  en: 'Coffin Bread',            desc: '發源於台南，以厚片土司挖空後填入濃鬱奶油燉料，外邳5e9e9內滑，名稱怪異卻混受喜感。',       wiki: 'Coffin_bread',            fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Coffin_bread.jpg/640px-Coffin_bread.jpg' },
     stinkytofu: { zh: '臭豆腥',  en: 'Stinky Tofu',             desc: '炸至金黃邳5e9e9脆後配上酸辣泡菜，「聞起來臭，吃起來香」，是台灣夜市最具挑戰性的美食。',   wiki: 'Stinky_tofu',             fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Stinky_tofu_in_Jiufen.jpg/640px-Stinky_tofu_in_Jiufen.jpg' },
     bawan:      { zh: '肉圓',    en: 'Ba-Wan',                  desc: '以地瓜粉製成半透明外皮，包裹豬絞肉、竹筍與香菇，清蒸或油炸後淡上甜辣醬，是彰化、台南的在地驕傲。', wiki: 'Ba-wan',            fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Bawan.jpg/640px-Bawan.jpg' },
   };
