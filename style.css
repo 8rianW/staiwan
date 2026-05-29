@@ -33,7 +33,7 @@ a { color: inherit; text-decoration: none; }
 img { display: block; width: 100%; height: 100%; object-fit: cover; }
 button { font-family: inherit; cursor: none; border: none; background: none; }
 
-/* ─── TEXTURE ───────────────────────────────────────── */
+/* ─── TEXTURE ──────────────────────────────────────── */
 .texture-overlay {
   position: absolute;
   inset: 0;
@@ -44,7 +44,7 @@ button { font-family: inherit; cursor: none; border: none; background: none; }
   z-index: 1;
 }
 
-/* ─── LOADER ───────────────────────────────────────── */
+/* ─── LOADER ──────────────────────────────────────── */
 #loader {
   position: fixed;
   inset: 0;
@@ -87,7 +87,7 @@ button { font-family: inherit; cursor: none; border: none; background: none; }
   transition: width 1.8s var(--ease);
 }
 
-/* ─── CURSOR ───────────────────────────────────────── */
+/* ─── CURSOR ──────────────────────────────────────── */
 #cursor {
   position: fixed;
   width: 8px;
@@ -118,7 +118,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   button { cursor: pointer; }
 }
 
-/* ─── NAV ──────────────────────────────────────────── */
+/* ─── NAV ─────────────────────────────────────────── */
 #nav {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -177,7 +177,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
 .nav-dot.active { background: var(--gold); transform: scale(1.5); }
 .nav-dot:hover { background: var(--muted); }
 
-/* ─── SCROLL PROGRESS ─────────────────────────────────── */
+/* ─── SCROLL PROGRESS ──────────────────────────────────── */
 #scroll-progress {
   position: fixed;
   left: 0;
@@ -194,7 +194,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   transition: height 0.1s linear;
 }
 
-/* ─── SECTION BASE ──────────────────────────────────── */
+/* ─── SECTION BASE ────────────────────────────────────── */
 .section {
   position: relative;
   min-height: 100vh;
@@ -215,7 +215,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
 }
 .section.active .section-bg { filter: brightness(0.28) saturate(0.55); }
 
-/* ─── REVEAL ANIMATIONS ────────────────────────────────── */
+/* ─── REVEAL ANIMATIONS ─────────────────────────────────── */
 .reveal, .reveal-up {
   opacity: 0;
   transform: translateY(28px);
@@ -327,7 +327,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   animation: scrollPulse 2.2s ease-in-out infinite;
 }
 
-/* ─── WHO ARE WE ───────────────────────────────────── */
+/* ─── WHO ARE WE ────────────────────────────────────── */
 #s-who { background: var(--bg2); }
 .who-content {
   text-align: center;
@@ -356,7 +356,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   letter-spacing: 0.25em;
 }
 
-/* ─── IDENTITY CRISIS ─────────────────────────────────── */
+/* ─── IDENTITY CRISIS ──────────────────────────────────── */
 #s-crisis {
   background: var(--bg);
   flex-direction: column;
@@ -500,7 +500,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   letter-spacing: 0.2em;
 }
 
-/* ─── SYNTAX (Language Installation Art) ─────────────── */
+/* ─── SYNTAX (Language Installation Art) ────────────────────────── */
 #s-syntax {
   background: var(--bg);
   min-height: 140vh;
@@ -775,7 +775,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   line-height: 2;
 }
 
-/* ─── MARGINALIZATION ─────────────────────────────────── */
+/* ─── MARGINALIZATION ───────────────────────────────────── */
 #s-marginal { background: var(--bg); }
 .marginal-content {
   position: relative;
@@ -818,7 +818,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   font-size: 0.9em;
 }
 
-/* ─── GRASSROOTS ──────────────────────────────────── */
+/* ─── GRASSROOTS ────────────────────────────────────── */
 #s-grassroots {
   background: var(--bg);
   flex-direction: column;
@@ -1163,6 +1163,94 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
 }
 .ending-artist-info a:hover { color: var(--gold); }
 
+/* ─── ENDING SEQUENCE ───────────────────────────────────── */
+#s-ending-seq {
+  background: #000;
+  height: 100vh;
+}
+#s-ending-seq::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg,
+      transparent, transparent 3px,
+      rgba(255,255,255,0.007) 3px, rgba(255,255,255,0.007) 4px),
+    repeating-linear-gradient(90deg,
+      transparent, transparent 5px,
+      rgba(255,255,255,0.004) 5px, rgba(255,255,255,0.004) 6px);
+  pointer-events: none;
+  z-index: 0;
+}
+#s-ending-seq > * { position: relative; z-index: 1; }
+.eseq-stage {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+.eseq-prompt {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  font-family: var(--serif);
+  font-size: 22px;
+  font-style: italic;
+  color: rgba(255,255,255,0.65);
+  letter-spacing: 0.08em;
+  opacity: 0;
+}
+.eseq-texts {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  opacity: 0;
+  width: max-content;
+  max-width: 90vw;
+}
+.eseq-zh {
+  font-family: var(--zh);
+  font-size: 42px;
+  font-weight: 500;
+  color: #F2F2F2;
+  letter-spacing: 0.06em;
+  line-height: 1.3;
+}
+.eseq-en {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-style: italic;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.1em;
+}
+.eseq-taiwan-center {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+}
+.eseq-taiwan {
+  display: flex;
+  gap: 0.35em;
+  opacity: 0;
+}
+.eseq-taiwan span {
+  font-family: var(--serif);
+  font-size: 64px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.85);
+  filter: blur(0.2px);
+  display: inline-block;
+  line-height: 1;
+}
+@keyframes eseqBreathe {
+  0%, 100% { transform: scale(1);     opacity: 0.82; }
+  50%       { transform: scale(1.01); opacity: 0.88; }
+}
+
 /* ─── FOOTER ──────────────────────────────────────────── */
 footer {
   background: var(--bg);
@@ -1243,7 +1331,7 @@ footer p {
 }
 .lb-close:hover { border-color: var(--gold); color: var(--gold); }
 
-/* ─── CELL LIGHTBOX ────────────────────────────────────── */
+/* ─── CELL LIGHTBOX ──────────────────────────────────────── */
 #cellBox {
   position: fixed;
   inset: 0;
@@ -1311,7 +1399,7 @@ footer p {
 #cellBox.open #cellBoxClose { opacity: 1; pointer-events: auto; }
 #cellBoxClose:hover { border-color: var(--gold); color: var(--gold); }
 
-/* ─── MARGINALIZATION LENS ────────────────────────────────── */
+/* ─── MARGINALIZATION LENS ───────────────────────────────────── */
 .marginal-spotlight {
   position: absolute;
   inset: 0;
@@ -1325,7 +1413,7 @@ footer p {
 }
 #s-marginal.spotlight-active .marginal-spotlight { opacity: 1; }
 
-/* ─── FREEDOM ORBS ───────────────────────────────────── */
+/* ─── FREEDOM ORBS ─────────────────────────────────────── */
 .freedom-orbs {
   position: absolute;
   inset: 0;
@@ -1352,7 +1440,7 @@ footer p {
   100% { transform: translateY(-100vh) scale(0.25); opacity: 0; }
 }
 
-/* ─── BANQUET HALF-CIRCLE ─────────────────────────────────── */
+/* ─── BANQUET HALF-CIRCLE ───────────────────────────────────── */
 .banquet-wrap {
   width: 100%;
   padding: 60px 0 0;
@@ -1425,7 +1513,7 @@ footer p {
 }
 .banquet-food { cursor: pointer; }
 
-/* ─── BANQUET POPUP ───────────────────────────────────── */
+/* ─── BANQUET POPUP ───────────────────────────────────────── */
 #banquetPopup {
   position: fixed;
   inset: 0;
@@ -1510,7 +1598,7 @@ footer p {
 }
 #bp-close:hover { border-color: var(--gold); color: var(--gold); }
 
-/* ─── AUDIO BUTTON ───────────────────────────────────────── */
+/* ─── AUDIO BUTTON ──────────────────────────────────────────── */
 #audioBtn {
   position: fixed;
   bottom: 28px;
@@ -1544,7 +1632,7 @@ footer p {
 }
 @media (pointer: coarse) { #audioBtn { cursor: pointer; } }
 
-/* ─── KEYFRAMES ──────────────────────────────────────────── */
+/* ─── KEYFRAMES ────────────────────────────────────────────── */
 @keyframes scrollPulse {
   0%   { transform: scaleY(0); transform-origin: top; }
   49%  { transform: scaleY(1); transform-origin: top; }
@@ -1641,6 +1729,10 @@ footer p {
   .ending-artist-info { text-align: center; }
 
   footer { padding: 28px 24px; }
+
+  .eseq-zh { font-size: 32px; }
+  .eseq-en { font-size: 15px; }
+  .eseq-taiwan span { font-size: 42px; }
 }
 
 @media (max-width: 480px) {
