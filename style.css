@@ -1603,32 +1603,31 @@ footer p {
   position: fixed;
   bottom: 28px;
   right: 28px;
-  width: 44px;
-  height: 44px;
-  border: 1px solid var(--border);
-  background: rgba(13,13,13,0.88);
+  padding: 8px 14px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(10,10,10,0.72);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  color: var(--muted);
+  color: rgba(255,255,255,0.50);
+  font-family: var(--sans);
+  font-size: 9px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: 2px;
   z-index: 990;
   cursor: none;
   transition: border-color 0.35s ease, color 0.35s ease;
 }
-#audioBtn svg { width: 18px; height: 18px; flex-shrink: 0; }
-#audioBtn:hover { border-color: var(--gold); color: var(--gold); }
-#audioBtn.playing {
-  border-color: rgba(201,168,76,0.6);
-  color: var(--gold);
-  animation: audioPulse 3s ease-in-out infinite;
+#audioBtn:hover {
+  border-color: rgba(255,255,255,0.30);
+  color: rgba(255,255,255,0.85);
 }
-#audioBtn.playing .audio-mute-line { display: none; }
-@keyframes audioPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0.22); }
-  50%       { box-shadow: 0 0 0 7px rgba(201,168,76,0); }
+#audioBtn.playing {
+  border-color: rgba(201,168,76,0.35);
+  color: rgba(201,168,76,0.70);
 }
 @media (pointer: coarse) { #audioBtn { cursor: pointer; } }
 
