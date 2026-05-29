@@ -112,19 +112,20 @@ function initAudio() {
   let pendingOff = null;
   const lastSfx = {};
 
+  const isMobile = window.matchMedia('(pointer: coarse)').matches;
+
   const SEC_VOL = {
-    's-opening':    0.15,
+    's-opening':    0.16,
     's-who':        0.20,
-    's-crisis':     0.25,
-    's-syntax':     0.45,
-    's-chaos':      0.35,
-    's-warmth':     0.40,
-    's-marginal':   0.32,
-    's-grassroots': 0.38,
-    's-freedom':    0.50,
-    's-culture':    0.35,
-    's-ending':     0.30,
-    's-ending-seq': null,
+    's-crisis':     0.22,
+    's-syntax':     0.38,
+    's-chaos':      0.28,
+    's-warmth':     0.32,
+    's-marginal':   0.26,
+    's-grassroots': 0.30,
+    's-freedom':    0.36,
+    's-culture':    0.30,
+    's-ending':     0.24,
   };
 
   function getCtx() {
@@ -161,10 +162,10 @@ function initAudio() {
 
   const sVObs = new IntersectionObserver(entries => {
     entries.forEach(e => {
-      if (!e.isIntersecting || !musicPlaying) return;
+      if (!e.isIntersecting || !musicPlaying || isMobile) return;
       const v = SEC_VOL[e.target.id];
       if (v === undefined) return;
-      fadeTo(v === null ? 0 : v, v === null ? 10000 : 2200);
+      fadeTo(v, 2200);
     });
   }, { threshold: 0.45 });
   document.querySelectorAll('.section').forEach(s => sVObs.observe(s));
@@ -363,12 +364,16 @@ function initAudio() {
       musicPlaying = true;
       updateBtn();
       bgMusic.play().then(function() {
-        const active = Array.from(document.querySelectorAll('.section')).find(function(s) {
-          const r = s.getBoundingClientRect();
-          return r.top <= window.innerHeight * .5 && r.bottom > 0;
-        });
-        const v = active ? (SEC_VOL[active.id] != null ? SEC_VOL[active.id] : 0.20) : 0.15;
-        fadeTo(typeof v === 'number' ? v : 0.15, 2500);
+        if (isMobile) {
+          fadeTo(0.28, 2500);
+        } else {
+          const active = Array.from(document.querySelectorAll('.section')).find(function(s) {
+            const r = s.getBoundingClientRect();
+            return r.top <= window.innerHeight * .5 && r.bottom > 0;
+          });
+          const v = active ? SEC_VOL[active.id] : undefined;
+          fadeTo(typeof v === 'number' ? v : 0.16, 2500);
+        }
       }).catch(function() {
         musicPlaying = false;
         updateBtn();
@@ -657,13 +662,22 @@ function initSyntax() {
   }
 
   const section = document.getElementById('s-syntax');
+  const synMobile = window.matchMedia('(pointer: coarse)').matches;
   let started = false;
   let syntaxVisible = false;
   const obs = new IntersectionObserver(entries => {
     syntaxVisible = entries[0].isIntersecting;
-    if (syntaxVisible && !started) {
-      started = true;
-      later(() => runPair(0), 600);
+    if (syntaxVisible) {
+      if (!started || synMobile) {
+        started = true;
+        idx = 0;
+        clearAll();
+        later(() => runPair(0), 600);
+      }
+    } else if (synMobile) {
+      clearAll();
+      started = false;
+      idx = 0;
     }
   }, { threshold: 0.35 });
   if (section) obs.observe(section);

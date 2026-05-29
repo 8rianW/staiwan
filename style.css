@@ -1601,38 +1601,35 @@ footer p {
 /* ─── AUDIO BUTTON ──────────────────────────────────────────── */
 #audioBtn {
   position: fixed;
-  bottom: 28px;
-  right: 28px;
-  padding: 8px 14px;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: rgba(10,10,10,0.72);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  bottom: 24px;
+  right: 24px;
+  padding: 10px 14px;
+  border: none;
+  background: transparent;
   color: rgba(255,255,255,0.50);
   font-family: var(--sans);
-  font-size: 9px;
-  letter-spacing: 0.32em;
+  font-size: 11px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 2px;
   z-index: 990;
   cursor: none;
-  transition: border-color 0.35s ease, color 0.35s ease;
+  transition: color 0.35s ease;
 }
 #audioBtn:hover {
-  border-color: rgba(255,255,255,0.30);
   color: rgba(255,255,255,0.85);
 }
 #audioBtn.playing {
-  border-color: rgba(201,168,76,0.35);
   color: rgba(201,168,76,0.70);
 }
 @media (pointer: coarse) {
   #audioBtn {
     cursor: pointer;
-    padding: 12px 18px;
+    bottom: calc(env(safe-area-inset-bottom) + 24px);
+    right: 20px;
+    padding: 14px 18px;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
   }
@@ -1756,4 +1753,22 @@ footer p {
     grid-template-columns: 1fr;
     grid-template-rows: 70vw 55vw 55vw;
   }
+}
+
+/* ─── REDUCED MOTION ────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .syn-l, .syn-float-l {
+    transition: opacity 0.2s ease !important;
+    transform: none !important;
+    filter: none !important;
+  }
+  .syn-from-word, .syn-to-word {
+    transition: opacity 0.2s ease !important;
+    animation: none !important;
+  }
+  @keyframes synWordBreathe { from, to { transform: none; opacity: 1; } }
+  @keyframes synTwBreathe   { from, to { transform: none; opacity: 1; } }
+  @keyframes eseqBreathe    { from, to { transform: none; opacity: 1; } }
+  @keyframes orbFloat       { from, to { transform: none; } }
+  @keyframes scrollPulse    { from, to { transform: none; opacity: 0; } }
 }
