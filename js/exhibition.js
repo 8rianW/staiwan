@@ -453,7 +453,26 @@ function initCrisis() {
     setTimeout(() => { cell.classList.remove('active-cell'); if (activeCell === cell) activeCell = null; }, 480);
   }
 
+  // preload all thumbnails when section enters viewport
+  const crisisSection = document.getElementById('s-crisis');
+  if (crisisSection) {
+    const preloadObs = new IntersectionObserver(entries => {
+      if (!entries[0].isIntersecting) return;
+      cells.forEach(cell => {
+        const img = cell.querySelector('.gc-photo img');
+        if (img && cell.dataset.photo && !img.src) img.src = cell.dataset.photo;
+      });
+      preloadObs.disconnect();
+    }, { threshold: 0.2 });
+    preloadObs.observe(crisisSection);
+  }
+
   cells.forEach(cell => {
+    // desktop: start loading on hover so click is near-instant
+    cell.addEventListener('mouseenter', () => {
+      const img = cell.querySelector('.gc-photo img');
+      if (img && cell.dataset.photo && !img.src) img.src = cell.dataset.photo;
+    });
     cell.addEventListener('click', e => {
       e.stopPropagation();
       if (activeCell === cell) closeCell();
