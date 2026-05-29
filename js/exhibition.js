@@ -97,6 +97,7 @@ function initAll() {
   initBanquet();
   initSpotlight();
   initEnding();
+  initEndingSeq();
 }
 
 /* ─── AUDIO ────────────────────────────────────── */
@@ -287,8 +288,8 @@ function initSyntax() {
 
   const COLORS = { T:'#E05555', A:'#D4A843', I:'#5B88D4', W:'#5DB86A', N:'#D4A843' };
   const GLOW   = {
-    T:'rgba(178,58,58,0.55)', A:'rgba(201,168,76,0.55)',
-    I:'rgba(47,93,159,0.55)', W:'rgba(58,125,68,0.55)',  N:'rgba(201,168,76,0.55)',
+    T:'rgba(224,85,85,0.55)', A:'rgba(212,168,67,0.55)',
+    I:'rgba(91,136,212,0.55)', W:'rgba(93,184,106,0.55)', N:'rgba(212,168,67,0.55)',
   };
 
   const PAIRS = [
@@ -296,9 +297,9 @@ function initSyntax() {
     { from:'CHAOS', to:'ACTION', twIdx:[2,3,5], zh:'混亂 → 行動' },
     { from:'SIN',   to:'SAINT',  twIdx:[1,4],   zh:'罪惡 → 聖潔' },
     { from:'ILL',   to:'WILL',   twIdx:[0],     zh:'病態 → 意志' },
-    { from:'RUST',  to:'TRUST',  twIdx:[0],     zh:'锈黎 → 信任' },
+    { from:'RUST',  to:'TRUST',  twIdx:[0],     zh:'鏽蝕 → 信任' },
     { from:'FEAR',  to:'AWARE',  twIdx:[1,2],   zh:'恐懼 → 覺察' },
-    { from:'DARK',  to:'DAWN',   twIdx:[2,3],   zh:'黑暗 → 鳨明' },
+    { from:'DARK',  to:'DAWN',   twIdx:[2,3],   zh:'黑暗 → 黎明' },
     { from:'WEAK',  to:'AWAKE',  twIdx:[0],     zh:'虛弱 → 覺醒' },
     { from:'HURT',  to:'TRUTH',  twIdx:[0],     zh:'傷痛 → 真實' },
     { from:'ASH',   to:'WASH',   twIdx:[0],     zh:'灰燼 → 洗淨' },
@@ -327,67 +328,73 @@ function initSyntax() {
 
     const fromSpans = pair.from.split('').map((ch, i) => {
       const s = document.createElement('span');
-      s.className = 'syn-l';
+      s.className   = 'syn-l';
       s.textContent = ch;
       s.style.opacity   = '0';
-      s.style.transform = 'translateY(16px)';
-      s.style.filter    = 'blur(4px)';
+      s.style.transform = 'translateY(18px)';
+      s.style.filter    = 'blur(6px)';
       fromWrap.appendChild(s);
       later(() => {
-        s.style.transition = 'opacity 0.7s ease, transform 0.7s ease, filter 0.7s ease';
+        s.style.transition = 'opacity 0.9s ease, transform 0.9s cubic-bezier(0.16,1,0.3,1), filter 0.9s ease';
         s.style.opacity    = '1';
         s.style.transform  = 'translateY(0)';
         s.style.filter     = 'blur(0)';
-      }, i * 100);
+      }, 80 + i * 110);
       return s;
     });
 
-    /* Phase 2: Taiwan letters float in from darkness */
+    /* Phase 2: Taiwan letters emerge from darkness */
     const floaters = [];
     later(() => {
       addChs.forEach((ch, i) => {
-        const f   = document.createElement('span');
-        f.className = 'syn-float-l';
-        const col  = COLORS[ch] || '#C9A84C';
-        const glow = GLOW[ch]   || 'rgba(201,168,76,0.5)';
-        const ex   = (i - (addChs.length - 1) / 2) * 60;
-        const sx   = ex + (Math.random() - 0.5) * 140;
-        const sy   = -110 - Math.random() * 60;
-        const ey   = -82 - i * 18;
+        const f      = document.createElement('span');
+        f.className  = 'syn-float-l';
+        const col    = COLORS[ch] || '#C9A84C';
+        const glow   = GLOW[ch]   || 'rgba(201,168,76,0.5)';
+        const spread = (i - (addChs.length - 1) / 2) * 52;
+        const sx     = spread + (Math.random() - 0.5) * 90;
+        const sy     = -98 - Math.random() * 46;
+        const hy     = -68 - i * 16;
+
         f.style.color      = col;
-        f.style.textShadow = `0 0 22px ${glow}`;
+        f.style.textShadow = `0 0 28px ${glow}`;
         f.style.opacity    = '0';
         f.style.transform  = `translate(calc(-50% + ${sx}px), calc(-50% + ${sy}px))`;
-        f.style.filter     = 'blur(10px)';
+        f.style.filter     = 'blur(14px)';
         wordArea.appendChild(f);
-        floaters.push({ el: f, ex, ey });
+        floaters.push(f);
 
         later(() => {
-          f.style.transition = 'opacity 1s ease, transform 1s ease, filter 1s ease';
-          f.style.transform  = `translate(calc(-50% + ${ex}px), calc(-50% + ${ey}px))`;
-          f.style.opacity    = '0.88';
+          f.style.transition = 'opacity 1.4s ease, transform 1.4s cubic-bezier(0.16,1,0.3,1), filter 1.4s ease';
+          f.style.transform  = `translate(calc(-50% + ${spread}px), calc(-50% + ${hy}px))`;
+          f.style.opacity    = '0.78';
           f.style.filter     = 'blur(0.5px)';
-        }, 60 + i * 210);
+        }, 80 + i * 200);
       });
 
-      /* Phase 3: Scatter + reform */
+      /* Phase 3: Cinematic dissolve — no scatter */
       later(() => {
+        /* FROM letters: slow vertical dissolve upward, no fly-out */
         fromSpans.forEach((el, i) => {
-          const ang = (i / fromSpans.length) * Math.PI * 2 + (Math.random() - 0.5) * 1.4;
-          const d   = 38 + Math.random() * 54;
-          el.style.transition = `opacity 0.5s ease ${i*22}ms, transform 0.5s ease ${i*22}ms, filter 0.4s ease`;
-          el.style.transform  = `translate(${(Math.cos(ang)*d).toFixed(0)}px,${(Math.sin(ang)*d).toFixed(0)}px)`;
-          el.style.opacity    = '0';
-          el.style.filter     = 'blur(5px)';
-        });
-        floaters.forEach(({ el: f }) => {
-          f.style.transition = 'opacity 0.45s ease, transform 0.45s ease, filter 0.45s ease';
-          f.style.transform  = 'translate(-50%, -50%) scale(0.55)';
-          f.style.opacity    = '0';
-          f.style.filter     = 'blur(7px)';
+          later(() => {
+            el.style.transition = 'opacity 1.5s ease, transform 1.5s ease, filter 1.5s ease';
+            el.style.opacity    = '0';
+            el.style.transform  = 'translateY(-12px) scale(0.94)';
+            el.style.filter     = 'blur(10px)';
+          }, i * 45);
         });
 
-        /* Phase 4: TO word emerges */
+        /* Taiwan floaters: breathe inward and dissolve, no scatter */
+        floaters.forEach((f, i) => {
+          later(() => {
+            f.style.transition = 'opacity 1.3s ease, transform 1.5s cubic-bezier(0.16,1,0.3,1), filter 1.3s ease';
+            f.style.transform  = `translate(-50%, calc(-50% + ${-14 + i * 10}px)) scale(0.76)`;
+            f.style.opacity    = '0';
+            f.style.filter     = 'blur(8px)';
+          }, i * 60);
+        });
+
+        /* Phase 4: TO word assembles from blur */
         later(() => {
           wordArea.innerHTML = '';
           const toWrap = document.createElement('div');
@@ -395,47 +402,50 @@ function initSyntax() {
           wordArea.appendChild(toWrap);
 
           pair.to.split('').forEach((ch, i) => {
-            const s   = document.createElement('span');
+            const s    = document.createElement('span');
             const isTw = twSet.has(i);
             s.className   = 'syn-l' + (isTw ? ' tw' : '');
             s.textContent = ch;
             if (isTw) s.style.color = COLORS[ch] || '#C9A84C';
             s.style.opacity   = '0';
-            s.style.transform = 'translateY(14px)';
-            s.style.filter    = 'blur(5px)';
+            s.style.transform = 'translateY(12px) scale(0.92)';
+            s.style.filter    = 'blur(8px)';
             toWrap.appendChild(s);
 
             later(() => {
-              s.style.transition = 'opacity 0.85s ease, transform 0.85s ease, filter 0.85s ease';
+              s.style.transition = 'opacity 1.0s ease, transform 1.0s cubic-bezier(0.16,1,0.3,1), filter 1.0s ease';
               s.style.opacity    = '1';
-              s.style.transform  = 'translateY(0)';
+              s.style.transform  = 'translateY(0) scale(1)';
               s.style.filter     = 'blur(0)';
               if (isTw) {
                 later(() => {
-                  if (s.isConnected) s.style.animation = 'synTwBreathe 3s ease-in-out infinite';
-                }, 950);
+                  if (s.isConnected) s.style.animation = 'synTwBreathe 3.5s ease-in-out infinite';
+                }, 1000);
               }
-            }, 80 + i * 110);
+            }, 60 + i * 100);
           });
 
-          later(() => meaning.classList.add('visible'), 500);
+          later(() => meaning.classList.add('visible'), 700);
 
           later(() => {
             if (toWrap.isConnected)
-              toWrap.style.animation = 'synWordBreathe 4s ease-in-out infinite';
+              toWrap.style.animation = 'synWordBreathe 5s ease-in-out infinite';
           }, 1400);
 
           /* Fade out then next pair */
           later(() => {
-            toWrap.style.transition = 'opacity 0.8s ease';
-            toWrap.style.opacity    = '0';
+            if (toWrap.isConnected) {
+              toWrap.style.animation  = 'none';
+              toWrap.style.transition = 'opacity 0.85s ease';
+              toWrap.style.opacity    = '0';
+            }
             meaning.classList.remove('visible');
-            later(() => { idx = (idx + 1) % PAIRS.length; runPair(idx); }, 850);
+            later(() => { idx = (idx + 1) % PAIRS.length; runPair(idx); }, 900);
           }, 3000);
 
-        }, 680);
-      }, 1200);
-    }, 1500);
+        }, 1000); /* Phase 4 starts 1s into Phase 3 */
+      }, 1400);   /* Phase 3 starts 1.4s after Phase 2 */
+    }, 1500);     /* Phase 2 starts at 1.5s */
   }
 
   const section = document.getElementById('s-syntax');
@@ -443,7 +453,7 @@ function initSyntax() {
   const obs = new IntersectionObserver(entries => {
     if (entries[0].isIntersecting && !started) {
       started = true;
-      later(() => runPair(0), 500);
+      later(() => runPair(0), 600);
     }
   }, { threshold: 0.35 });
   if (section) obs.observe(section);
@@ -957,4 +967,53 @@ function initSpotlight() {
       else { morphed = true; morphing = false; section.classList.add('ring-morphed'); }
     })(t0);
   });
+}
+
+/* ─── ENDING SEQUENCE ──────────────────────────────────── */
+function initEndingSeq() {
+  const section = document.getElementById('s-ending-seq');
+  const prompt  = document.getElementById('eseqPrompt');
+  const texts   = document.getElementById('eseqTexts');
+  const taiwan  = document.getElementById('eseqTaiwan');
+  if (!section || !prompt || !texts || !taiwan) return;
+
+  let started = false;
+
+  function runSequence() {
+    /* Stage 1: "Taiwan is ______" fades in (2s) */
+    prompt.style.transition = 'opacity 2s ease';
+    prompt.style.opacity = '1';
+
+    /* Stage 2: at 2.5s — prompt fades out, Chinese + English fade in */
+    setTimeout(() => {
+      prompt.style.transition = 'opacity 3s ease';
+      prompt.style.opacity = '0';
+      texts.style.transition = 'opacity 1.6s ease';
+      texts.style.opacity = '1';
+
+      /* Stage 3: at 2.5+4.5=7s — texts dissolve out slowly */
+      setTimeout(() => {
+        texts.style.transition = 'opacity 3s ease';
+        texts.style.opacity = '0';
+
+        /* Stage 4: at 1.5s into Stage 3 — T A I W A N breathes in */
+        setTimeout(() => {
+          taiwan.style.transition = 'opacity 2.5s ease';
+          taiwan.style.opacity = '1';
+          setTimeout(() => {
+            if (taiwan.isConnected)
+              taiwan.style.animation = 'eseqBreathe 4s ease-in-out infinite';
+          }, 2500);
+        }, 1500);
+      }, 4500);
+    }, 2500);
+  }
+
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting && !started) {
+      started = true;
+      setTimeout(runSequence, 800);
+    }
+  }, { threshold: 0.45 });
+  obs.observe(section);
 }
