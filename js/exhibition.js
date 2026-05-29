@@ -1,6 +1,6 @@
 'use strict';
 
-/* ─── LOADER ─────────────────────────────────── */
+/* ─── LOADER ─────────────────────────────────────── */
 const loader = document.getElementById('loader');
 const loaderFill = document.querySelector('.loader-fill');
 window.addEventListener('load', () => {
@@ -8,7 +8,7 @@ window.addEventListener('load', () => {
   setTimeout(() => { loader.classList.add('hidden'); initAll(); }, 2000);
 });
 
-/* ─── CURSOR ─────────────────────────────────── */
+/* ─── CURSOR ─────────────────────────────────────── */
 const cur = document.getElementById('cursor');
 const ring = document.getElementById('cursor-ring');
 let cx = 0, cy = 0, rx = 0, ry = 0;
@@ -26,7 +26,7 @@ document.querySelectorAll('a,button,.grid-cell,.warmth-photo,.gr-item,.cu-item')
   el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
 });
 
-/* ─── NAV ───────────────────────────────────────── */
+/* ─── NAV ─────────────────────────────────────────── */
 const nav = document.getElementById('nav');
 const navName = document.getElementById('navSectionName');
 const navDots = document.querySelectorAll('.nav-dot');
@@ -52,14 +52,14 @@ function updateNavDots() {
   navName.textContent = sections[active]?.dataset.name || '';
 }
 
-/* ─── SCROLL PROGRESS ───────────────────────────── */
+/* ─── SCROLL PROGRESS ────────────────────────────────── */
 const scrollFill = document.getElementById('scroll-fill');
 function updateScrollProgress() {
   const total = document.body.scrollHeight - window.innerHeight;
   if (total > 0) scrollFill.style.height = (window.scrollY / total * 100) + '%';
 }
 
-/* ─── INIT ───────────────────────────────────────── */
+/* ─── INIT ─────────────────────────────────────────── */
 function initAll() {
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => {
@@ -100,14 +100,30 @@ function initAll() {
   initEndingSeq();
 }
 
-/* ─── AUDIO ────────────────────────────────────── */
+/* ─── AUDIO ────────────────────────────────────────── */
 function initAudio() {
   const bgMusic = document.getElementById('bgMusic');
   const audioBtn = document.getElementById('audioBtn');
-  if (!bgMusic || !audioBtn) return;
 
   let audioCtx = null;
   let musicPlaying = false;
+  let volRafId = null;
+  const lastSfx = {};
+
+  const SEC_VOL = {
+    's-opening':    0.15,
+    's-who':        0.20,
+    's-crisis':     0.25,
+    's-syntax':     0.45,
+    's-chaos':      0.35,
+    's-warmth':     0.40,
+    's-marginal':   0.32,
+    's-grassroots': 0.38,
+    's-freedom':    0.50,
+    's-culture':    0.35,
+    's-ending':     0.30,
+    's-ending-seq': null,
+  };
 
   function getCtx() {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -115,94 +131,192 @@ function initAudio() {
     return audioCtx;
   }
 
-  function playTone(freq, type = 'sine', duration = 0.4, vol = 0.1) {
+  function fadeTo(vol, ms) {
+    if (!bgMusic) return;
+    if (volRafId) { cancelAnimationFrame(volRafId); volRafId = null; }
+    const t0 = performance.now(), v0 = bgMusic.volume;
+    (function step(now) {
+      const p = Math.min((now - t0) / ms, 1);
+      const e = p < .5 ? 2*p*p : -1+(4-2*p)*p;
+      bgMusic.volume = v0 + (vol - v0) * e;
+      if (p < 1) volRafId = requestAnimationFrame(step);
+      else bgMusic.volume = vol;
+    })(performance.now());
+  }
+
+  const sVObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting || !musicPlaying) return;
+      const v = SEC_VOL[e.target.id];
+      if (v === undefined) return;
+      fadeTo(v === null ? 0 : v, v === null ? 10000 : 2200);
+    });
+  }, { threshold: 0.45 });
+  document.querySelectorAll('.section').forEach(s => sVObs.observe(s));
+
+  function ok(key, ms) {
+    const now = Date.now();
+    if (lastSfx[key] && now - lastSfx[key] < ms) return false;
+    lastSfx[key] = now; return true;
+  }
+
+  function particle(vol) {
+    vol = vol != null ? vol : 0.10;
+    if (!ok('particle', 180)) return;
     try {
-      const ctx = getCtx();
-      const osc = ctx.createOscillator();
-      const gn  = ctx.createGain();
-      osc.connect(gn); gn.connect(ctx.destination);
-      osc.type = type;
-      osc.frequency.setValueAtTime(freq, ctx.currentTime);
-      gn.gain.setValueAtTime(vol, ctx.currentTime);
-      gn.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
-      osc.start(ctx.currentTime);
-      osc.stop(ctx.currentTime + duration + 0.05);
+      const c = getCtx(), n = Math.floor(c.sampleRate * 0.10);
+      const buf = c.createBuffer(1, n, c.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < n; i++) d[i] = (Math.random()*2-1) * (1-i/n);
+      const src = c.createBufferSource(); src.buffer = buf;
+      const f = c.createBiquadFilter(); f.type = 'highpass'; f.frequency.value = 4200;
+      const g = c.createGain(); g.gain.setValueAtTime(vol, c.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + .10);
+      src.connect(f); f.connect(g); g.connect(c.destination); src.start();
     } catch (_) {}
   }
 
-  function playDrop(vol = 0.12) {
+  function magnetic(vol) {
+    vol = vol != null ? vol : 0.09;
+    if (!ok('magnetic', 350)) return;
     try {
-      const ctx = getCtx();
-      const osc = ctx.createOscillator();
-      const gn  = ctx.createGain();
-      osc.connect(gn); gn.connect(ctx.destination);
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(1400, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(480, ctx.currentTime + 0.07);
-      gn.gain.setValueAtTime(vol, ctx.currentTime);
-      gn.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.14);
-      osc.start(ctx.currentTime);
-      osc.stop(ctx.currentTime + 0.16);
+      const c = getCtx(), dur = 0.22, n = Math.floor(c.sampleRate * dur);
+      const buf = c.createBuffer(1, n, c.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < n; i++) d[i] = (Math.random()*2-1) * Math.sin(i/n*Math.PI) * .5;
+      const src = c.createBufferSource(); src.buffer = buf;
+      const f = c.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 700; f.Q.value = 2.5;
+      const g = c.createGain(); g.gain.setValueAtTime(vol, c.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + dur);
+      src.connect(f); f.connect(g); g.connect(c.destination); src.start();
     } catch (_) {}
   }
 
-  function playWhoosh(vol = 0.06) {
+  function resonance(vol) {
+    vol = vol != null ? vol : 0.13;
+    if (!ok('resonance', 500)) return;
     try {
-      const ctx = getCtx();
-      const bufSize = Math.floor(ctx.sampleRate * 0.35);
-      const buf  = ctx.createBuffer(1, bufSize, ctx.sampleRate);
-      const d    = buf.getChannelData(0);
-      for (let i = 0; i < bufSize; i++) d[i] = Math.random() * 2 - 1;
-      const src  = ctx.createBufferSource();
-      src.buffer = buf;
-      const filt = ctx.createBiquadFilter();
-      filt.type  = 'bandpass';
-      filt.frequency.setValueAtTime(280, ctx.currentTime);
-      filt.frequency.exponentialRampToValueAtTime(2800, ctx.currentTime + 0.28);
-      filt.Q.value = 0.5;
-      const gn = ctx.createGain();
-      gn.gain.setValueAtTime(vol, ctx.currentTime);
-      gn.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.35);
-      src.connect(filt); filt.connect(gn); gn.connect(ctx.destination);
-      src.start();
+      const c = getCtx();
+      [196, 294].forEach(function(freq, i) {
+        const o = c.createOscillator(), g = c.createGain();
+        o.connect(g); g.connect(c.destination);
+        o.type = 'sine'; o.frequency.value = freq;
+        g.gain.setValueAtTime(0, c.currentTime);
+        g.gain.linearRampToValueAtTime(vol * (1 - i * .35), c.currentTime + .04);
+        g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + .32);
+        o.start(c.currentTime); o.stop(c.currentTime + .35);
+      });
     } catch (_) {}
   }
 
-  window._sfx = { tone: playTone, drop: playDrop, whoosh: playWhoosh };
+  function paperSlide(vol) {
+    vol = vol != null ? vol : 0.09;
+    if (!ok('paper', 130)) return;
+    try {
+      const c = getCtx(), dur = 0.16, n = Math.floor(c.sampleRate * dur);
+      const buf = c.createBuffer(1, n, c.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < n; i++) d[i] = (Math.random()*2-1) * (1-i/n) * .6;
+      const src = c.createBufferSource(); src.buffer = buf;
+      const f = c.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 1100; f.Q.value = .8;
+      const g = c.createGain(); g.gain.setValueAtTime(vol, c.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + dur);
+      src.connect(f); f.connect(g); g.connect(c.destination); src.start();
+    } catch (_) {}
+  }
+
+  function settle(vol) {
+    vol = vol != null ? vol : 0.11;
+    if (!ok('settle', 250)) return;
+    try {
+      const c = getCtx(), dur = 0.13, n = Math.floor(c.sampleRate * dur);
+      const buf = c.createBuffer(1, n, c.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < n; i++) d[i] = (Math.random()*2-1) * Math.pow(1-i/n, 2.5);
+      const src = c.createBufferSource(); src.buffer = buf;
+      const f = c.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 550;
+      const g = c.createGain(); g.gain.setValueAtTime(vol, c.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + dur);
+      src.connect(f); f.connect(g); g.connect(c.destination); src.start();
+    } catch (_) {}
+  }
+
+  function lowRes(vol) {
+    vol = vol != null ? vol : 0.14;
+    try {
+      const c = getCtx(), o = c.createOscillator(), g = c.createGain();
+      o.connect(g); g.connect(c.destination); o.type = 'sine';
+      o.frequency.setValueAtTime(78, c.currentTime);
+      o.frequency.exponentialRampToValueAtTime(52, c.currentTime + .55);
+      g.gain.setValueAtTime(0, c.currentTime);
+      g.gain.linearRampToValueAtTime(vol, c.currentTime + .08);
+      g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + .56);
+      o.start(c.currentTime); o.stop(c.currentTime + .60);
+    } catch (_) {}
+  }
+
+  window._sfx = {
+    particle: particle,
+    magnetic: magnetic,
+    resonance: resonance,
+    paperSlide: paperSlide,
+    settle: settle,
+    lowRes: lowRes,
+    fadeTo: fadeTo,
+    tone: function(freq, type, duration, vol) {
+      type = type != null ? type : 'sine';
+      duration = duration != null ? duration : 0.4;
+      vol = vol != null ? vol : 0.1;
+      try {
+        const c = getCtx(), o = c.createOscillator(), g = c.createGain();
+        o.connect(g); g.connect(c.destination); o.type = type;
+        o.frequency.value = freq;
+        g.gain.setValueAtTime(vol, c.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + duration);
+        o.start(c.currentTime); o.stop(c.currentTime + duration + .05);
+      } catch (_) {}
+    },
+    drop: function(vol) { settle(vol != null ? vol : .12); },
+    whoosh: function(vol) { paperSlide(vol != null ? vol : .09); },
+  };
+
+  function updateBtn() {
+    if (!audioBtn) return;
+    const lbl = audioBtn.querySelector('.sound-label');
+    if (lbl) lbl.textContent = musicPlaying ? 'Sound: On' : 'Sound: Off';
+    audioBtn.classList.toggle('playing', musicPlaying);
+  }
 
   function toggleMusic() {
+    if (!bgMusic) return;
     if (!musicPlaying) {
       getCtx();
       bgMusic.volume = 0;
-      bgMusic.play().then(() => {
+      bgMusic.play().then(function() {
         musicPlaying = true;
-        audioBtn.classList.add('playing');
-        let vol = 0;
-        const id = setInterval(() => {
-          vol = Math.min(vol + 0.005, 0.18);
-          bgMusic.volume = vol;
-          if (vol >= 0.18) clearInterval(id);
-        }, 55);
-      }).catch(() => {});
+        updateBtn();
+        const active = Array.from(document.querySelectorAll('.section')).find(function(s) {
+          const r = s.getBoundingClientRect();
+          return r.top <= window.innerHeight * .5 && r.bottom > 0;
+        });
+        const v = active ? (SEC_VOL[active.id] != null ? SEC_VOL[active.id] : 0.20) : 0.15;
+        fadeTo(typeof v === 'number' ? v : 0.15, 2500);
+      }).catch(function() {});
     } else {
-      let vol = bgMusic.volume;
-      const id = setInterval(() => {
-        vol = Math.max(vol - 0.012, 0);
-        bgMusic.volume = vol;
-        if (vol <= 0) {
-          clearInterval(id);
-          bgMusic.pause();
-          musicPlaying = false;
-          audioBtn.classList.remove('playing');
-        }
-      }, 55);
+      fadeTo(0, 2000);
+      setTimeout(function() {
+        if (bgMusic) { bgMusic.pause(); }
+        musicPlaying = false;
+        updateBtn();
+      }, 2200);
     }
   }
 
-  audioBtn.addEventListener('click', toggleMusic);
+  if (audioBtn) audioBtn.addEventListener('click', toggleMusic);
+  updateBtn();
 }
 
-/* ─── PARALLAX ───────────────────────────────────── */
+/* ─── PARALLAX ───────────────────────────────────────── */
 function initParallax() {
   const bg = document.getElementById('openingBg');
   if (!bg || window.matchMedia('(pointer: coarse)').matches) return;
@@ -219,7 +333,7 @@ function initParallax() {
   })();
 }
 
-/* ─── IDENTITY CRISIS ─────────────────────────────── */
+/* ─── IDENTITY CRISIS ───────────────────────────────────── */
 function initCrisis() {
   const cells = document.querySelectorAll('.grid-cell');
   const cellBox    = document.getElementById('cellBox');
@@ -280,7 +394,7 @@ function initCrisis() {
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCell(); });
 }
 
-/* ─── SYNTAX ──────────────────────────────────────── */
+/* ─── SYNTAX ──────────────────────────────────────────── */
 function initSyntax() {
   const wordArea = document.getElementById('synWordArea');
   const meaning  = document.getElementById('synMeaning');
@@ -297,11 +411,11 @@ function initSyntax() {
     { from:'CHAOS', to:'ACTION', twIdx:[2,3,5], zh:'混亂 → 行動' },
     { from:'SIN',   to:'SAINT',  twIdx:[1,4],   zh:'罪惡 → 聖潔' },
     { from:'ILL',   to:'WILL',   twIdx:[0],     zh:'病態 → 意志' },
-    { from:'RUST',  to:'TRUST',  twIdx:[0],     zh:'鏽蝕 → 信任' },
+    { from:'RUST',  to:'TRUST',  twIdx:[0],     zh:'锈蝕 → 信任' },
     { from:'FEAR',  to:'AWARE',  twIdx:[1,2],   zh:'恐懼 → 覺察' },
     { from:'DARK',  to:'DAWN',   twIdx:[2,3],   zh:'黑暗 → 黎明' },
     { from:'WEAK',  to:'AWAKE',  twIdx:[0],     zh:'虛弱 → 覺醒' },
-    { from:'HURT',  to:'TRUTH',  twIdx:[0],     zh:'傷痛 → 真實' },
+    { from:'HURT',  to:'TRUTH',  twIdx:[0],     zh:'傈痛 → 真實' },
     { from:'ASH',   to:'WASH',   twIdx:[0],     zh:'灰燼 → 洗淨' },
   ];
 
@@ -371,9 +485,11 @@ function initSyntax() {
           f.style.filter     = 'blur(0.5px)';
         }, 80 + i * 200);
       });
+      if (addChs.length) later(() => window._sfx && window._sfx.particle(), 90);
 
       /* Phase 3: Cinematic dissolve — no scatter */
       later(() => {
+        window._sfx && window._sfx.magnetic();
         /* FROM letters: slow vertical dissolve upward, no fly-out */
         fromSpans.forEach((el, i) => {
           later(() => {
@@ -426,6 +542,7 @@ function initSyntax() {
           });
 
           later(() => meaning.classList.add('visible'), 700);
+          later(() => window._sfx && window._sfx.resonance(), 60 + pair.to.length * 100 + 60);
 
           later(() => {
             if (toWrap.isConnected)
@@ -459,7 +576,7 @@ function initSyntax() {
   if (section) obs.observe(section);
 }
 
-/* ─── CHAOS CANVAS ─────────────────────────────────── */
+/* ─── CHAOS CANVAS ─────────────────────────────────────── */
 function initChaos() {
   const canvas = document.getElementById('chaosCanvas');
   if (!canvas) return;
@@ -560,7 +677,7 @@ function initChaos() {
   }
 }
 
-/* ─── LIGHTBOX ───────────────────────────────────── */
+/* ─── LIGHTBOX ───────────────────────────────────────── */
 function initLightbox() {
   const lb      = document.getElementById('lightbox');
   const lbImg   = document.getElementById('lbImg');
@@ -585,7 +702,7 @@ function initLightbox() {
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
 }
 
-/* ─── BANQUET ───────────────────────────────────────── */
+/* ─── BANQUET ───────────────────────────────────────────── */
 function initBanquet() {
   const viewport = document.getElementById('banquetViewport');
   const rotateG  = document.getElementById('banquetRotate');
@@ -593,16 +710,16 @@ function initBanquet() {
   if (!viewport || !rotateG || !foodEls.length) return;
 
   const FOOD_DATA = {
-    oyster:     { zh: '蚵仙4煎',  en: 'Oyster Omelette',        desc: '以地瓜粉、雞蛋與新鮮蚵仙4煎製而成，淋上特調甜辣醬，是台灣夜市最具代表性的小吃。',       wiki: 'Oyster_omelette',         fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Orh-Nee-Jian-Oyster-Omelette.jpg/640px-Orh-Nee-Jian-Oyster-Omelette.jpg' },
-    chicken:    { zh: '鸹鄭雞',  en: 'Taiwanese Fried Chicken', desc: '香鄭的雞塊與九層塔一同入鍋炸製，鸹香鄭脆，是台灣宵夜文化的靈魂小吃。',               wiki: 'Taiwanese_fried_chicken', fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Yansuj%C3%AD.jpg/640px-Yansuj%C3%AD.jpg' },
-    guabao:     { zh: '割包',    en: 'Gua Bao',                 desc: '鬆軟白麵包夾入滇製五花肉、花生粉與酸菜，軟嫩鄭脆並存，被譽為「台灣漢堡」。',           wiki: 'Gua_bao',                 fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Gua_bao_2.jpg/640px-Gua_bao_2.jpg' },
+    oyster:     { zh: '蛔仑54煎',  en: 'Oyster Omelette',        desc: '以地瓜粉、雞蛋與新鮮蛔仑54煎製而成，淡上特調甜辣醬，是台灣夜市最具代表性的小吃。',       wiki: 'Oyster_omelette',         fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Orh-Nee-Jian-Oyster-Omelette.jpg/640px-Orh-Nee-Jian-Oyster-Omelette.jpg' },
+    chicken:    { zh: '胡邳5e9e9',  en: 'Taiwanese Fried Chicken', desc: '香邳5e9e9块與九層塔一同入鍋炸製，胡香邳5e9e9脆，是台灣寵夜文化的靈魂小吃。',               wiki: 'Taiwanese_fried_chicken', fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Yansuj%C3%AD.jpg/640px-Yansuj%C3%AD.jpg' },
+    guabao:     { zh: '割包',    en: 'Gua Bao',                 desc: '鬆軟白麵包夾入滇製五花肉、花生粉與酸菜，軟崩邳5e9e9脆並存，被譽為「台灣漢堡」。',           wiki: 'Gua_bao',                 fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Gua_bao_2.jpg/640px-Gua_bao_2.jpg' },
     luroufan:   { zh: '滇肉飯',  en: 'Lu Rou Fan',              desc: '肥瘦相間的豬五花以醬油、米酒、冰糖慢燉後澆在白飯上，是台灣家常滋味的最高代表。',       wiki: 'Lu_rou_fan',              fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Luroufan.jpg/640px-Luroufan.jpg' },
-    beefnoodle: { zh: '牛肉麵',  en: 'Beef Noodle Soup',        desc: '以紅燒湯底燉煮軟裛牛踱，搞配彈牙麵條，是台灣最驕傲的國民美食，每年舉辦比賽選出最佳口味。', wiki: 'Beef_noodle_soup',        fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Taiwan_beef_noodle_soup.jpg/640px-Taiwan_beef_noodle_soup.jpg', imgOverride: 'https://tokyo-kitchen.icook.network/uploads/recipe/cover/338564/8869cd181686929d.jpg' },
+    beefnoodle: { zh: '牛肉麵',  en: 'Beef Noodle Soup',        desc: '以紅燒湯底燉煮軟裸牛蹄，搞配彈牙麵條，是台灣最驕傲的國民美食，每年舉辦比賽選出最佳口味。', wiki: 'Beef_noodle_soup',        fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Taiwan_beef_noodle_soup.jpg/640px-Taiwan_beef_noodle_soup.jpg', imgOverride: 'https://tokyo-kitchen.icook.network/uploads/recipe/cover/338564/8869cd181686929d.jpg' },
     bubbletea:  { zh: '珍珠奶茶', en: 'Bubble Tea',             desc: '1980年代發源於台灣台中，Q很珍珠搞配奶茶，是台灣對世界飲料文化最大的貢獻。',           wiki: 'Bubble_tea',              fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Bubble_tea_at_Fantaasia_2015.jpg/640px-Bubble_tea_at_Fantaasia_2015.jpg', imgOverride: 'https://doqvf81n9htmm.cloudfront.net/data/crop_article/91169/shutterstock_1271869054.jpg_1140x855.jpg' },
-    miansian:   { zh: '大腸麵線', en: 'Oyster Vermicelli',      desc: '以豬大腸與蚵仙4燉入勾芝的麵線湯中，口感滑順，是廟會與夜市中最殫慰人心的平民小吃。',   wiki: 'Oyster_vermicelli',       fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Mian_xian.jpg/640px-Mian_xian.jpg' },
-    coffin:     { zh: '棺材板',  en: 'Coffin Bread',            desc: '發源於台南，以厚片土司挖空後填入濃郁奶油燉料，外鄭內滑，名稱怪異卻深受喜愛。',       wiki: 'Coffin_bread',            fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Coffin_bread.jpg/640px-Coffin_bread.jpg' },
-    stinkytofu: { zh: '臭豆腥',  en: 'Stinky Tofu',             desc: '炸至金黃鄭脆後配上酸辣泡菜，「聞起來臭，吃起來香」，是台灣夜市最具挑戰性的美食。',   wiki: 'Stinky_tofu',             fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Stinky_tofu_in_Jiufen.jpg/640px-Stinky_tofu_in_Jiufen.jpg' },
-    bawan:      { zh: '肉圓',    en: 'Ba-Wan',                  desc: '以地瓜粉製成半透明外皮，包裹豬絞肉、竹筍與香菇，清蒸或油炸後淋上甜辣醬，是彰化、台南的在地驕傲。', wiki: 'Ba-wan',            fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Bawan.jpg/640px-Bawan.jpg' },
+    miansian:   { zh: '大腸麵線', en: 'Oyster Vermicelli',      desc: '以豬大腸與蛔仑54燉入劾苝的麵線湯中，口感滑順，是廟會與夜市中最沙慕人心的平民小吃。',   wiki: 'Oyster_vermicelli',       fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Mian_xian.jpg/640px-Mian_xian.jpg' },
+    coffin:     { zh: '棺材板',  en: 'Coffin Bread',            desc: '發源於台南，以厚片土司挖空後填入濃鬱奶油燉料，外邳5e9e9內滑，名稱怪異卻深受喜愛。',       wiki: 'Coffin_bread',            fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Coffin_bread.jpg/640px-Coffin_bread.jpg' },
+    stinkytofu: { zh: '臭豆腥',  en: 'Stinky Tofu',             desc: '炸至金黃邳5e9e9脆後配上酸辣泡菜，「聞起來臭，吃起來香」，是台灣夜市最具挑戰性的美食。',   wiki: 'Stinky_tofu',             fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Stinky_tofu_in_Jiufen.jpg/640px-Stinky_tofu_in_Jiufen.jpg' },
+    bawan:      { zh: '肉圓',    en: 'Ba-Wan',                  desc: '以地瓜粉製成半透明外皮，包裹豬絞肉、竹筍與香菇，清蒸或油炸後淡上甜辣醬，是彰化、台南的在地驕傲。', wiki: 'Ba-wan',            fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Bawan.jpg/640px-Bawan.jpg' },
   };
 
   const popup   = document.getElementById('banquetPopup');
@@ -787,7 +904,7 @@ function initBanquet() {
   applyRotation();
 }
 
-/* ─── ENDING ───────────────────────────────────────── */
+/* ─── ENDING ───────────────────────────────────────────── */
 function initEnding() {
   const chips       = document.querySelectorAll('.w-chip');
   const dropZone    = document.getElementById('dropZone');
@@ -836,8 +953,8 @@ function initEnding() {
 
   chips.forEach(chip => {
     chip.addEventListener('click', () => {
-      window._sfx?.drop(0.14);
-      window._sfx?.tone(880, 'sine', 0.45, 0.07);
+      window._sfx && window._sfx.paperSlide(0.09);
+      window._sfx && window._sfx.settle(0.11);
       const word = chip.dataset.word;
       chips.forEach(c => c.classList.remove('selected'));
       chip.classList.add('selected');
@@ -856,7 +973,7 @@ function initEnding() {
   });
 }
 
-/* ─── SPOTLIGHT ───────────────────────────────────────── */
+/* ─── SPOTLIGHT ───────────────────────────────────────────── */
 function initSpotlight() {
   const section  = document.getElementById('s-marginal');
   const ringPath = document.getElementById('marginalRingPath');
@@ -969,7 +1086,7 @@ function initSpotlight() {
   });
 }
 
-/* ─── ENDING SEQUENCE ──────────────────────────────────── */
+/* ─── ENDING SEQUENCE ────────────────────────────────────────── */
 function initEndingSeq() {
   const section = document.getElementById('s-ending-seq');
   const prompt  = document.getElementById('eseqPrompt');
@@ -1000,6 +1117,8 @@ function initEndingSeq() {
         setTimeout(() => {
           taiwan.style.transition = 'opacity 2.5s ease';
           taiwan.style.opacity = '1';
+          window._sfx && window._sfx.lowRes();
+          window._sfx && window._sfx.fadeTo(0, 10000);
           setTimeout(() => {
             if (taiwan.isConnected)
               taiwan.style.animation = 'eseqBreathe 4s ease-in-out infinite';
