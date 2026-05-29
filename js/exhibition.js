@@ -351,7 +351,7 @@ function initCrisis() {
   let activeCell = null;
 
   function openCell(cell) {
-    window._sfx?.tone(523, 'sine', 0.5, 0.09);
+    window._sfx?.resonance(0.08);
     if (activeCell) closeCell();
     activeCell = cell;
     cell.classList.add('active-cell');
@@ -377,7 +377,7 @@ function initCrisis() {
 
   function closeCell() {
     if (!activeCell) return;
-    window._sfx?.tone(440, 'sine', 0.3, 0.06);
+    window._sfx?.settle(0.07);
     const cell = activeCell;
     const rect = cell.getBoundingClientRect();
     cellBoxImg.style.cssText = `top:${rect.top}px;left:${rect.left}px;width:${rect.width}px;height:${rect.height}px;opacity:0;`;
@@ -702,7 +702,7 @@ function initLightbox() {
       document.body.style.overflow = 'hidden';
     });
   });
-  function closeLb() { window._sfx?.tone(494, 'sine', 0.25, 0.06); lb.classList.remove('open'); document.body.style.overflow = ''; }
+  function closeLb() { window._sfx?.paperSlide(0.07); lb.classList.remove('open'); document.body.style.overflow = ''; }
   if (lbClose) lbClose.addEventListener('click', closeLb);
   if (lbBd)    lbBd.addEventListener('click', closeLb);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
@@ -744,7 +744,7 @@ function initBanquet() {
   async function openPopup(key) {
     const food = FOOD_DATA[key];
     if (!food || !popup) return;
-    window._sfx?.tone(784, 'sine', 0.6, 0.1);
+    window._sfx?.resonance(0.09);
     bpName.textContent    = `${food.zh}　${food.en}`;
     bpDesc.textContent    = food.desc;
     bpPhoto.style.opacity = '0';
@@ -793,7 +793,7 @@ function initBanquet() {
 
   function closePopup() {
     if (!popup) return;
-    window._sfx?.tone(523, 'sine', 0.3, 0.06);
+    window._sfx?.settle(0.07);
     popup.classList.remove('open');
     document.body.style.overflow = '';
     setTimeout(() => { if (bpPhoto) bpPhoto.src = ''; }, 400);
