@@ -1818,7 +1818,16 @@ footer p {
   color: rgba(255,255,255,0.13);
   letter-spacing: 0.20em;
 }
+.order-footer {
+  position: relative;
+  min-height: 72px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
 .order-caption {
+  position: absolute;
+  bottom: 0;
   text-align: center;
   opacity: 0;
   transition: opacity 2.4s var(--ease);
@@ -1841,6 +1850,19 @@ footer p {
   line-height: 2.3;
   margin-top: 6px;
 }
+.order-becoming {
+  position: absolute;
+  bottom: 0;
+  font-family: var(--serif);
+  font-size: clamp(10px, 1.3vw, 13px);
+  font-style: italic;
+  color: rgba(255,255,255,0.16);
+  letter-spacing: 0.24em;
+  opacity: 0;
+  transition: opacity 2.8s var(--ease);
+  white-space: nowrap;
+}
+.order-becoming.visible { opacity: 1; }
 @media (max-width: 768px) {
   .order-overlay { padding: 56px 24px 60px; }
 }
