@@ -537,16 +537,21 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
 }
 .syn-title {
   font-family: var(--serif);
-  font-size: clamp(20px, 3vw, 34px);
+  font-size: clamp(26px, 4vw, 52px);
   font-weight: 300;
-  letter-spacing: 0.38em;
+  letter-spacing: 0.50em;
   color: #F2F2F2;
   text-transform: uppercase;
   margin-bottom: 28px;
 }
+.bec-l  { color: #F2F2F2; }
+.bec-tw { color: #F2F2F2; transition: color 1.6s ease; }
+.syn-title.in .bec-tw-green { color: rgb(187, 207, 190); transition-delay: 0.5s; }
+.syn-title.in .bec-tw-blue  { color: rgb(184, 197, 217); transition-delay: 0.7s; }
+.syn-title.in .bec-tw-red   { color: rgb(223, 187, 187); transition-delay: 0.9s; }
 .syn-concept {
   font-size: clamp(11px, 1.4vw, 13px);
-  color: rgba(255,255,255,0.30);
+  color: rgba(255,255,255,0.55);
   letter-spacing: 0.05em;
   line-height: 1.9;
   margin-bottom: 10px;
@@ -554,7 +559,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
 .syn-concept-zh {
   font-family: var(--zh);
   font-size: clamp(11px, 1.3vw, 12px);
-  color: rgba(255,255,255,0.17);
+  color: rgba(255,255,255,0.38);
   line-height: 1.9;
   font-weight: 200;
 }
@@ -1684,7 +1689,7 @@ footer p {
 
   #s-syntax { padding: 60px 20px; }
   .syn-header { margin-bottom: 48px; }
-  .syn-title { letter-spacing: 0.22em; }
+  .syn-title { letter-spacing: 0.28em; }
 
   #s-warmth {
     display: block;
