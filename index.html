@@ -481,15 +481,12 @@
 
 <!-- ─── ORDER ─────────────────────────────────────── -->
 <section id="s-order" class="section" data-name="Order">
-  <div class="order-content">
-    <p class="section-q reveal-up">What holds us together?</p>
-    <h2 class="order-title reveal-up">Order</h2>
-    <p class="order-zh reveal-up" data-delay="0.2">秩序</p>
-    <div class="order-divider reveal-up" data-delay="0.35"></div>
-    <p class="order-body reveal-up" data-delay="0.5">不是來自制度，<br>而是來自選擇。<br><br><em>Not from systems.<br>From people.</em></p>
-    <div class="paradox reveal-up" data-delay="0.7">
-      <p class="paradox-en">Chaotic.<br>Yet functioning.</p>
-      <p class="paradox-zh">看似混亂，<br>卻持續運轉。</p>
+  <canvas id="orderCanvas"></canvas>
+  <div class="order-overlay">
+    <p class="order-eyebrow">What holds us together?</p>
+    <div class="order-caption" id="orderCaption">
+      <p class="order-caption-en">Chaotic.<br>Yet functioning.</p>
+      <p class="order-caption-zh">看似混亂，<br>卻持續運轉。</p>
     </div>
   </div>
 </section>
@@ -626,6 +623,7 @@
 </div>
 
 <script src="js/exhibition.js"></script>
+<script src="js/order-particles.js"></script>
 
 <!-- ─── AUDIO BUTTON ─────────────────────────────── -->
 <button id="audioBtn" aria-label="Toggle background music">
