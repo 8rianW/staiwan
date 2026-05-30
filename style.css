@@ -464,7 +464,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
 }
 .grid-cell.active-cell .gc-titles { opacity: 0; transition-delay: 0s; }
 .grid-cell.active-cell .gc-desc   { opacity: 0; transition-delay: 0s; }
-.grid-cell.active-cell .gc-photo  { opacity: 1; transform: scale(1); }
+.grid-cell.active-cell .gc-photo  { opacity: 0; }
 .grid-cell[data-type="negative"]:hover,
 .grid-cell[data-type="negative"].active-cell {
   background: rgba(178,58,58,0.12);
