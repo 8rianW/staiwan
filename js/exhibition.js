@@ -640,7 +640,7 @@ function initSyntax() {
           });
 
           later(() => meaning.classList.add('visible'), 700);
-          later(() => syntaxVisible && window._sfx && window._sfx.resonance(), 60 + pair.to.length * 100 + 60);
+          later(() => syntaxVisible && window._sfx && window._sfx.resonance(0.10), 60 + pair.to.length * 100 + 60);
 
           later(() => {
             if (toWrap.isConnected)
@@ -1226,7 +1226,7 @@ function initEndingSeq() {
         setTimeout(() => {
           taiwan.style.transition = 'opacity 2.5s ease';
           taiwan.style.opacity = '1';
-          window._sfx && window._sfx.lowRes();
+          window._sfx && window._sfx.lowRes(0.10);
           window._sfx && window._sfx.fadeTo(0, 10000);
           setTimeout(() => {
             if (taiwan.isConnected)
