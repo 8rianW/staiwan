@@ -1760,6 +1760,76 @@ footer p {
   }
 }
 
+/* ─── STORY TRANSITIONS ─────────────────────────────────────── */
+.story-trans {
+  background: var(--bg);
+  padding: clamp(60px, 13vh, 110px) 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+}
+.st-en {
+  font-family: var(--serif);
+  font-size: clamp(14px, 2vw, 20px);
+  font-style: italic;
+  color: rgba(255,255,255,0.30);
+  letter-spacing: 0.04em;
+  line-height: 1.9;
+}
+.st-zh {
+  font-family: var(--zh);
+  font-size: clamp(10px, 1.2vw, 12px);
+  font-weight: 200;
+  color: rgba(255,255,255,0.16);
+  letter-spacing: 0.22em;
+  line-height: 2;
+}
+
+/* ─── ORDER ──────────────────────────────────────────────────── */
+#s-order { background: var(--bg2); }
+.order-content {
+  text-align: center;
+  padding: 0 24px;
+  max-width: 720px;
+}
+.order-title {
+  font-family: var(--serif);
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 300;
+  color: var(--text);
+  letter-spacing: 0.06em;
+}
+.order-zh {
+  font-family: var(--zh);
+  font-size: clamp(14px, 2vw, 18px);
+  font-weight: 200;
+  color: var(--muted);
+  letter-spacing: 0.35em;
+  margin-top: -8px;
+}
+.order-divider {
+  width: 40px;
+  height: 1px;
+  background: var(--dim);
+  margin: 28px auto;
+}
+.order-body {
+  font-family: var(--zh);
+  font-size: clamp(14px, 1.8vw, 16px);
+  font-weight: 300;
+  color: var(--muted);
+  letter-spacing: 0.15em;
+  line-height: 2.2;
+}
+.order-body em {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--dim);
+}
+
 /* ─── REDUCED MOTION ────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .syn-l, .syn-float-l {
