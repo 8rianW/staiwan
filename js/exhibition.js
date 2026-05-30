@@ -498,56 +498,77 @@ function initSyntax() {
   const meaning  = document.getElementById('synMeaning');
   if (!wordArea || !meaning) return;
 
-  const COLORS = { T:'#E05555', A:'#D4A843', I:'#5B88D4', W:'#5DB86A', N:'#D4A843' };
-  const GLOW   = {
-    T:'rgba(224,85,85,0.55)', A:'rgba(212,168,67,0.55)',
-    I:'rgba(91,136,212,0.55)', W:'rgba(93,184,106,0.55)', N:'rgba(212,168,67,0.55)',
-  };
+  /* Taiwan flag colors — full saturation for the injected letters */
+  const TW_COLORS = ['#3A7D44', '#2F5D9F', '#B23A3A'];
+  const TW_GLOW   = ['rgba(58,125,68,0.60)', 'rgba(47,93,159,0.60)', 'rgba(178,58,58,0.60)'];
 
   const PAIRS = [
     { from:'PAIN',  to:'PAINT',  twIdx:[4],     zh:'痛苦 → 創作' },
     { from:'CHAOS', to:'ACTION', twIdx:[2,3,5], zh:'混亂 → 行動' },
     { from:'SIN',   to:'SAINT',  twIdx:[1,4],   zh:'罪惡 → 聖潔' },
     { from:'ILL',   to:'WILL',   twIdx:[0],     zh:'病態 → 意志' },
-    { from:'RUST',  to:'TRUST',  twIdx:[0],     zh:'锈蝕 → 信任' },
+    { from:'RUST',  to:'TRUST',  twIdx:[0],     zh:'鏽蝕 → 信任' },
     { from:'FEAR',  to:'AWARE',  twIdx:[1,2],   zh:'恐懼 → 覺察' },
     { from:'DARK',  to:'DAWN',   twIdx:[2,3],   zh:'黑暗 → 黎明' },
     { from:'WEAK',  to:'AWAKE',  twIdx:[0],     zh:'虛弱 → 覺醒' },
-    { from:'HURT',  to:'TRUTH',  twIdx:[0],     zh:'傈痛 → 真實' },
+    { from:'HURT',  to:'TRUTH',  twIdx:[0],     zh:'傷痛 → 真實' },
     { from:'ASH',   to:'WASH',   twIdx:[0],     zh:'灰燼 → 洗淨' },
   ];
 
-  let idx = 0;
-  let timers = [];
-
+  let idx = 0, timers = [], syntaxVisible = false;
   function later(fn, ms) { const id = setTimeout(fn, ms); timers.push(id); return id; }
   function clearAll() { timers.forEach(clearTimeout); timers = []; }
 
   function runPair(pairIdx) {
     clearAll();
-    const pair   = PAIRS[pairIdx];
-    const twSet  = new Set(pair.twIdx);
-    const addChs = [...twSet].map(i => pair.to[i]);
+    const pair    = PAIRS[pairIdx];
+    const twSet   = new Set(pair.twIdx);
+    /* Taiwan letters: the chars injected into TO word at twIdx positions */
+    const twInfos = pair.twIdx.map((toI, ci) => ({
+      ch:    pair.to[toI],
+      color: TW_COLORS[ci % TW_COLORS.length],
+      glow:  TW_GLOW[ci % TW_GLOW.length],
+    }));
 
-    wordArea.innerHTML = '';
-    meaning.className  = 'syn-meaning';
+    wordArea.innerHTML  = '';
+    meaning.className   = 'syn-meaning';
     meaning.textContent = pair.zh;
 
-    /* Phase 1: FROM word drifts in */
-    const fromWrap = document.createElement('div');
-    fromWrap.className = 'syn-from-word';
-    wordArea.appendChild(fromWrap);
+    /* ── Column wrapper: Taiwan letters (top) + FROM word (bottom) ── */
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(14px,2.6vh,32px);width:100%;';
+    wordArea.appendChild(wrap);
+
+    /* ── Taiwan letters row — invisible initially ── */
+    const twRow = document.createElement('div');
+    twRow.style.cssText = 'display:flex;align-items:center;justify-content:center;gap:0.24em;opacity:0;transform:translateY(-16px);transition:opacity 1.5s ease,transform 1.5s cubic-bezier(0.16,1,0.3,1);';
+    wrap.appendChild(twRow);
+
+    const twSpans = twInfos.map(({ ch, color, glow }) => {
+      const s       = document.createElement('span');
+      s.className   = 'syn-l tw';
+      s.textContent = ch;
+      s.style.color      = color;
+      s.style.textShadow = `0 0 28px ${glow}, 0 0 56px ${glow}`;
+      s.style.filter     = 'blur(14px)';
+      s.style.transition = 'filter 1.4s ease';
+      twRow.appendChild(s);
+      return s;
+    });
+
+    /* ── FROM word row ── */
+    const fromRow = document.createElement('div');
+    fromRow.style.cssText = 'display:flex;align-items:center;justify-content:center;gap:0.03em;';
+    wrap.appendChild(fromRow);
 
     const fromSpans = pair.from.split('').map((ch, i) => {
-      const s = document.createElement('span');
+      const s       = document.createElement('span');
       s.className   = 'syn-l';
       s.textContent = ch;
-      s.style.opacity   = '0';
-      s.style.transform = 'translateY(18px)';
-      s.style.filter    = 'blur(6px)';
-      fromWrap.appendChild(s);
+      s.style.cssText = 'opacity:0;transform:translateY(18px);filter:blur(6px);';
+      fromRow.appendChild(s);
       later(() => {
-        s.style.transition = 'opacity 0.9s ease, transform 0.9s cubic-bezier(0.16,1,0.3,1), filter 0.9s ease';
+        s.style.transition = 'opacity 0.9s ease,transform 0.9s cubic-bezier(0.16,1,0.3,1),filter 0.9s ease';
         s.style.opacity    = '1';
         s.style.transform  = 'translateY(0)';
         s.style.filter     = 'blur(0)';
@@ -555,131 +576,124 @@ function initSyntax() {
       return s;
     });
 
-    /* Phase 2: Taiwan letters emerge from darkness */
-    const floaters = [];
+    /* ── Phase 2 (3200ms): Taiwan letters emerge from darkness ── */
     later(() => {
-      addChs.forEach((ch, i) => {
-        const f      = document.createElement('span');
-        f.className  = 'syn-float-l';
-        const col    = COLORS[ch] || '#C9A84C';
-        const glow   = GLOW[ch]   || 'rgba(201,168,76,0.5)';
-        const spread = (i - (addChs.length - 1) / 2) * 52;
-        const sx     = spread + (Math.random() - 0.5) * 90;
-        const sy     = -98 - Math.random() * 46;
-        const hy     = -68 - i * 16;
-
-        f.style.color      = col;
-        f.style.textShadow = `0 0 28px ${glow}`;
-        f.style.opacity    = '0';
-        f.style.transform  = `translate(calc(-50% + ${sx}px), calc(-50% + ${sy}px))`;
-        f.style.filter     = 'blur(14px)';
-        wordArea.appendChild(f);
-        floaters.push(f);
-
-        later(() => {
-          f.style.transition = 'opacity 1.4s ease, transform 1.4s cubic-bezier(0.16,1,0.3,1), filter 1.4s ease';
-          f.style.transform  = `translate(calc(-50% + ${spread}px), calc(-50% + ${hy}px))`;
-          f.style.opacity    = '0.78';
-          f.style.filter     = 'blur(0.5px)';
-        }, 80 + i * 200);
+      if (!syntaxVisible) return;
+      window._sfx?.particle(0.08);
+      twRow.style.opacity   = '1';
+      twRow.style.transform = 'translateY(0)';
+      twSpans.forEach((s, i) => {
+        later(() => { if (s.isConnected) s.style.filter = 'blur(0)'; }, 300 + i * 260);
       });
-      if (addChs.length) later(() => syntaxVisible && window._sfx && window._sfx.particle(), 90);
+    }, 3200);
 
-      /* Phase 3: Cinematic dissolve — no scatter */
-      later(() => {
-        syntaxVisible && window._sfx && window._sfx.magnetic();
-        /* FROM letters: slow vertical dissolve upward, no fly-out */
-        fromSpans.forEach((el, i) => {
-          later(() => {
-            el.style.transition = 'opacity 1.5s ease, transform 1.5s ease, filter 1.5s ease';
-            el.style.opacity    = '0';
-            el.style.transform  = 'translateY(-12px) scale(0.94)';
-            el.style.filter     = 'blur(10px)';
-          }, i * 45);
-        });
-
-        /* Taiwan floaters: breathe inward and dissolve, no scatter */
-        floaters.forEach((f, i) => {
-          later(() => {
-            f.style.transition = 'opacity 1.3s ease, transform 1.5s cubic-bezier(0.16,1,0.3,1), filter 1.3s ease';
-            f.style.transform  = `translate(-50%, calc(-50% + ${-14 + i * 10}px)) scale(0.76)`;
-            f.style.opacity    = '0';
-            f.style.filter     = 'blur(8px)';
-          }, i * 60);
-        });
-
-        /* Phase 4: TO word assembles from blur */
+    /* ── Phase 3 (4700ms): Combined dwell — tw letters breathe ── */
+    later(() => {
+      if (!syntaxVisible) return;
+      twSpans.forEach((s, i) => {
         later(() => {
-          wordArea.innerHTML = '';
-          const toWrap = document.createElement('div');
-          toWrap.className = 'syn-to-word';
-          wordArea.appendChild(toWrap);
+          if (s.isConnected) s.style.animation = 'synTwBreathe 3.5s ease-in-out infinite';
+        }, i * 130);
+      });
+    }, 4700);
 
-          pair.to.split('').forEach((ch, i) => {
-            const s    = document.createElement('span');
-            const isTw = twSet.has(i);
-            s.className   = 'syn-l' + (isTw ? ' tw' : '');
-            s.textContent = ch;
-            if (isTw) s.style.color = COLORS[ch] || '#C9A84C';
-            s.style.opacity   = '0';
-            s.style.transform = 'translateY(12px) scale(0.92)';
-            s.style.filter    = 'blur(8px)';
-            toWrap.appendChild(s);
+    /* ── Phase 4 (6900ms): Rearrangement begins ── */
+    later(() => {
+      if (!syntaxVisible) return;
+      window._sfx?.magnetic(0.09);
 
-            later(() => {
-              s.style.transition = 'opacity 1.0s ease, transform 1.0s cubic-bezier(0.16,1,0.3,1), filter 1.0s ease';
-              s.style.opacity    = '1';
-              s.style.transform  = 'translateY(0) scale(1)';
-              s.style.filter     = 'blur(0)';
-              if (isTw) {
-                later(() => {
-                  if (s.isConnected) s.style.animation = 'synTwBreathe 3.5s ease-in-out infinite';
-                }, 1000);
-              }
-            }, 60 + i * 100);
-          });
+      /* FROM letters blur and drift upward */
+      fromSpans.forEach((s, i) => {
+        later(() => {
+          if (!s.isConnected) return;
+          s.style.transition = 'opacity 1.5s ease,transform 1.5s ease,filter 1.5s ease';
+          s.style.opacity    = '0';
+          s.style.transform  = `translateY(${-8 - i * 2}px) scale(0.9)`;
+          s.style.filter     = 'blur(12px)';
+        }, i * 45);
+      });
 
-          later(() => meaning.classList.add('visible'), 700);
-          later(() => syntaxVisible && window._sfx && window._sfx.resonance(0.10), 60 + pair.to.length * 100 + 60);
+      /* Taiwan letters dissolve downward */
+      twSpans.forEach((s, i) => {
+        later(() => {
+          if (!s.isConnected) return;
+          s.style.animation  = 'none';
+          s.style.transition = 'opacity 1.3s ease,transform 1.3s ease,filter 1.3s ease';
+          s.style.opacity    = '0';
+          s.style.transform  = 'translateY(10px) scale(0.82)';
+          s.style.filter     = 'blur(12px)';
+        }, 280 + i * 65);
+      });
+
+      /* ── Phase 5 (6900+1900=8800ms): TO word assembles ── */
+      later(() => {
+        wordArea.innerHTML = '';
+
+        const toWrap     = document.createElement('div');
+        toWrap.className = 'syn-to-word';
+        wordArea.appendChild(toWrap);
+
+        pair.to.split('').forEach((ch, i) => {
+          const isTw  = twSet.has(i);
+          const ci    = pair.twIdx.indexOf(i);
+          const s     = document.createElement('span');
+          s.className = 'syn-l' + (isTw ? ' tw' : '');
+          s.textContent = ch;
+          if (isTw) {
+            s.style.color      = TW_COLORS[ci % TW_COLORS.length];
+            s.style.textShadow = `0 0 28px ${TW_GLOW[ci % TW_GLOW.length]}, 0 0 56px ${TW_GLOW[ci % TW_GLOW.length]}`;
+          }
+          s.style.opacity   = '0';
+          s.style.transform = 'translateY(14px) scale(0.88)';
+          s.style.filter    = 'blur(10px)';
+          toWrap.appendChild(s);
 
           later(() => {
-            if (toWrap.isConnected)
-              toWrap.style.animation = 'synWordBreathe 5s ease-in-out infinite';
-          }, 1400);
-
-          /* Fade out then next pair */
-          later(() => {
-            if (toWrap.isConnected) {
-              toWrap.style.animation  = 'none';
-              toWrap.style.transition = 'opacity 0.85s ease';
-              toWrap.style.opacity    = '0';
+            s.style.transition = 'opacity 1.1s ease,transform 1.1s cubic-bezier(0.16,1,0.3,1),filter 1.1s ease';
+            s.style.opacity    = '1';
+            s.style.transform  = 'translateY(0) scale(1)';
+            s.style.filter     = 'blur(0)';
+            if (isTw) {
+              later(() => {
+                if (s.isConnected) s.style.animation = 'synTwBreathe 3.5s ease-in-out infinite';
+              }, 1100);
             }
-            meaning.classList.remove('visible');
-            later(() => { idx = (idx + 1) % PAIRS.length; runPair(idx); }, 900);
-          }, 3000);
+          }, 60 + i * 95);
+        });
 
-        }, 1000); /* Phase 4 starts 1s into Phase 3 */
-      }, 1400);   /* Phase 3 starts 1.4s after Phase 2 */
-    }, 1500);     /* Phase 2 starts at 1.5s */
+        later(() => meaning.classList.add('visible'), 900);
+        later(() => {
+          if (toWrap.isConnected) toWrap.style.animation = 'synWordBreathe 5s ease-in-out infinite';
+        }, 1600);
+        syntaxVisible && window._sfx?.resonance(0.10);
+
+        /* ── Phase 6 (dwell 4s then fade) ── */
+        later(() => {
+          if (!toWrap.isConnected) return;
+          toWrap.style.animation  = 'none';
+          toWrap.style.transition = 'opacity 1.1s ease';
+          toWrap.style.opacity    = '0';
+          meaning.classList.remove('visible');
+          later(() => { idx = (idx + 1) % PAIRS.length; runPair(idx); }, 1100);
+        }, 4000);
+
+      }, 1900); /* Phase 5 starts 1.9s after Phase 4 */
+    }, 6900);   /* Phase 4 starts at 6900ms */
   }
 
-  const section = document.getElementById('s-syntax');
+  const section   = document.getElementById('s-syntax');
   const synMobile = window.matchMedia('(pointer: coarse)').matches;
-  let started = false;
-  let syntaxVisible = false;
+  let   started   = false;
+
   const obs = new IntersectionObserver(entries => {
     syntaxVisible = entries[0].isIntersecting;
     if (syntaxVisible) {
       if (!started || synMobile) {
-        started = true;
-        idx = 0;
-        clearAll();
+        started = true; idx = 0; clearAll();
         later(() => runPair(0), 600);
       }
     } else if (synMobile) {
-      clearAll();
-      started = false;
-      idx = 0;
+      clearAll(); started = false; idx = 0;
     }
   }, { threshold: 0.35 });
   if (section) obs.observe(section);
