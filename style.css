@@ -1830,6 +1830,67 @@ footer p {
   color: var(--dim);
 }
 
+/* ─── SECTION QUESTION ──────────────────────────────────────── */
+.section-q {
+  font-family: var(--serif);
+  font-size: clamp(10px, 1.2vw, 12px);
+  font-style: italic;
+  color: rgba(255,255,255,0.20);
+  letter-spacing: 0.18em;
+  line-height: 1.7;
+}
+.ending-q { margin-bottom: 4px; }
+
+/* ─── PARADOX ────────────────────────────────────────────────── */
+.paradox {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.paradox-en {
+  font-family: var(--serif);
+  font-size: clamp(12px, 1.5vw, 15px);
+  font-style: italic;
+  color: rgba(255,255,255,0.24);
+  letter-spacing: 0.06em;
+  line-height: 1.65;
+}
+.paradox-zh {
+  font-family: var(--zh);
+  font-size: clamp(9px, 1vw, 10px);
+  font-weight: 200;
+  color: rgba(255,255,255,0.12);
+  letter-spacing: 0.24em;
+  line-height: 2.1;
+}
+.gr-paradox {
+  text-align: center;
+  width: 100%;
+  padding: 0 60px 48px;
+}
+@media (max-width: 768px) {
+  .gr-paradox { padding: 0 24px 40px; }
+}
+
+/* ─── ENDING HINT ────────────────────────────────────────────── */
+.ending-hint {
+  font-family: var(--serif);
+  font-size: 11px;
+  font-style: italic;
+  color: rgba(255,255,255,0.38);
+  letter-spacing: 0.08em;
+  text-align: center;
+  line-height: 2;
+}
+.ending-hint-zh {
+  font-family: var(--zh);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 200;
+  color: rgba(255,255,255,0.20);
+  letter-spacing: 0.22em;
+}
+
 /* ─── REDUCED MOTION ────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .syn-l, .syn-float-l {
