@@ -19,7 +19,7 @@
   --ease:     cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ─── BASE ────────────────────────────────────────── */
+/* ─── BASE ──────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; background: var(--bg); }
 body {
@@ -33,7 +33,7 @@ a { color: inherit; text-decoration: none; }
 img { display: block; width: 100%; height: 100%; object-fit: cover; }
 button { font-family: inherit; cursor: none; border: none; background: none; }
 
-/* ─── TEXTURE ──────────────────────────────────────── */
+/* ─── TEXTURE ────────────────────────────────────────── */
 .texture-overlay {
   position: absolute;
   inset: 0;
@@ -44,7 +44,7 @@ button { font-family: inherit; cursor: none; border: none; background: none; }
   z-index: 1;
 }
 
-/* ─── LOADER ──────────────────────────────────────── */
+/* ─── LOADER ────────────────────────────────────────── */
 #loader {
   position: fixed;
   inset: 0;
@@ -87,7 +87,7 @@ button { font-family: inherit; cursor: none; border: none; background: none; }
   transition: width 1.8s var(--ease);
 }
 
-/* ─── CURSOR ──────────────────────────────────────── */
+/* ─── CURSOR ────────────────────────────────────────── */
 #cursor {
   position: fixed;
   width: 8px;
@@ -118,7 +118,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   button { cursor: pointer; }
 }
 
-/* ─── NAV ─────────────────────────────────────────── */
+/* ─── NAV ───────────────────────────────────────────── */
 #nav {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -194,7 +194,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   transition: height 0.1s linear;
 }
 
-/* ─── SECTION BASE ────────────────────────────────────── */
+/* ─── SECTION BASE ─────────────────────────────────────── */
 .section {
   position: relative;
   min-height: 100vh;
@@ -231,7 +231,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
 .reveal.in, .reveal-up.in   { opacity: 1; transform: translateY(0); will-change: auto; }
 .reveal-photo.in             { opacity: 1; transform: translateY(0) scale(1); will-change: auto; }
 
-/* ─── OPENING ───────────────────────────────────────── */
+/* ─── OPENING ─────────────────────────────────────────── */
 #s-opening { height: 100vh; }
 #s-opening .section-bg { inset: -28px; }
 .opening-wrapper {
@@ -307,6 +307,17 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   line-height: 1.9;
   margin-top: 4px;
 }
+.opening-taiwan {
+  font-family: var(--serif);
+  font-size: clamp(44px, 10vw, 148px);
+  font-weight: 300;
+  color: #F2F2F2;
+  letter-spacing: 0.35em;
+  text-align: center;
+  line-height: 1;
+}
+#s-opening .opening-wrapper { max-width: none; }
+
 .opening-scroll {
   display: flex;
   flex-direction: column;
@@ -327,7 +338,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   animation: scrollPulse 2.2s ease-in-out infinite;
 }
 
-/* ─── WHO ARE WE ─────────────────────────────────────── */
+/* ─── WHO ARE WE ───────────────────────────────────────── */
 #s-who { background: var(--bg2); }
 .who-content {
   text-align: center;
@@ -356,7 +367,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   letter-spacing: 0.25em;
 }
 
-/* ─── IDENTITY CRISIS ────────────────────────────────────── */
+/* ─── IDENTITY CRISIS ─────────────────────────────────────── */
 #s-crisis {
   background: var(--bg);
   flex-direction: column;
@@ -500,7 +511,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   letter-spacing: 0.2em;
 }
 
-/* ─── SYNTAX (Language Installation Art) ────────────────────────────── */
+/* ─── SYNTAX (Language Installation Art) ──────────────────────────── */
 #s-syntax {
   background: var(--bg);
   min-height: 140vh;
@@ -632,7 +643,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   50%       { text-shadow: 0 0 36px currentColor, 0 0 60px currentColor; }
 }
 
-/* ─── CHAOS ──────────────────────────────────────────────── */
+/* ─── CHAOS ────────────────────────────────────────────────── */
 #s-chaos { background: #000; height: 100vh; }
 #chaosCanvas {
   position: absolute;
@@ -680,7 +691,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   letter-spacing: 0.22em;
 }
 
-/* ─── WARMTH ─────────────────────────────────────────── */
+/* ─── WARMTH ───────────────────────────────────────────── */
 #s-warmth {
   background: var(--bg2);
   min-height: 100vh;
@@ -780,7 +791,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   line-height: 2;
 }
 
-/* ─── MARGINALIZATION ─────────────────────────────────────── */
+/* ─── MARGINALIZATION ───────────────────────────────────────── */
 #s-marginal { background: var(--bg); }
 .marginal-content {
   position: relative;
@@ -823,7 +834,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   font-size: 0.9em;
 }
 
-/* ─── GRASSROOTS ───────────────────────────────────────── */
+/* ─── GRASSROOTS ─────────────────────────────────────────── */
 #s-grassroots {
   background: var(--bg);
   flex-direction: column;
@@ -888,7 +899,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   width: 100%;
 }
 
-/* ─── FREEDOM ──────────────────────────────────────────── */
+/* ─── FREEDOM ────────────────────────────────────────────── */
 #s-freedom { background: var(--bg); }
 .freedom-bg {
   position: absolute;
@@ -957,7 +968,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   color: var(--dim);
 }
 
-/* ─── CULTURE ──────────────────────────────────────────── */
+/* ─── CULTURE ────────────────────────────────────────────── */
 #s-culture {
   background: var(--bg);
   flex-direction: column;
@@ -1038,7 +1049,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   margin-top: 4px;
 }
 
-/* ─── ENDING ──────────────────────────────────────────── */
+/* ─── ENDING ────────────────────────────────────────────── */
 #s-ending { background: var(--bg2); }
 .ending-content {
   text-align: center;
@@ -1168,7 +1179,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
 }
 .ending-artist-info a:hover { color: var(--gold); }
 
-/* ─── ENDING SEQUENCE ───────────────────────────────────── */
+/* ─── ENDING SEQUENCE ─────────────────────────────────────── */
 #s-ending-seq {
   background: #000;
   height: 100vh;
@@ -1278,7 +1289,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   letter-spacing: 0.24em;
 }
 
-/* ─── FOOTER ────────────────────────────────────────────── */
+/* ─── FOOTER ──────────────────────────────────────────────── */
 footer {
   background: var(--bg);
   border-top: 1px solid var(--border);
@@ -1440,7 +1451,7 @@ footer p {
 }
 #s-marginal.spotlight-active .marginal-spotlight { opacity: 1; }
 
-/* ─── FREEDOM ORBS ───────────────────────────────────────────── */
+/* ─── FREEDOM ORBS ─────────────────────────────────────────── */
 .freedom-orbs {
   position: absolute;
   inset: 0;
@@ -1467,7 +1478,7 @@ footer p {
   100% { transform: translateY(-100vh) scale(0.25); opacity: 0; }
 }
 
-/* ─── BANQUET HALF-CIRCLE ─────────────────────────────────────── */
+/* ─── BANQUET HALF-CIRCLE ────────────────────────────────────── */
 .banquet-wrap {
   width: 100%;
   padding: 60px 0 0;
@@ -1670,7 +1681,7 @@ footer p {
   100% { transform: scaleY(0); transform-origin: bottom; }
 }
 
-/* ─── TABLET ───────────────────────────────────────────── */
+/* ─── TABLET ─────────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .marginal-content {
     padding: 60px 40px;
@@ -1685,7 +1696,7 @@ footer p {
   .grassroots-grid { grid-template-columns: 3fr 2fr 2fr; }
 }
 
-/* ─── MOBILE ───────────────────────────────────────────── */
+/* ─── MOBILE ─────────────────────────────────────────────── */
 @media (max-width: 768px) {
   #nav { padding: 14px 20px; }
   #nav.scrolled { padding: 10px 20px; }
@@ -1810,7 +1821,7 @@ footer p {
   line-height: 2;
 }
 
-/* ─── ORDER ──────────────────────────────────────────────────── */
+/* ─── ORDER ────────────────────────────────────────────────── */
 #s-order {
   background: #060606;
   height: 100vh;
