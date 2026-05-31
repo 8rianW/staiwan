@@ -50,10 +50,33 @@
     ox.textBaseline = 'middle';
     ox.fillText('ORDER', W * 0.5, H * 0.5);
     const px = ox.getImageData(0, 0, W, H).data;
+
+    /* ── Pass 1: uniform base sampling across full word ── */
     for (let y = 0; y < H; y += SAMPLE)
       for (let x = 0; x < W; x += SAMPLE)
         if (px[(y * W + x) * 4 + 3] > 100)
           targets.push({ x, y });
+
+    /* ── Pass 2: finer grid for R / D / E — thin strokes undersampled at step 5
+         R: leg diagonal  D: right arc  E: three horizontal bars
+         step=3 captures strokes that fall between SAMPLE=5 grid lines
+         alpha threshold 80 catches anti-aliased stroke edges too            ── */
+    const fullW = ox.measureText('ORDER').width;
+    let lx = W * 0.5 - fullW * 0.5;
+    const lBounds = [];
+    for (const ch of 'ORDER') {
+      const cw = ox.measureText(ch).width;
+      lBounds.push([Math.floor(lx) - 2, Math.ceil(lx + cw) + 2]);
+      lx += cw;
+    }
+    /* O=0, R=1, D=2, E=3, R=4 */
+    for (const i of [1, 2, 3, 4]) {
+      const [x0, x1] = lBounds[i];
+      for (let y = 0; y < H; y += 3)
+        for (let x = Math.max(0, x0); x <= Math.min(W - 1, x1); x += 3)
+          if (px[(y * W + x) * 4 + 3] > 80)
+            targets.push({ x, y });
+    }
   }
 
   /* ── Resize ───────────────────────────────────── */
