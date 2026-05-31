@@ -667,15 +667,15 @@ function initSyntax() {
         }, 1600);
         syntaxVisible && window._sfx?.resonance(0.10);
 
-        /* ── Phase 6 (dwell 4s then fade) ── */
+        /* ── Phase 6 (dwell 4.5s, fade 1.1s, black 1s, next pair) ── */
         later(() => {
           if (!toWrap.isConnected) return;
           toWrap.style.animation  = 'none';
           toWrap.style.transition = 'opacity 1.1s ease';
           toWrap.style.opacity    = '0';
           meaning.classList.remove('visible');
-          later(() => { idx = (idx + 1) % PAIRS.length; runPair(idx); }, 1100);
-        }, 4000);
+          later(() => { idx = (idx + 1) % PAIRS.length; runPair(idx); }, 2100);
+        }, 4500);
 
       }, 1900); /* Phase 5 starts 1.9s after Phase 4 */
     }, 6900);   /* Phase 4 starts at 6900ms */
@@ -1029,11 +1029,31 @@ function initBanquet() {
 
 /* ─── ENDING ───────────────────────────────────────────── */
 function initEnding() {
+  const section     = document.getElementById('s-ending');
   const chips       = document.querySelectorAll('.w-chip');
   const dropZone    = document.getElementById('dropZone');
   const dropWord    = document.getElementById('dropWord');
   const placeholder = dropZone?.querySelector('.drop-placeholder');
   if (!chips.length || !dropZone || !dropWord) return;
+
+  /* Elements to dim during Focus Mode */
+  const dimEls = section ? Array.from(
+    section.querySelectorAll('.ending-q, #wordBank, .ending-hint, .ending-core, .ending-artist')
+  ) : [];
+
+  function enterFocus() {
+    dimEls.forEach(el => {
+      el.style.transition = 'opacity 0.9s ease';
+      el.style.opacity    = '0.08';
+    });
+  }
+
+  function exitFocus() {
+    dimEls.forEach(el => {
+      el.style.transition = 'opacity 1.4s ease';
+      el.style.opacity    = '';
+    });
+  }
 
   function spawnParticles(fromEl) {
     const rect = fromEl.getBoundingClientRect();
@@ -1074,16 +1094,27 @@ function initEnding() {
     setTimeout(() => dropZone.classList.remove('flash'), 600);
   }
 
+  let dissolveTimer = null;
+  let dissolveInnerTimer = null;
+
   chips.forEach(chip => {
     chip.addEventListener('click', () => {
       window._sfx && window._sfx.paperSlide(0.09);
       window._sfx && window._sfx.settle(0.11);
       const word = chip.dataset.word;
+
+      clearTimeout(dissolveTimer);
+      clearTimeout(dissolveInnerTimer);
+      dissolveTimer = null;
+      dissolveInnerTimer = null;
+
       chips.forEach(c => c.classList.remove('selected'));
       chip.classList.add('selected');
 
       spawnParticles(chip);
 
+      dropWord.style.transition = '';
+      dropWord.style.opacity = '';
       dropWord.classList.remove('show');
       dropWord.getBoundingClientRect();
       dropWord.textContent = word;
@@ -1092,6 +1123,25 @@ function initEnding() {
       flashZone();
 
       requestAnimationFrame(() => dropWord.classList.add('show'));
+      enterFocus();
+
+      /* Dwell 1.8s → slowly dissolve → return to blank, exit focus */
+      dissolveTimer = setTimeout(() => {
+        dropWord.style.transition = 'opacity 1.6s ease';
+        dropWord.style.opacity = '0';
+        dissolveInnerTimer = setTimeout(() => {
+          dropWord.classList.remove('show');
+          dropWord.style.transition = '';
+          dropWord.style.opacity = '';
+          dropWord.textContent = '';
+          if (placeholder) placeholder.classList.remove('hidden');
+          dropZone.classList.remove('active');
+          chips.forEach(c => c.classList.remove('selected'));
+          exitFocus();
+          dissolveTimer = null;
+          dissolveInnerTimer = null;
+        }, 1600);
+      }, 1800);
     });
   });
 }
@@ -1244,7 +1294,12 @@ function initEndingSeq() {
           window._sfx && window._sfx.fadeTo(0, 10000);
           setTimeout(() => {
             if (taiwan.isConnected)
-              taiwan.style.animation = 'eseqBreathe 4s ease-in-out infinite';
+              taiwan.style.animation = 'eseqBreathe 12s ease-in-out infinite';
+            /* Coda appears 7s after TAIWAN fully visible — almost invisible, for those who stay */
+            const coda = document.getElementById('eseqCoda');
+            setTimeout(() => {
+              if (coda && coda.isConnected) coda.classList.add('visible');
+            }, 7000);
           }, 2500);
         }, 1500);
       }, 4500);
