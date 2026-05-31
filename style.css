@@ -19,7 +19,7 @@
   --ease:     cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ─── BASE ───────────────────────────────────────── */
+/* ─── BASE ────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; background: var(--bg); }
 body {
@@ -177,7 +177,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
 .nav-dot.active { background: var(--gold); transform: scale(1.5); }
 .nav-dot:hover { background: var(--muted); }
 
-/* ─── SCROLL PROGRESS ──────────────────────────────────── */
+/* ─── SCROLL PROGRESS ─────────────────────────────────── */
 #scroll-progress {
   position: fixed;
   left: 0;
@@ -231,7 +231,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
 .reveal.in, .reveal-up.in   { opacity: 1; transform: translateY(0); will-change: auto; }
 .reveal-photo.in             { opacity: 1; transform: translateY(0) scale(1); will-change: auto; }
 
-/* ─── OPENING ────────────────────────────────────────── */
+/* ─── OPENING ───────────────────────────────────────── */
 #s-opening { height: 100vh; }
 #s-opening .section-bg { inset: -28px; }
 .opening-wrapper {
@@ -327,7 +327,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   animation: scrollPulse 2.2s ease-in-out infinite;
 }
 
-/* ─── WHO ARE WE ────────────────────────────────────── */
+/* ─── WHO ARE WE ─────────────────────────────────────── */
 #s-who { background: var(--bg2); }
 .who-content {
   text-align: center;
@@ -356,7 +356,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   letter-spacing: 0.25em;
 }
 
-/* ─── IDENTITY CRISIS ──────────────────────────────────── */
+/* ─── IDENTITY CRISIS ────────────────────────────────────── */
 #s-crisis {
   background: var(--bg);
   flex-direction: column;
@@ -500,7 +500,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   letter-spacing: 0.2em;
 }
 
-/* ─── SYNTAX (Language Installation Art) ────────────────────────── */
+/* ─── SYNTAX (Language Installation Art) ────────────────────────────── */
 #s-syntax {
   background: var(--bg);
   min-height: 140vh;
@@ -595,7 +595,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
 }
 .syn-l {
   font-family: var(--serif);
-  font-size: clamp(52px, 9vw, 108px);
+  font-size: clamp(72px, 13vw, 160px);
   font-weight: 300;
   color: #F0EDE6;
   display: inline-block;
@@ -632,7 +632,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   50%       { text-shadow: 0 0 36px currentColor, 0 0 60px currentColor; }
 }
 
-/* ─── CHAOS ───────────────────────────────────────────── */
+/* ─── CHAOS ──────────────────────────────────────────────── */
 #s-chaos { background: #000; height: 100vh; }
 #chaosCanvas {
   position: absolute;
@@ -680,7 +680,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   letter-spacing: 0.22em;
 }
 
-/* ─── WARMTH ────────────────────────────────────────── */
+/* ─── WARMTH ─────────────────────────────────────────── */
 #s-warmth {
   background: var(--bg2);
   min-height: 100vh;
@@ -780,7 +780,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   line-height: 2;
 }
 
-/* ─── MARGINALIZATION ───────────────────────────────────── */
+/* ─── MARGINALIZATION ─────────────────────────────────────── */
 #s-marginal { background: var(--bg); }
 .marginal-content {
   position: relative;
@@ -823,7 +823,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   font-size: 0.9em;
 }
 
-/* ─── GRASSROOTS ────────────────────────────────────── */
+/* ─── GRASSROOTS ───────────────────────────────────────── */
 #s-grassroots {
   background: var(--bg);
   flex-direction: column;
@@ -888,7 +888,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   width: 100%;
 }
 
-/* ─── FREEDOM ────────────────────────────────────────── */
+/* ─── FREEDOM ──────────────────────────────────────────── */
 #s-freedom { background: var(--bg); }
 .freedom-bg {
   position: absolute;
@@ -957,7 +957,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   color: var(--dim);
 }
 
-/* ─── CULTURE ────────────────────────────────────────── */
+/* ─── CULTURE ──────────────────────────────────────────── */
 #s-culture {
   background: var(--bg);
   flex-direction: column;
@@ -1038,7 +1038,7 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   margin-top: 4px;
 }
 
-/* ─── ENDING ─────────────────────────────────────────── */
+/* ─── ENDING ──────────────────────────────────────────── */
 #s-ending { background: var(--bg2); }
 .ending-content {
   text-align: center;
@@ -1244,19 +1244,41 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
 }
 .eseq-taiwan span {
   font-family: var(--serif);
-  font-size: 64px;
+  font-size: 42px;
   font-weight: 300;
-  color: rgba(255,255,255,0.85);
+  color: rgba(255,255,255,0.75);
   filter: blur(0.2px);
   display: inline-block;
   line-height: 1;
 }
 @keyframes eseqBreathe {
-  0%, 100% { transform: scale(1);     opacity: 0.82; }
-  50%       { transform: scale(1.01); opacity: 0.88; }
+  0%, 100% { transform: scale(1);      opacity: 0.70; }
+  50%       { transform: scale(1.004); opacity: 0.78; }
+}
+.eseq-coda {
+  margin-top: 22px;
+  text-align: center;
+  font-family: var(--serif);
+  font-size: 10px;
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: 0.22em;
+  color: rgba(255,255,255,0.9);
+  opacity: 0;
+  transition: opacity 5s ease;
+}
+.eseq-coda.visible { opacity: 0.06; }
+.eseq-coda-zh {
+  display: block;
+  margin-top: 5px;
+  font-family: var(--zh);
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 200;
+  letter-spacing: 0.24em;
 }
 
-/* ─── FOOTER ──────────────────────────────────────────── */
+/* ─── FOOTER ────────────────────────────────────────────── */
 footer {
   background: var(--bg);
   border-top: 1px solid var(--border);
@@ -1271,7 +1293,7 @@ footer p {
   letter-spacing: 0.25em;
 }
 
-/* ─── LIGHTBOX ────────────────────────────────────────── */
+/* ─── LIGHTBOX ───────────────────────────────────────────── */
 #lightbox {
   position: fixed;
   inset: 0;
@@ -1336,7 +1358,7 @@ footer p {
 }
 .lb-close:hover { border-color: var(--gold); color: var(--gold); }
 
-/* ─── CELL LIGHTBOX ──────────────────────────────────────── */
+/* ─── CELL LIGHTBOX ─────────────────────────────────────────── */
 #cellBox {
   position: fixed;
   inset: 0;
@@ -1404,7 +1426,7 @@ footer p {
 #cellBox.open #cellBoxClose { opacity: 1; pointer-events: auto; }
 #cellBoxClose:hover { border-color: var(--gold); color: var(--gold); }
 
-/* ─── MARGINALIZATION LENS ───────────────────────────────────── */
+/* ─── MARGINALIZATION LENS ────────────────────────────────────── */
 .marginal-spotlight {
   position: absolute;
   inset: 0;
@@ -1418,7 +1440,7 @@ footer p {
 }
 #s-marginal.spotlight-active .marginal-spotlight { opacity: 1; }
 
-/* ─── FREEDOM ORBS ─────────────────────────────────────── */
+/* ─── FREEDOM ORBS ───────────────────────────────────────────── */
 .freedom-orbs {
   position: absolute;
   inset: 0;
@@ -1445,7 +1467,7 @@ footer p {
   100% { transform: translateY(-100vh) scale(0.25); opacity: 0; }
 }
 
-/* ─── BANQUET HALF-CIRCLE ───────────────────────────────────── */
+/* ─── BANQUET HALF-CIRCLE ─────────────────────────────────────── */
 .banquet-wrap {
   width: 100%;
   padding: 60px 0 0;
@@ -1518,7 +1540,7 @@ footer p {
 }
 .banquet-food { cursor: pointer; }
 
-/* ─── BANQUET POPUP ───────────────────────────────────────── */
+/* ─── BANQUET POPUP ───────────────────────────────────────────── */
 #banquetPopup {
   position: fixed;
   inset: 0;
@@ -1603,7 +1625,7 @@ footer p {
 }
 #bp-close:hover { border-color: var(--gold); color: var(--gold); }
 
-/* ─── AUDIO BUTTON ──────────────────────────────────────────── */
+/* ─── AUDIO BUTTON ───────────────────────────────────────────── */
 #audioBtn {
   position: fixed;
   bottom: 24px;
@@ -1648,7 +1670,7 @@ footer p {
   100% { transform: scaleY(0); transform-origin: bottom; }
 }
 
-/* ─── TABLET ──────────────────────────────────────────── */
+/* ─── TABLET ───────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .marginal-content {
     padding: 60px 40px;
@@ -1663,7 +1685,7 @@ footer p {
   .grassroots-grid { grid-template-columns: 3fr 2fr 2fr; }
 }
 
-/* ─── MOBILE ──────────────────────────────────────────── */
+/* ─── MOBILE ───────────────────────────────────────────── */
 @media (max-width: 768px) {
   #nav { padding: 14px 20px; }
   #nav.scrolled { padding: 10px 20px; }
@@ -1746,7 +1768,7 @@ footer p {
 @media (max-width: 480px) {
   .opening-zh { letter-spacing: 0.2em; }
   .opening-en { letter-spacing: 0.35em; }
-  .syn-l { font-size: clamp(40px, 11vw, 72px); }
+  .syn-l { font-size: clamp(52px, 14vw, 96px); }
   .chaos-words { flex-direction: column; gap: 8px; }
   .chaos-arr { transform: rotate(90deg); }
   .culture-grid {
@@ -1829,15 +1851,14 @@ footer p {
   position: absolute;
   bottom: 0;
   text-align: center;
-  opacity: 0;
-  transition: opacity 2.4s var(--ease);
+  opacity: 0.35;
 }
-.order-caption.visible { opacity: 1; }
+.order-caption.visible { opacity: 0.35; }
 .order-caption-en {
   font-family: var(--serif);
   font-size: clamp(11px, 1.4vw, 14px);
   font-style: italic;
-  color: rgba(255,255,255,0.26);
+  color: rgba(255,255,255,0.88);
   letter-spacing: 0.08em;
   line-height: 2.0;
 }
@@ -1845,7 +1866,7 @@ footer p {
   font-family: var(--zh);
   font-size: clamp(9px, 1vw, 10px);
   font-weight: 200;
-  color: rgba(255,255,255,0.13);
+  color: rgba(255,255,255,0.65);
   letter-spacing: 0.26em;
   line-height: 2.3;
   margin-top: 6px;
@@ -1867,7 +1888,7 @@ footer p {
   .order-overlay { padding: 56px 24px 60px; }
 }
 
-/* ─── SECTION QUESTION ──────────────────────────────────────── */
+/* ─── SECTION QUESTION ────────────────────────────────────────── */
 .section-q {
   font-family: var(--serif);
   font-size: clamp(10px, 1.2vw, 12px);
@@ -1909,7 +1930,7 @@ footer p {
   .gr-paradox { padding: 0 24px 40px; }
 }
 
-/* ─── ENDING HINT ────────────────────────────────────────────── */
+/* ─── ENDING HINT ──────────────────────────────────────────────── */
 .ending-hint {
   font-family: var(--serif);
   font-size: 11px;
@@ -1928,7 +1949,7 @@ footer p {
   letter-spacing: 0.22em;
 }
 
-/* ─── REDUCED MOTION ────────────────────────────────────────── */
+/* ─── REDUCED MOTION ──────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .syn-l, .syn-float-l {
     transition: opacity 0.2s ease !important;
