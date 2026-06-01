@@ -6,6 +6,9 @@
    Phase 2  Weave      6.5 → 12s  threads interlace (茄芷袋 spirit)
    Phase 3  Form       12 → 19s   ORDER emerges — irregular, alive
    Phase 4  Dwell      19 → 24s   ORDER breathes
+             19 → 19.5s  burst particles fade in  (+90% density)
+             19.5→ 21s   burst holds — ORDER is unmistakable
+             21 → 21.8s  burst fades out — density settles back
    Phase 5  Dissolve   24 → 28s   structure scatters back to light
    Phase 6  Becoming   28 → 32s   returning to chaos, becoming
    (loop)
@@ -30,11 +33,21 @@
     end      : 32000,
   };
 
-  /* ── Config ───────────────────────────────────── */
-  const COUNT  = /Mobi|Android/i.test(navigator.userAgent) ? 160 : 240;
-  const SAMPLE = 5;
+  /* Burst timing relative to S.dwell */
+  const B = {
+    fadeIn  :   500,   // ms to reach full opacity
+    hold    :  1500,   // ms at peak density
+    fadeOut :   800,   // ms to fade back to 0
+  };
+  B.total = B.fadeIn + B.hold + B.fadeOut;  // 2800 ms
 
-  let W = 0, H = 0, targets = [], parts = [];
+  /* ── Config ───────────────────────────────────── */
+  const MOBILE      = /Mobi|Android/i.test(navigator.userAgent);
+  const COUNT       = MOBILE ? 160 : 240;
+  const BURST_COUNT = MOBILE ? 144 : 216;   // +90 % ≈ within 80-120 % range
+  const SAMPLE      = 5;
+
+  let W = 0, H = 0, targets = [], parts = [], bursts = [];
   let raf = null, t0 = null, active = false, cycle = 0;
 
   /* ── Text sampling ────────────────────────────── */
@@ -85,9 +98,10 @@
     H = canvas.height = section.offsetHeight || window.innerHeight;
     sampleText();
     if (parts.length) { assignTargets(); assignLanes(); }
+    if (bursts.length)  assignBurstTargets();
   }
 
-  /* ── Particle ─────────────────────────────────── */
+  /* ── Main particle ────────────────────────────── */
   function make(idx) {
     return {
       x    : Math.random() * W,
@@ -110,12 +124,37 @@
     };
   }
 
+  /* ── Burst particle ───────────────────────────── */
+  function makeBurst() {
+    return {
+      x  : 0, y : 0,
+      r  : 0.45 + Math.random() * 0.70,
+      a  : 0.10 + Math.random() * 0.24,
+      tx : 0, ty : 0,
+      jx : (Math.random() - 0.5) * 3.5,
+      jy : (Math.random() - 0.5) * 3.5,
+      bO : Math.random() * Math.PI * 2,
+    };
+  }
+
   function assignTargets() {
     if (!targets.length) return;
     parts.forEach(p => {
       const t = targets[Math.floor(Math.random() * targets.length)];
       p.tx = t.x + p.jx;
       p.ty = t.y + p.jy;
+    });
+  }
+
+  function assignBurstTargets() {
+    if (!targets.length) return;
+    bursts.forEach(p => {
+      const t = targets[Math.floor(Math.random() * targets.length)];
+      p.tx = t.x + p.jx;
+      p.ty = t.y + p.jy;
+      /* pre-position invisibly so first fade-in has zero jump */
+      p.x  = p.tx;
+      p.y  = p.ty;
     });
   }
 
@@ -146,13 +185,17 @@
       p.vx = (Math.random() - 0.5) * 0.5;
       p.vy = (Math.random() - 0.5) * 0.5;
     });
+    /* snap bursts back to targets silently for next cycle */
+    bursts.forEach(p => { p.x = p.tx; p.y = p.ty; });
   }
 
   function init() {
     resize();
-    parts = Array.from({ length: COUNT }, (_, i) => make(i));
+    parts  = Array.from({ length: COUNT },       (_, i) => make(i));
+    bursts = Array.from({ length: BURST_COUNT },  ()     => makeBurst());
     assignTargets();
     assignLanes();
+    assignBurstTargets();
     scatter();
   }
 
@@ -257,6 +300,29 @@
     ctx.fill();
   }
 
+  /* ── Burst alpha curve ────────────────────────── */
+  function burstFrac(el) {
+    const t = el - S.dwell;
+    if (t < 0 || t >= B.total) return 0;
+    if (t < B.fadeIn) return ease(t / B.fadeIn);
+    if (t < B.fadeIn + B.hold) return 1;
+    return ease(1 - (t - B.fadeIn - B.hold) / B.fadeOut);
+  }
+
+  /* ── Burst step + draw ────────────────────────── */
+  function stepPaintBurst(p, frac, tS) {
+    /* micro breathing — matches dwell phase feel */
+    const j = 1.4;
+    p.x += (p.tx + Math.sin(tS * 0.34 + p.bO) * j - p.x) * 0.034;
+    p.y += (p.ty + Math.cos(tS * 0.28 + p.bO) * j - p.y) * 0.034;
+
+    const breathe = 0.82 + Math.sin(tS * 0.40 + p.bO) * 0.18;
+    ctx.globalAlpha = Math.max(0, Math.min(1, p.a * breathe * frac));
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
   /* ── UI helpers ───────────────────────────────── */
   const setVis = (id, v) => {
     const el = document.getElementById(id);
@@ -283,7 +349,19 @@
 
     ctx.clearRect(0, 0, W, H);
     ctx.fillStyle = '#ffffff';
+
+    /* main particles */
     parts.forEach(p => { step(p, el, tS); paint(p, el, tS); });
+
+    /* burst overlay — extra density at ORDER completion */
+    const bf = burstFrac(el);
+    if (bf > 0) {
+      bursts.forEach(p => stepPaintBurst(p, bf, tS));
+    } else {
+      /* silently keep burst particles at their targets while invisible */
+      bursts.forEach(p => { p.x = p.tx; p.y = p.ty; });
+    }
+
     ctx.globalAlpha = 1;
 
     raf = requestAnimationFrame(tick);
