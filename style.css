@@ -1157,34 +1157,35 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
   padding-top: 16px;
   border-top: 1px solid var(--border);
   width: 100%;
-  max-width: 480px;
+  max-width: 720px;
   justify-content: center;
-}
-.ending-artist img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  object-fit: cover;
-  flex-shrink: 0;
-  filter: grayscale(20%);
+  overflow: visible;
 }
 .ending-artist-info {
   display: flex;
   flex-direction: column;
   gap: 6px;
   text-align: left;
+  min-width: 0;
+  overflow: visible;
 }
 .ending-artist-info span {
+  display: block;
   font-family: var(--zh);
   font-size: 14px;
   font-weight: 300;
   color: var(--text);
   letter-spacing: 0.1em;
+  white-space: normal;
+  word-break: break-word;
 }
 .ending-artist-info a {
+  display: block;
   font-size: 12px;
   color: var(--muted);
   transition: color 0.3s;
+  white-space: normal;
+  word-break: break-word;
 }
 .ending-artist-info a:hover { color: var(--gold); }
 
@@ -1791,8 +1792,8 @@ footer p {
   .ending-content { padding: 60px 24px; gap: 20px; }
   .drop-zone { min-width: 220px; padding: 12px 24px; }
   .w-chip { padding: 8px 16px; font-size: 11px; }
-  .ending-artist { flex-direction: column; text-align: center; }
-  .ending-artist-info { text-align: center; }
+  .ending-artist { flex-direction: column; gap: 16px; max-width: 90vw; text-align: center; }
+  .ending-artist-info { text-align: center; align-items: center; }
 
   footer { padding: 28px 24px; }
 
@@ -2001,3 +2002,4 @@ footer p {
   @keyframes eseqBreathe    { from, to { transform: none; opacity: 1; } }
   @keyframes orbFloat       { from, to { transform: none; } }
   @keyframes scrollPulse    { from, to { transform: none; opacity: 0; } }
+}
