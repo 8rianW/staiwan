@@ -1751,6 +1751,22 @@ footer p {
     text-align: center;
   }
 
+  /* mobile: disable spotlight, replace with static radial brightening */
+  #s-marginal .marginal-spotlight { display: none; }
+  #s-marginal::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(
+      ellipse 68% 52% at 50% 42%,
+      rgba(255,255,255,0.058) 0%,
+      rgba(255,255,255,0.024) 48%,
+      transparent 72%
+    );
+  }
+
   .grassroots-header { padding: 0 24px; }
   .grassroots-grid {
     grid-template-columns: 1fr 1fr;
@@ -1985,4 +2001,3 @@ footer p {
   @keyframes eseqBreathe    { from, to { transform: none; opacity: 1; } }
   @keyframes orbFloat       { from, to { transform: none; } }
   @keyframes scrollPulse    { from, to { transform: none; opacity: 0; } }
-}
