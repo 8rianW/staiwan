@@ -1152,42 +1152,53 @@ body.hovering #cursor-ring { width: 52px; height: 52px; border-color: rgba(255,2
 }
 .ending-artist {
   display: flex;
-  align-items: center;
-  gap: 24px;
-  padding-top: 16px;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 80px;
+  padding-top: 20px;
   border-top: 1px solid var(--border);
   width: 100%;
-  max-width: 720px;
+  max-width: 600px;
   justify-content: center;
-  overflow: visible;
 }
-.ending-artist-info {
+.ending-artist-person {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  text-align: left;
-  min-width: 0;
-  overflow: visible;
+  align-items: center;
+  gap: 3px;
+  text-align: center;
 }
-.ending-artist-info span {
-  display: block;
+.ending-artist-name-zh {
   font-family: var(--zh);
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--text);
+  letter-spacing: 0.12em;
+  margin: 0 0 1px;
+}
+.ending-artist-name-en {
+  font-family: var(--sans);
+  font-size: 11px;
   font-weight: 300;
   color: var(--text);
-  letter-spacing: 0.1em;
-  white-space: normal;
-  word-break: break-word;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin: 0 0 10px;
 }
-.ending-artist-info a {
+.ending-artist-person a {
   display: block;
-  font-size: 12px;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 300;
   color: var(--muted);
-  transition: color 0.3s;
-  white-space: normal;
-  word-break: break-word;
+  letter-spacing: 0.04em;
+  opacity: 0.68;
+  transition: opacity 0.3s, color 0.3s;
 }
-.ending-artist-info a:hover { color: var(--gold); }
+.ending-artist-person a:hover {
+  opacity: 1;
+  color: var(--gold);
+}
 
 /* ─── ENDING SEQUENCE ───────────────────────────────────── */
 #s-ending-seq {
@@ -1792,8 +1803,7 @@ footer p {
   .ending-content { padding: 60px 24px; gap: 20px; }
   .drop-zone { min-width: 220px; padding: 12px 24px; }
   .w-chip { padding: 8px 16px; font-size: 11px; }
-  .ending-artist { flex-direction: column; gap: 16px; max-width: 90vw; text-align: center; }
-  .ending-artist-info { text-align: center; align-items: center; }
+  .ending-artist { flex-direction: column; gap: 28px; max-width: 90vw; align-items: center; }
 
   footer { padding: 28px 24px; }
 
