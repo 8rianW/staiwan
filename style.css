@@ -1437,6 +1437,18 @@ footer p {
 #cellBox.open #cellBoxClose { opacity: 1; pointer-events: auto; }
 #cellBoxClose:hover { border-color: var(--gold); color: var(--gold); }
 
+/* ─── MARGINALIZATION PARADOX ─────────────────────────────────────── */
+#s-marginal .paradox-en {
+  color: rgba(255,255,255,0.65);
+  text-shadow: 0 0 12px rgba(0,0,0,0.6);
+  font-size: clamp(14px, 1.5vw, 16px);
+}
+#s-marginal .paradox-zh {
+  color: rgba(255,255,255,0.40);
+  text-shadow: 0 0 12px rgba(0,0,0,0.6);
+  font-size: clamp(12px, 1vw, 13px);
+}
+
 /* ─── MARGINALIZATION LENS ────────────────────────────────────── */
 .marginal-spotlight {
   position: absolute;
