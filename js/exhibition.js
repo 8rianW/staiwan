@@ -126,6 +126,7 @@ function initAudio() {
     's-freedom':    0.36,
     's-culture':    0.30,
     's-ending':     0.24,
+    's-ending-seq': 0,
   };
 
   function getCtx() {

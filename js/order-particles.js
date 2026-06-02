@@ -70,8 +70,8 @@
         if (px[(y * W + x) * 4 + 3] > 100)
           targets.push({ x, y });
 
-    /* ── Pass 2: finer grid for R / D / E — thin strokes undersampled at step 5
-         R: leg diagonal  D: right arc  E: three horizontal bars
+    /* ── Pass 2: finer grid for O / R / D / E — thin strokes undersampled at step 5
+         O: circular arc  R: leg diagonal  D: right arc  E: three horizontal bars
          step=3 captures strokes that fall between SAMPLE=5 grid lines
          alpha threshold 80 catches anti-aliased stroke edges too            ── */
     const fullW = ox.measureText('ORDER').width;
@@ -83,7 +83,7 @@
       lx += cw;
     }
     /* O=0, R=1, D=2, E=3, R=4 */
-    for (const i of [1, 2, 3, 4]) {
+    for (const i of [0, 1, 2, 3, 4]) {
       const [x0, x1] = lBounds[i];
       for (let y = 0; y < H; y += 3)
         for (let x = Math.max(0, x0); x <= Math.min(W - 1, x1); x += 3)
